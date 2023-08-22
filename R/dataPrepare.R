@@ -12,6 +12,7 @@
 #'
 #' @return NULL
 #'
+#' @importFrom cli cli_alert_info
 #' @export
 #' @examples
 #' print('resetLRdb')
@@ -22,21 +23,25 @@ resetLRdb <- function(db, switch=FALSE) {
     if(colnames(db)[1]=='ligand' & colnames(db)[2]=='receptor'){
       
         if(switch){
-            # envir = .GlobalEnv
             assign("LRdb", unique(db[, c('ligand', 'receptor')]),
                    envir=as.environment("LRdbEnv"))
         }
         else {  
-            updated.LRdb <- rbind(LRdb[, c('ligand', 'receptor')],
+            db <- rbind(LRdb[, c('ligand', 'receptor')],
                                   db[, c('ligand', 'receptor')])
-            # envir = .GlobalEnv
-            assign("LRdb", unique(updated.LRdb), envir=as.environment("LRdbEnv"))
+            assign("LRdb", unique(db), envir=as.environment("LRdbEnv"))
         }
     } else {
       stop(paste0("db should be a data frame with ",
             "2 columns named 'ligand' and 'receptor'."))
     }
-    
+
+    cat("\n")
+    cat(cli::cli_alert_info("New database defined for {.val LRdb}.","\n"))
+    print(utils::head(db))
+
+return(invisible(NULL))
+  
 } # resetLRdb
 
 
@@ -203,7 +208,7 @@ prepareDataset <- function(counts, normalize = TRUE, symbol.col = NULL, min.coun
           ncounts <- data.matrix(ncounts) 
           rm(counts.transposed)
     }
-       
+    
     nLR <- length(intersect(
         c(LRdb$ligand, LRdb$receptor),
         rownames(ncounts)))

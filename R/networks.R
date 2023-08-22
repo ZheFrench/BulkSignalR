@@ -122,6 +122,8 @@ getLRNetwork <- function(bsrinf, pval.thres=NULL, qval.thres=NULL,
     # local binding
     i <- NULL
 
+   #Network <- getResource(resourceName="Network")
+
     directed.int <- c("controls-state-change-of", "catalysis-precedes",
                       "controls-expression-of", "controls-transport-of",
                       "controls-phosphorylation-of")
@@ -145,9 +147,9 @@ getLRNetwork <- function(bsrinf, pval.thres=NULL, qval.thres=NULL,
         a.iter <- data.frame(from=pairs$L[i], to=r, edge.type="LR",
                              stringsAsFactors=FALSE)
         genes.in.pw <- pw[pw[[id.col]]==p,gene.col]
-        int <- SingleCellSignalR::PwC_ReactomeKEGG[
-            SingleCellSignalR::PwC_ReactomeKEGG$a.gn %in% genes.in.pw &
-                SingleCellSignalR::PwC_ReactomeKEGG$b.gn %in% genes.in.pw,]
+        int <- Network[
+            Network$a.gn %in% genes.in.pw &
+                Network$b.gn %in% genes.in.pw,]
         directed <- int$type %in% directed.int
         ret <- int[!directed,c("b.gn", "a.gn")]
         names(ret) <- c("a.gn", "b.gn")
@@ -168,9 +170,9 @@ getLRNetwork <- function(bsrinf, pval.thres=NULL, qval.thres=NULL,
                         for (k in 2:length(vertices)){
                             from <- igraph::V(g)$name[vertices[k-1]]
                             to <- igraph::V(g)$name[vertices[k]]
-                            edge.type <- SingleCellSignalR::PwC_ReactomeKEGG[
-                                SingleCellSignalR::PwC_ReactomeKEGG$a.gn==from &
-                                SingleCellSignalR::PwC_ReactomeKEGG$b.gn==to,
+                            edge.type <- Network[
+                                Network$a.gn==from &
+                                Network$b.gn==to,
                                 "type"][1]
                             a.iter <- rbind(a.iter, data.frame(from=from,to=to,
                                                         edge.type=edge.type,
@@ -251,6 +253,10 @@ getLRIntracellNetwork <- function(bsrinf, pval.thres=NULL, qval.thres=NULL,
     if (ipar$ligand.reduced || ipar$receptor.reduced)
         stop(paste0("Does not work with inferences already reduced to the ",
                     "ligands or the receptors"))
+
+
+    #reactome <- getResource(resourceName="Reactome")
+    #gobp <- getResource(resourceName="GO-BP")
 
     # get unique LR pairs with required statistical significance
     pairs <- LRinter(bsrinf)

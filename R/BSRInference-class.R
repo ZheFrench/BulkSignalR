@@ -470,6 +470,9 @@ setMethod("getPathwayStats", "BSRInference", function(obj,
     # number of ligands for each receptor
     R.n.comb <- table(LRdb$receptor)
 
+    #reactome <- getResource(resourceName="Reactome")
+    #gobp <- getResource(resourceName="GO-BP")
+
     foreach::foreach(id=names(pw.ids), .combine=rbind) %do% {
 
         # number of receptors that are in the current pathway,

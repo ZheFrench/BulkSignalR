@@ -20,7 +20,15 @@ LazyData: FALSE
 Depends: R (>= 4.0)
 biocViews: Network, RNASeq, Software, Proteomics, Transcriptomics, NetworkInference
 Imports:
+    BiocFileCache,
+    rappdirs,
+    httr,
+    DBI,
+    RSQLite,
+    cli,
     rlang,
+    dplyr,
+    jsonlite,
     methods,
     doParallel,
     glmnet,
@@ -33,7 +41,6 @@ Imports:
     foreach,
     multtest,
     igraph,
-    SingleCellSignalR,
     orthogene,
     stabledist,
     circlize (>= 0.4.14),
@@ -44,7 +51,6 @@ Imports:
 Suggests: 
     knitr,
     grid,
-    dplyr,
     markdown,
     rmarkdown
 RoxygenNote: 7.2.3

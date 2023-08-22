@@ -121,12 +121,32 @@
   # local binding
   r <- p <- pl <- id <- NULL
   
+  #Network <- getResource(resourceName="Network")
+
   # define interaction types
   control.int <- "controls-expression-of"
   incomplex.int <- c("in-complex-with","interacts-with")
-  directed.int <- c("controls-state-change-of", "catalysis-precedes",
+  directed.int <- c("catalysis-precedes","controls-state-change-of",
                     "controls-expression-of", "controls-transport-of",
                     "controls-phosphorylation-of")
+
+  control.int.upgrade <- c("positively-controls-expression-of", "negatively-controls-expression-of")
+  directed.int.upgrade <-c("catalysis-precedes",
+                    "controls-state-change-of",
+                    "controls-transport-of",
+                    "controls-phosphorylation-of",
+                    "controls-phospho-of",
+                    "controls-state-of-by-metabo",
+                    "regulates-phospho-of",
+                    "regulates-dephospho-of",
+                    "controls-dephospho-of",
+                    "regulates_transcription_of"
+                    )
+
+  control.int <- union(control.int,control.int.upgrade)
+  directed.int <- union(directed.int,directed.int.upgrade)
+
+
   if (with.complex)
     correlated.int <- union(control.int, incomplex.int)
   else
@@ -150,9 +170,9 @@
       best.2nd <- foreach::foreach(p=pa,.combine=rbind) %do% {
         # best.2nd <- NULL
         # for (p in pa){
-        int <- SingleCellSignalR::PwC_ReactomeKEGG[
-          SingleCellSignalR::PwC_ReactomeKEGG$a.gn %in% pw[pw[[id.col]]==p,gene.col] &
-            SingleCellSignalR::PwC_ReactomeKEGG$b.gn %in% pw[pw[[id.col]]==p,gene.col],
+        int <- Network[
+          Network$a.gn %in% pw[pw[[id.col]]==p,gene.col] &
+            Network$b.gn %in% pw[pw[[id.col]]==p,gene.col],
         ]
         directed <- int$type %in% directed.int
         
@@ -314,6 +334,9 @@
   reference <- match.arg(reference)
   results <- list()
   
+  #reactome <- getResource(resourceName="Reactome")
+  #gobp <- getResource(resourceName="GO-BP")
+
   # Reactome pathways
   if (reference %in% c("REACTOME-GOBP","REACTOME")){
     react <- reactome[reactome$`Gene name` %in% rownames(stats(cc)),]

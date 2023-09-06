@@ -27,7 +27,7 @@
     urlGo       <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/resources/gobp.rds"
     urlReactome <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/resources/reactome.rds"
     #urlNetwork <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/resources/PwC_ReactomeKEGG.rds"
-    #urlNetwork <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/resources/Network.rds"
+    urlNetwork <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/resources/Network.rds"
 
     Sys.setenv("BulkSignalR_GO_URL" = urlGo)
     Sys.setenv("BulkSignalR_Reactome_URL" = urlReactome)

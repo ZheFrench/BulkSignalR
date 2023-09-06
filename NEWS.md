@@ -41,7 +41,7 @@ Integrated Pathways :
 134 440 gene-pathway association in react
 
 # Msidb C2 and C5 from Msidb
-64 2656 gene-pathway association in gobp
+642 656 gene-pathway association in gobp
 92 780  gene-pathway association in react
 
 ############################

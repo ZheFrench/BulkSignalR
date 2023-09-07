@@ -128,6 +128,21 @@ getLRNetwork <- function(bsrinf, pval.thres=NULL, qval.thres=NULL,
                       "controls-expression-of", "controls-transport-of",
                       "controls-phosphorylation-of")
 
+    directed.int.upgrade <-c("catalysis-precedes",
+                        "controls-state-change-of",
+                        "controls-transport-of",
+                        "controls-phosphorylation-of",
+                        "controls-phospho-of",
+                        "controls-state-of-by-metabo",
+                        "regulates-phospho-of",
+                        "regulates-dephospho-of",
+                        "controls-dephospho-of",
+                        "regulates_transcription_of"
+                        )
+
+    directed.int <- union(directed.int,directed.int.upgrade)
+
+
     arcs <- foreach::foreach(i=1:nrow(pairs), .combine=rbind) %do% {
     # arcs <- NULL
     # for (i in 1:nrow(pairs)) {
@@ -342,6 +357,22 @@ getLRIntracellNetwork <- function(bsrinf, pval.thres=NULL, qval.thres=NULL,
     directed.int <- c("controls-state-change-of", "catalysis-precedes",
                       "controls-expression-of","controls-transport-of",
                       "controls-phosphorylation-of","LR")
+
+
+    directed.int.upgrade <-c("catalysis-precedes",
+                        "controls-state-change-of",
+                        "controls-transport-of",
+                        "controls-phosphorylation-of",
+                        "controls-phospho-of",
+                        "controls-state-of-by-metabo",
+                        "regulates-phospho-of",
+                        "regulates-dephospho-of",
+                        "controls-dephospho-of",
+                        "regulates_transcription_of"
+                        )
+
+    directed.int <- union(directed.int,directed.int.upgrade)
+
     directed <- all.edges$edge.type %in% directed.int
     ret <- all.edges[!directed,]
     from <- ret$from

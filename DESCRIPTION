@@ -35,6 +35,7 @@ Imports:
     ggalluvial,
     ggplot2,
     gridExtra,
+    grid,
     png,
     Rtsne,
     ggrepel,
@@ -50,7 +51,6 @@ Imports:
     RANN
 Suggests: 
     knitr,
-    grid,
     markdown,
     rmarkdown
 RoxygenNote: 7.2.3

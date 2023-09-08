@@ -217,19 +217,19 @@ return(invisible(NULL))
 .formatPathwaysFromTxt <- function(file,
     resourceName=NULL) {
     
-    db <- read.csv(file, 
+    db <- utils::read.csv(file, 
                   stringsAsFactors = FALSE, sep ="\t") 
 
     if(resourceName=="Reactome"){
 
-        if (!all(c('Reactome ID','Gene name','Reactome name') %in% names(data[[1]]))){
+        if (!all(c('Reactome ID','Gene name','Reactome name') %in% names(db[[1]]))){
               cli::cli_alert_danger("Colnames shoul be defined with specific names.\n")
               stop("Three columns must defined as 'Reactome ID','Gene name','Reactome name'.")
         }
     }
     if(resourceName=="GO-BP"){
 
-        if (!all(c('GO ID','Gene name','GO name') %in% names(data[[1]]))){
+        if (!all(c('GO ID','Gene name','GO name') %in% names(db[[1]]))){
               cli::cli_alert_danger("Colnames shoul be defined with specific names.\n")
               stop("Three columns must defined as 'GO ID','Gene name','GO name'.")
         }

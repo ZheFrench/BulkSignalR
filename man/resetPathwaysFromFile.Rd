@@ -4,12 +4,17 @@
 \alias{resetPathwaysFromFile}
 \title{Import pathways from a file to dataframe}
 \usage{
-resetPathwaysFromFile(file, fileType = NULL, resourceName = NULL)
+resetPathwaysFromFile(
+  file,
+  fileType = c("json", "gmt", "txt"),
+  resourceName = NULL
+)
 }
 \arguments{
 \item{file}{Path to file.}
 
-\item{fileType}{Default is Json.}
+\item{fileType}{Default is Json.
+Other options are gmt or txt files.}
 
 \item{resourceName}{Two options "GO-BP" or "REACTOME".}
 }

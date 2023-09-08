@@ -158,6 +158,7 @@ return(invisible(NULL))
 #'
 #' @param file    Path to file.
 #' @param fileType    Default is Json.
+#' Other options are gmt or txt files.
 #' @param resourceName    Two options "GO-BP" or "REACTOME".
 #'
 #' @return NULL
@@ -170,10 +171,10 @@ return(invisible(NULL))
 #'    resetPathwaysFromFile(file,"GO-BP")
 #'
 resetPathwaysFromFile <- function(file,
-                        fileType=NULL,
+                        fileType=c("json","gmt","txt"),
                         resourceName=NULL){
 
-        #fileType <- match.arg(fileType)
+        fileType <- match.arg(fileType)
 
         if (! resourceName %in% c("GO-BP","Reactome"))
            stop("GO-BP and Reactome are the only keywords alllowed.")
@@ -187,7 +188,10 @@ resetPathwaysFromFile <- function(file,
         else if(fileType=="gmt")
            db <- .formatPathwaysFromGmt(file=file,
                 resourceName=resourceName)
-        else {  stop("File format accepted are `json` or `gmt` only.")}
+        else if(fileType=="txt")
+           db <- .formatPathwaysFromTxt(file=file,
+                resourceName=resourceName)
+        else {  stop("File format accepted are `json` , `gmt` or `txt` only.")}
 
         cat("\n")
         cat(cli::cli_alert_info("New resource defined for {.val {resourceName}}.","\n"))
@@ -202,6 +206,39 @@ resetPathwaysFromFile <- function(file,
 return(invisible(NULL))
 
 } #resetPathwaysFromFile
+
+#' Read dataframe from txt file
+#'
+#' @param file    Path to a tabular file.
+#' @param resourceName    Two options "GO-BP"  "REACTOME".
+#'
+#' @return Dataframe with pathwayID, geneName and pathwayName
+#'
+.formatPathwaysFromTxt <- function(file,
+    resourceName=NULL) {
+    
+    db <- read.csv(file, 
+                  stringsAsFactors = FALSE, sep ="\t") 
+
+    if(resourceName=="Reactome"){
+
+        if (!all(c('Reactome ID','Gene name','Reactome name') %in% names(data[[1]]))){
+              cli::cli_alert_danger("Colnames shoul be defined with specific names.\n")
+              stop("Three columns must defined as 'Reactome ID','Gene name','Reactome name'.")
+        }
+    }
+    if(resourceName=="GO-BP"){
+
+        if (!all(c('GO ID','Gene name','GO name') %in% names(data[[1]]))){
+              cli::cli_alert_danger("Colnames shoul be defined with specific names.\n")
+              stop("Three columns must defined as 'GO ID','Gene name','GO name'.")
+        }
+    }
+
+return (db)
+
+} # .formatPathwaysFromTxt
+
 
 #' Format dataframe according to json input
 #'

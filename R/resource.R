@@ -218,18 +218,18 @@ return(invisible(NULL))
     resourceName=NULL) {
     
     db <- utils::read.csv(file, 
-                  stringsAsFactors = FALSE, sep ="\t") 
+                  stringsAsFactors = FALSE, sep ="\t",check.names=FALSE) 
 
     if(resourceName=="Reactome"){
 
-        if (!all(c('Reactome.ID','Gene.name','Reactome.name') %in% names(db))){
+        if (!all(c('Reactome ID','Gene name','Reactome name') %in% names(db))){
               cli::cli_alert_danger("Colnames should be defined with specific names.\n")
               stop("Three columns must defined as 'Reactome ID','Gene name','Reactome name'.")
         }
     }
     if(resourceName=="GO-BP"){
 
-        if (!all(c('GO.ID','Gene.name','GO.name') %in% names(db))){
+        if (!all(c('GO ID','Gene name','GO name') %in% names(db))){
               cli::cli_alert_danger("Colnames should be defined with specific names.\n")
               stop("Three columns must defined as 'GO ID','Gene name','GO name'.")
         }

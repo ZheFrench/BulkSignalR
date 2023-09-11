@@ -21,14 +21,14 @@
 #'  createResources() 
 createResources <- function(onRequest=TRUE,verbose=FALSE) {
 
-   cacheDir <-     Sys.getenv("BulkSignalR_CACHEDIR")
+   cacheDir <-    get("BulkSignalR_CACHEDIR")
    resourcesCacheDir <- paste(cacheDir,"resources",sep="/")
 
    # Do it once, onLoad
    if(!dir.exists(resourcesCacheDir) | onRequest) {
-        .cacheAdd(fpath=Sys.getenv("BulkSignalR_GO_URL"),cacheDir=resourcesCacheDir,resourceName="GO-BP",verbose=verbose)
-        .cacheAdd(fpath=Sys.getenv("BulkSignalR_Reactome_URL"),cacheDir=resourcesCacheDir,resourceName="Reactome",verbose=verbose)
-        .cacheAdd(fpath=Sys.getenv("BulkSignalR_Network_URL"),cacheDir=resourcesCacheDir,resourceName="Network",verbose=verbose)
+        .cacheAdd(fpath=BulkSignalR_GO_URL,cacheDir=resourcesCacheDir,resourceName="GO-BP",verbose=verbose)
+        .cacheAdd(fpath=BulkSignalR_Reactome_URL,cacheDir=resourcesCacheDir,resourceName="Reactome",verbose=verbose)
+        .cacheAdd(fpath=BulkSignalR_Network_URL,cacheDir=resourcesCacheDir,resourceName="Network",verbose=verbose)
 
     }
 
@@ -56,7 +56,7 @@ getResource <- function(resourceName=NULL) {
         cat(cli::cli_alert_danger(".val {GO-BP, Reactome & Network} are the only keywords alllowed.","\n"))
         stop() 
     }
-    cacheDir <-     Sys.getenv("BulkSignalR_CACHEDIR")
+    cacheDir <- get("BulkSignalR_CACHEDIR")
     resourcesCacheDir <- paste(cacheDir,"resources",sep="/")
     
     # safeguard
@@ -123,9 +123,8 @@ getResource <- function(resourceName=NULL) {
 #'
 resetNetwork <- function(network){
 
-        if(!identical(colnames(network),c("a.gn" ,   "type" ,   "b.gn")))
+        if(!all(c("a.gn" ,   "type" ,   "b.gn") %in%  colnames(network)))
            stop("Column names of network should be defined as a.gn, type & b.gn.")
-
         #if(unique(network$type)!='controls-expression-of'){
         #    stop(paste0("type should be set to 'controls-expression-of'",
         #         " when network is provided by user."))
@@ -134,7 +133,7 @@ resetNetwork <- function(network){
         cat(cli::cli_alert_info("New resource defined for {.val Network}.","\n"))
         print(utils::head(network))
 
-       assign("Network",network,envir=as.environment("LRdbEnv"))
+       assign("Network",network,envir=as.environment(nameEnv))
 
 return(invisible(NULL))
 
@@ -197,10 +196,11 @@ resetPathwaysFromFile <- function(file,
         cat(cli::cli_alert_info("New resource defined for {.val {resourceName}}.","\n"))
         print(utils::head(db))
 
+
         if(resourceName=="Reactome")
-         assign("reactome",db ,envir=as.environment("LRdbEnv"))
+         assign("reactome",db ,envir=as.environment(get("nameEnv")))
         if(resourceName=="GO-BP")
-         assign("gobp",db ,envir=as.environment("LRdbEnv"))
+         assign("gobp",db ,envir=as.environment(get("nameEnv")))
 
 
 return(invisible(NULL))
@@ -222,15 +222,15 @@ return(invisible(NULL))
 
     if(resourceName=="Reactome"){
 
-        if (!all(c('Reactome ID','Gene name','Reactome name') %in% names(db[[1]]))){
-              cli::cli_alert_danger("Colnames shoul be defined with specific names.\n")
+        if (!all(c('Reactome.ID','Gene.name','Reactome.name') %in% names(db))){
+              cli::cli_alert_danger("Colnames should be defined with specific names.\n")
               stop("Three columns must defined as 'Reactome ID','Gene name','Reactome name'.")
         }
     }
     if(resourceName=="GO-BP"){
 
-        if (!all(c('GO ID','Gene name','GO name') %in% names(db[[1]]))){
-              cli::cli_alert_danger("Colnames shoul be defined with specific names.\n")
+        if (!all(c('GO.ID','Gene.name','GO.name') %in% names(db))){
+              cli::cli_alert_danger("Colnames should be defined with specific names.\n")
               stop("Three columns must defined as 'GO ID','Gene name','GO name'.")
         }
     }

@@ -14,9 +14,10 @@
 #' print("getComplexes")
 getComplexes <- function(idRelease=NULL) { 
 
-    cacheDir <- Sys.getenv("BulkSignalR_CACHEDIR")
-    url      <-  Sys.getenv("BulkSignalR_DB_URL")
-    
+
+    cacheDir <-  get("BulkSignalR_CACHEDIR")
+    url      <-  get("BulkSignalR_DB_URL")
+
     name <- stoichiometry <- pool.stoichiometry <- NULL
 
     # Retrieve database from cache
@@ -85,9 +86,10 @@ getComplexes <- function(idRelease=NULL) {
 #' getInteractions()
 getInteractions <- function(idRelease=NULL) { 
 
-    cacheDir <- Sys.getenv("BulkSignalR_CACHEDIR")
-    url      <-  Sys.getenv("BulkSignalR_DB_URL")
- 
+
+    cacheDir <- get("BulkSignalR_CACHEDIR")
+    url      <- get("BulkSignalR_DB_URL")
+
     # Retrieve database from cache
     cacheDir <- paste(cacheDir,"database",sep="/")
     bfc <- BiocFileCache::BiocFileCache(cacheDir,ask = FALSE)

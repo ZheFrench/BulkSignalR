@@ -20,16 +20,17 @@
 #' resetLRdb(db=data.frame(ligand="A2M", receptor="LRP1"), switch=FALSE)
 resetLRdb <- function(db, switch=FALSE) {
 
+
     if(colnames(db)[1]=='ligand' & colnames(db)[2]=='receptor'){
       
         if(switch){
             assign("LRdb", unique(db[, c('ligand', 'receptor')]),
-                   envir=as.environment("LRdbEnv"))
+                   envir=as.environment(get("nameEnv")))
         }
         else {  
             db <- rbind(LRdb[, c('ligand', 'receptor')],
                                   db[, c('ligand', 'receptor')])
-            assign("LRdb", unique(db), envir=as.environment("LRdbEnv"))
+            assign("LRdb", unique(db), envir=as.environment(get("nameEnv")))
         }
     } else {
       stop(paste0("db should be a data frame with ",

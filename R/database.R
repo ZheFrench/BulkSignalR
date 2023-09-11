@@ -16,15 +16,12 @@
 createDatabase <- function(onRequest=TRUE,verbose=FALSE){
 
     #Default directory 
-    cacheDir <- Sys.getenv("BulkSignalR_CACHEDIR")
+    cacheDir <- get("BulkSignalR_CACHEDIR")
     databaseCacheDir <- paste(cacheDir,"database",sep="/")
- 
-    url <-  Sys.getenv("BulkSignalR_DB_URL")
-
+    url <- BulkSignalR_DB_URL
     #databaseFilePath <- paste(databaseCacheDir
     #    ,basename(url)
     #    ,sep = "/")
-
     if(!file.exists(databaseCacheDir) | onRequest) {
 
         #isDownloaded <- .downloadDatabase(url,databaseFilePath)

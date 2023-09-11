@@ -98,7 +98,8 @@ cacheClear <- function(dir=c("both","resources","database")) {
         return(invisible(NULL))
     }
 
-    cacheDir <-     Sys.getenv("BulkSignalR_CACHEDIR")
+    cacheDir <-   get("BulkSignalR_CACHEDIR") 
+
     cacheDir <- paste(cacheDir,dir,sep="/")
 
     # safeguard
@@ -144,8 +145,8 @@ cacheInfo <- function(dir=c("both","resources","database")) {
         return(invisible(NULL))
     }
 
-    cacheDir <-  Sys.getenv(x = "BulkSignalR_CACHEDIR")
-  
+    cacheDir <- get("BulkSignalR_CACHEDIR")
+
     cacheDir <- paste(cacheDir,dir,sep="/")
     
     # safeguard
@@ -210,7 +211,7 @@ cacheVersion <- function(dir=c("both","resources","database")) {
         return(invisible(NULL))
     }
 
-    cacheDir <-     Sys.getenv("BulkSignalR_CACHEDIR")
+    cacheDir <-  get("BulkSignalR_CACHEDIR")
     cacheDir <- paste(cacheDir,dir,sep="/")
 
    # safeguard

@@ -152,13 +152,10 @@ resetNetwork <- function(network){
 
         if(!all(c("a.gn" ,   "type" ,   "b.gn") %in%  colnames(network)))
            stop("Column names of network should be defined as a.gn, type & b.gn.")
-        #if(unique(network$type)!='controls-expression-of'){
-        #    stop(paste0("type should be set to 'controls-expression-of'",
-        #         " when network is provided by user."))
-        #}
+ 
         cat("\n")
         cat(cli::cli_alert_info("New resource defined for {.val Network}.","\n"))
-        print(utils::head(network))
+        #print(utils::head(network))
 
        assign("Network",network,envir=as.environment(get("nameEnv")))
 

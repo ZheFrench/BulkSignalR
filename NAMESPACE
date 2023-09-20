@@ -131,4 +131,3 @@ importFrom(scales,rescale)
 importFrom(stabledist,dstable)
 importFrom(stabledist,pstable)
 importFrom(stats,quantile)
-

@@ -4,10 +4,13 @@
 \alias{getResource}
 \title{Get ressource from the cache.}
 \usage{
-getResource(resourceName = NULL)
+getResource(resourceName = NULL, cache = FALSE)
 }
 \arguments{
 \item{resourceName}{Ressource name.}
+
+\item{cache}{True/False. Defautlt is False
+If True, you will use environment variables.}
 }
 \description{
 Get  resources (pathways, or PathwayCommons network 

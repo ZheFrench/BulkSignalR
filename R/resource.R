@@ -45,46 +45,73 @@ return(invisible(NULL))
 #' stored in the cache.
 #'
 #' @param resourceName   Ressource name.
+#' @param cache   True/False. Defautlt is False
+#' If True, you will use environment variables.
 #'
 #' @importFrom cli cli_alert_danger
 #' @export
 #' @examples
 #' reactome <-  getResource(resourceName="Reactome")
-getResource <- function(resourceName=NULL) {
+getResource <- function(resourceName=NULL,cache=FALSE) {
 
     if (!resourceName %in% c("GO-BP","Reactome","Network")){
         cat(cli::cli_alert_danger(".val {GO-BP, Reactome & Network} are the only keywords alllowed.","\n"))
         stop() 
     }
-    cacheDir <- get("BulkSignalR_CACHEDIR")
-    resourcesCacheDir <- paste(cacheDir,"resources",sep="/")
-    
-    # safeguard
-    if(!dir.exists(resourcesCacheDir)) {
-        cat(cli::cli_alert_danger("Resources repository doesn't exist.","\n"))
-        stop()
-    } 
 
-    bfc <- BiocFileCache::BiocFileCache(resourcesCacheDir,ask = FALSE)
+    if(cache==TRUE){
 
-    dataframe <- .readRDSFromCache(bfc=bfc,resourceName=resourceName)
+        cacheDir <- get("BulkSignalR_CACHEDIR")
+        resourcesCacheDir <- paste(cacheDir,"resources",sep="/")
+        
+        # safeguard
+        if(!dir.exists(resourcesCacheDir)) {
+            cat(cli::cli_alert_danger("Resources repository doesn't exist.","\n"))
+            stop()
+        } 
 
-    # Due to the fact React and Go are organized differently
-    if(resourceName=="Reactome"){
-         if(!all(c('Reactome ID','Gene name','Reactome name') %in% colnames(dataframe))){
-           cli::cli_alert_danger("Colnames of raw data are not well defined.\n")
-           stop()
-         }          
-        dataframe <- dataframe[,c('Reactome name','Gene name','Reactome ID')]
+        bfc <- BiocFileCache::BiocFileCache(resourcesCacheDir,ask = FALSE)
+
+        dataframe <- .readRDSFromCache(bfc=bfc,resourceName=resourceName)
+
+        # Due to the fact React and Go are organized differently
+        if(resourceName=="Reactome"){
+             if(!all(c('Reactome ID','Gene name','Reactome name') %in% colnames(dataframe))){
+               cli::cli_alert_danger("Colnames of raw data are not well defined.\n")
+               stop()
+             }          
+            dataframe <- dataframe[,c('Reactome name','Gene name','Reactome ID')]
+        }
+
+        if(resourceName=="GO-BP"){
+              if(!all(c('GO ID','Gene name','GO name') %in% colnames(dataframe))){
+               cli::cli_alert_danger("Colnames of raw data are not well defined.\n")
+               stop()
+             }  
+             dataframe <- dataframe[,c('GO ID','Gene name','GO name')]
+        }
+
+        if(resourceName=="Network"){
+              if(!all(c('a.gn','type','b.gn') %in% colnames(dataframe))){
+               cli::cli_alert_danger("Colnames of raw data are not well defined.\n")
+               stop()
+             }  
+             dataframe <- dataframe[,c('a.gn','type','b.gn')]
+        }
+
     }
 
-    if(resourceName=="GO-BP"){
-          if(!all(c('GO ID','Gene name','GO name') %in% colnames(dataframe))){
-           cli::cli_alert_danger("Colnames of raw data are not well defined.\n")
-           stop()
-         }  
-         dataframe <- dataframe[,c('GO ID','Gene name','GO name')]
-    }
+    else  if(cache==FALSE){
+
+        if(resourceName=="Reactome")
+             dataframe <- get("reactome")
+                 
+        if(resourceName=="GO-BP")
+             dataframe <- get("gobp")
+
+          if(resourceName=="Network")
+             dataframe <- get("Network")
+   }
 
     return(dataframe)
 }
@@ -133,7 +160,7 @@ resetNetwork <- function(network){
         cat(cli::cli_alert_info("New resource defined for {.val Network}.","\n"))
         print(utils::head(network))
 
-       assign("Network",network,envir=as.environment(nameEnv))
+       assign("Network",network,envir=as.environment(get("nameEnv")))
 
 return(invisible(NULL))
 
@@ -227,12 +254,17 @@ return(invisible(NULL))
               stop("Three columns must defined as 'Reactome ID','Gene name','Reactome name'.")
         }
     }
-    if(resourceName=="GO-BP"){
+    else if(resourceName=="GO-BP"){
 
         if (!all(c('GO ID','Gene name','GO name') %in% names(db))){
               cli::cli_alert_danger("Colnames should be defined with specific names.\n")
               stop("Three columns must defined as 'GO ID','Gene name','GO name'.")
         }
+    }
+
+    else {
+            cli::cli_alert_danger("Resource name is not well defined.\n")
+           stop("")
     }
 
 return (db)

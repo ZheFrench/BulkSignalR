@@ -40,9 +40,9 @@
 
     createResources(onRequest=FALSE)
 
-    reactome <- getResource(resourceName="Reactome")
-    gobp  <- getResource(resourceName="GO-BP")
-    Network  <- getResource(resourceName="Network")
+    reactome <- getResource(resourceName="Reactome",cache=TRUE)
+    gobp  <- getResource(resourceName="GO-BP",cache=TRUE)
+    Network  <- getResource(resourceName="Network",cache=TRUE)
 
     assign("reactome", reactome, envir = as.environment(nameEnv))
     assign("gobp", gobp, envir = as.environment(nameEnv))

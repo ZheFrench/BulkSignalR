@@ -16,10 +16,8 @@ A raster image object.
 Rasterize raw image from filepath
 }
 \examples{
-print('rasterizeFromFile')
-if (FALSE){
-
-my.image.as.raster <- rasterizeFromFile(path.to.file)  
-
+print("rasterizeFromFile")
+if (FALSE) {
+    my.image.as.raster <- rasterizeFromFile(path.to.file)
 }
 }

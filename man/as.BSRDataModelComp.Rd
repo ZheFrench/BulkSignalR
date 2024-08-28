@@ -19,9 +19,9 @@ promotion adding an empty list of comparisons.
 }
 \examples{
 # prepare data
-data(sdc,package='BulkSignalR')
+data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
-bsrdm <- prepareDataset(sdc[,-normal])
+bsrdm <- prepareDataset(sdc[, -normal])
 
 # define the comparison
 bsrdm.comp <- as.BSRDataModelComp(bsrdm)

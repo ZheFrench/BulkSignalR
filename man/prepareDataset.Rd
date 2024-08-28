@@ -91,9 +91,9 @@ The \code{counts} matrix or table should be provided with expression
   understood as its equivalent with respect to those data.
 }
 \examples{
-print('prepareDataset')
-data(sdc,package='BulkSignalR')
+print("prepareDataset")
+data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
-bsrdm <- prepareDataset(sdc[,-normal])
+bsrdm <- prepareDataset(sdc[, -normal])
 
 }

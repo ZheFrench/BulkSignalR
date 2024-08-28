@@ -7,7 +7,7 @@
 .checkRDSFromCache(bfc, resourceName)
 }
 \arguments{
-\item{bfc}{Object of class BiocFileCache, created by a call to 
+\item{bfc}{Object of class BiocFileCache, created by a call to
 BiocFileCache::BiocFileCache()}
 
 \item{resourceName}{keyword associated to a specific resource name.}
@@ -15,7 +15,7 @@ BiocFileCache::BiocFileCache()}
 \description{
 This function checks if a cache entry is a valid RDS file.
 Returns TRUE if the cache entry is valid, FALSE otherwise.
-In the case of an invalid file the cache entry and file are 
+In the case of an invalid file the cache entry and file are
 deleted.
 }
 \keyword{internal}

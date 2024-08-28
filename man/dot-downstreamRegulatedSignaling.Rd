@@ -14,6 +14,9 @@
   gene.col,
   pw.col,
   min.positive,
+  pos.targets = FALSE,
+  neg.targets = FALSE,
+  min.t.logFC = 0.5,
   with.complex = TRUE
 )
 }
@@ -44,14 +47,24 @@ names.}
 \item{min.positive}{Minimum number of target genes to be found in a given
 pathway.}
 
+\item{pos.targets}{A logical imposing that all the network targets must
+display positive logFC, i.e. logFC >= min.t.logFC.}
+
+\item{neg.targets}{A logical imposing that all the network targets must
+display negative logFC, i.e. logFC <= - min.t.logFC.}
+
+\item{min.t.logFC}{The minimum log2 fold-change allowed for
+targets in case pos.targets or neg.targets are used.}
+
 \item{with.complex}{A logical indicating whether receptor co-complex
 members should be included in the target genes.}
 }
 \value{
 A table reporting all the ligand-receptor pairs provided in \code{lr}
   along with the pathways found and data about target gene regulation
-  P-values. Target gene correlations with the receptor are computed as
-  additional information provided \code{rncounts} is set.
+  P-values. Note that correlations are currently set to 1 to avoid
+  lengthy computations with scRNA-seq data and multiple cell
+  populations.
 }
 \description{
 Internal function to check receptor signaling downstream

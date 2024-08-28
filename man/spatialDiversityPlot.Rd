@@ -69,10 +69,8 @@ Not limited to BulkSignalR gene signature scores.
 Display a 2D-projection of the score spatial distributions.
 }
 \examples{
-print('spatialDiversityPlot')
-if(FALSE){
-
-spatialDiversityPlot(scores,associations)
-
+print("spatialDiversityPlot")
+if (FALSE) {
+    spatialDiversityPlot(scores, associations)
 }
 }

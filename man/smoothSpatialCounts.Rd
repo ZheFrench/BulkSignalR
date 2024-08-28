@@ -62,10 +62,8 @@ the central location is augmented according to
 1-(1-\code{weight.ratio})*(number of neighbors)/\code{nnn}.
 }
 \examples{
-print('smoothSpatialCounts')
-if (FALSE){
-
-sm.bsrdm <- smoothSpatialCounts(bsrdm, areas, radius=1.2, nnn.radius=4)
-
+print("smoothSpatialCounts")
+if (FALSE) {
+    sm.bsrdm <- smoothSpatialCounts(bsrdm, areas, radius = 1.2, nnn.radius = 4)
 }
 }

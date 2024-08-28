@@ -65,10 +65,8 @@ a global value (R2) is also computed from a multi-linear model (the same as
 what is used for the ANOVA).
 }
 \examples{
-print('spatialAssociation')
-if(FALSE){
-
-spatialAssociation(scores, areas)
-
+print("spatialAssociation")
+if (FALSE) {
+    spatialAssociation(scores, areas)
 }
 }

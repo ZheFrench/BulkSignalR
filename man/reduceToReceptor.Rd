@@ -30,6 +30,8 @@ slot \code{LRinter}, and in vectors in the \code{ligands} (list) slot.
 
 The reported P-value and target genes are those from the line with the
 pathway featuring the smallest P-value.
+The same logic applies to the LR-score, and the ligand
+expression.
 }
 \description{
 Simplifies a ligand-receptor table to focus on the receptors.
@@ -37,39 +39,43 @@ Simplifies a ligand-receptor table to focus on the receptors.
 Simplifies a ligand-receptor table to focus on the receptors.
 }
 \examples{
-print('reduceToReceptor')
-data(sdc,package='BulkSignalR')
+print("reduceToReceptor")
+data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm, 
-         null.model = "normal",
-         quick = FALSE, 
-         plot.folder = "./",
-         filename = "sdc",
-         verbose = TRUE)
+bsrdm <- learnParameters(bsrdm,
+    null.model = "normal",
+    quick = FALSE,
+    plot.folder = "./",
+    filename = "sdc",
+    verbose = TRUE
+)
 bsrinf <- initialInference(bsrdm)
-bsrinf.redR  <- reduceToReceptor(bsrinf)  
+bsrinf.redR <- reduceToReceptor(bsrinf)
 
-print('reduceToReceptor')
+print("reduceToReceptor")
 
 # prepare data
-data(sdc,package='BulkSignalR')
+data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
-bsrdm <- prepareDataset(sdc[,-normal])
+bsrdm <- prepareDataset(sdc[, -normal])
 
 # define the comparison
 bsrdm.comp <- as.BSRDataModelComp(bsrdm)
 colA <- as.integer(1:5)
 colB <- as.integer(8:15)
 n <- nrow(ncounts(bsrdm.comp))
-stats <- data.frame(pval=runif(n), logFC=rnorm(n, 0, 2))
+stats <- data.frame(
+    pval = runif(n), logFC = rnorm(n, 0, 2),
+    expr = runif(n, 0, 10)
+)
 rownames(stats) <- rownames(ncounts(bsrdm.comp))
 bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
 bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
 
 # infer ligand-receptor interactions from the comparison
-bsrinf <- initialInference(bsrdm.comp,max.pval=1, "random.example")
+bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 # reduction
-bsrinf.redR  <- reduceToReceptor(bsrinf)  
+bsrinf.redR <- reduceToReceptor(bsrinf)
 
 }

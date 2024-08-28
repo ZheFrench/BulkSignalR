@@ -61,10 +61,8 @@ neighbors only, whereas to simply set a maximum of four neighbors for
 instance would retrieve the four closest neighbors in every case.
 }
 \examples{
-print('maxLigandSpatialCounts')
-if (FALSE){
-
-max.bsrdm <- maxLigandSpatialCounts(bsrdm, areas, radius=1.2, nnn.radius=4)
-
+print("maxLigandSpatialCounts")
+if (FALSE) {
+    max.bsrdm <- maxLigandSpatialCounts(bsrdm, areas, radius = 1.2, nnn.radius = 4)
 }
 }

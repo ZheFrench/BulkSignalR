@@ -1,5 +1,3 @@
-library(methods)
-
 #' BulkSignalR Inference Object
 #'
 #' An S4 class to represent inferred ligand-receptor interactions.
@@ -25,61 +23,77 @@ library(methods)
 #' new("BSRInference")
 #'
 setClass("BSRInference",
-         slots=c(LRinter="data.frame",
-                 ligands="list",
-                 receptors="list",
-                 t.genes="list",
-                 tg.corr="list",
-                 inf.param="list"),
-         prototype=list(
-             LRinter=data.frame(L="A", R="B", LR.corr=0.6, pw.id="123",
-                                pw.name="one pw", rank=2, len=50,
-                                rank.corr=0.6, pval=1.0, qval=1.0,
-                                stringsAsFactors=FALSE),
-             ligands=list("A"),
-             receptors=list("B"),
-             t.genes=list(c("a","b","c")),
-             tg.corr=list(c(-0.5,0.1,0.8)),
-             inf.param=list()
-         ))
-
-setValidity("BSRInference",
-            function(object) {
-                if(!is.data.frame(object@LRinter))
-                    return("LRinter is not a data frame")
-                if(!is.list(object@ligands))
-                    return("ligands is not a list")
-                if(!is.list(object@receptors))
-                    return("receptors is not a list")
-                if(!is.list(object@t.genes))
-                    return("t.genes is not a list")
-                if(!is.list(object@tg.corr))
-                    return("tg.corr is not a list")
-                if (!is.list(object@inf.param))
-                    return("inf.param is not a list")
-
-                TRUE
-            }
+    slots = c(
+        LRinter = "data.frame",
+        ligands = "list",
+        receptors = "list",
+        t.genes = "list",
+        tg.corr = "list",
+        inf.param = "list"
+    ),
+    prototype = list(
+        LRinter = data.frame(
+            L = "A", R = "B", pw.id = "123", pw.name = "one pw",
+            pval = 1.0, qval = 1.0, LR.corr = 0.6, rank = 2,
+            len = 50, rank.corr = 0.6,
+            stringsAsFactors = FALSE
+        ),
+        ligands = list("A"),
+        receptors = list("B"),
+        t.genes = list(c("a", "b", "c")),
+        tg.corr = list(c(-0.5, 0.1, 0.8)),
+        inf.param = list()
+    )
 )
 
-setMethod("show", "BSRInference",
-          function(object) {
-              cat("Reference database: ", object@inf.param$reference, "\n", sep="")
-               print(utils::head(object@LRinter[order(object@LRinter$qval),
-                        c("L", "R", "pval", "qval", "pw.id", "pw.name"),]))[5,]
-              cat("Inference parameters:\n")
-              utils::str(object@inf.param)
-          }
+setValidity(
+    "BSRInference",
+    function(object) {
+        if (!is.data.frame(object@LRinter)) {
+            return("LRinter is not a data frame")
+        }
+        if (!is.list(object@ligands)) {
+            return("ligands is not a list")
+        }
+        if (!is.list(object@receptors)) {
+            return("receptors is not a list")
+        }
+        if (!is.list(object@t.genes)) {
+            return("t.genes is not a list")
+        }
+        if (!is.list(object@tg.corr)) {
+            return("tg.corr is not a list")
+        }
+        if (!is.list(object@inf.param)) {
+            return("inf.param is not a list")
+        }
+
+        TRUE
+    }
+)
+
+setMethod(
+    "show", "BSRInference",
+    function(object) {
+        cat("Reference database: ", object@inf.param$reference, "\n", sep = "")
+        message(utils::head(object@LRinter[
+            order(object@LRinter$qval),
+            c("L", "R", "pval", "qval", "pw.id", "pw.name"),
+        ]))[5, ]
+        cat("Inference parameters:\n")
+        utils::str(object@inf.param)
+    }
 )
 
 
 # Accessors & setters ========================================================
 
 if (!isGeneric("LRinter")) {
-    if (is.function("LRinter"))
+    if (is.function("LRinter")) {
         fun <- LRinter
-    else
+    } else {
         fun <- function(x) standardGeneric("LRinter")
+    }
     setGeneric("LRinter", fun)
 }
 #' LRinter accessor
@@ -91,27 +105,29 @@ if (!isGeneric("LRinter")) {
 setMethod("LRinter", "BSRInference", function(x) x@LRinter)
 
 if (!isGeneric("LRinter<-")) {
-    if (is.function("LRinter<-"))
+    if (is.function("LRinter<-")) {
         fun <- `LRinter<-`
-    else
-        fun <- function(x,value) standardGeneric("LRinter<-")
+    } else {
+        fun <- function(x, value) standardGeneric("LRinter<-")
+    }
     setGeneric("LRinter<-", fun)
 }
 #' LRinter setter (internal use only)
 #' @param x BSRInference object
 #' @param value value to be set to BSRInference
 #' @keywords internal
-setMethod("LRinter<-", "BSRInference", function(x, value){
+setMethod("LRinter<-", "BSRInference", function(x, value) {
     x@LRinter <- value
     methods::validObject(x)
     x
 })
 
 if (!isGeneric("ligands")) {
-    if (is.function("ligands"))
+    if (is.function("ligands")) {
         fun <- ligands
-    else
+    } else {
         fun <- function(x) standardGeneric("ligands")
+    }
     setGeneric("ligands", fun)
 }
 #' ligands accessor
@@ -123,27 +139,29 @@ if (!isGeneric("ligands")) {
 setMethod("ligands", "BSRInference", function(x) x@ligands)
 
 if (!isGeneric("ligands<-")) {
-    if (is.function("ligands<-"))
+    if (is.function("ligands<-")) {
         fun <- `ligands<-`
-    else
-        fun <- function(x,value) standardGeneric("ligands<-")
+    } else {
+        fun <- function(x, value) standardGeneric("ligands<-")
+    }
     setGeneric("ligands<-", fun)
 }
 #' ligands setter (internal use only)
 #' @param x BRSInference object
 #' @param value Value to be set for bsrinf
 #' @keywords internal
-setMethod("ligands<-", "BSRInference", function(x, value){
+setMethod("ligands<-", "BSRInference", function(x, value) {
     x@ligands <- value
     methods::validObject(x)
     x
 })
 
 if (!isGeneric("receptors")) {
-    if (is.function("receptors"))
+    if (is.function("receptors")) {
         fun <- receptors
-    else
+    } else {
         fun <- function(x) standardGeneric("receptors")
+    }
     setGeneric("receptors", fun)
 }
 #' receptors accessor
@@ -155,27 +173,29 @@ if (!isGeneric("receptors")) {
 setMethod("receptors", "BSRInference", function(x) x@receptors)
 
 if (!isGeneric("receptors<-")) {
-    if (is.function("receptors<-"))
+    if (is.function("receptors<-")) {
         fun <- `receptors<-`
-    else
+    } else {
         fun <- function(x, value) standardGeneric("receptors<-")
+    }
     setGeneric("receptors<-", fun)
 }
 #' receptors setter (internal use only)
 #' @param x BRSInference object
 #' @param value value to be set for BRSInference
 #' @keywords internal
-setMethod("receptors<-", "BSRInference", function(x, value){
+setMethod("receptors<-", "BSRInference", function(x, value) {
     x@receptors <- value
     methods::validObject(x)
     x
 })
 
 if (!isGeneric("tGenes")) {
-    if (is.function("tGenes"))
+    if (is.function("tGenes")) {
         fun <- tGenes
-    else
+    } else {
         fun <- function(x) standardGeneric("tGenes")
+    }
     setGeneric("tGenes", fun)
 }
 #' Target genes accessor
@@ -187,27 +207,29 @@ if (!isGeneric("tGenes")) {
 setMethod("tGenes", "BSRInference", function(x) x@t.genes)
 
 if (!isGeneric("tGenes<-")) {
-    if (is.function("tGenes<-"))
+    if (is.function("tGenes<-")) {
         fun <- `tGenes<-`
-    else
-        fun <- function(x,value) standardGeneric("tGenes<-")
+    } else {
+        fun <- function(x, value) standardGeneric("tGenes<-")
+    }
     setGeneric("tGenes<-", fun)
 }
 #' Target genes setter (internal use only)
 #' @param x BSRInferance object
 #' @param value value to be set BSRInference
-#' @keywords internal 
-setMethod("tGenes<-", "BSRInference", function(x, value){
+#' @keywords internal
+setMethod("tGenes<-", "BSRInference", function(x, value) {
     x@t.genes <- value
     methods::validObject(x)
     x
 })
 
 if (!isGeneric("tgCorr")) {
-    if (is.function("tgCorr"))
+    if (is.function("tgCorr")) {
         fun <- tgCorr
-    else
+    } else {
         fun <- function(x) standardGeneric("tgCorr")
+    }
     setGeneric("tgCorr", fun)
 }
 #' Target gene correlations accessor
@@ -219,27 +241,29 @@ if (!isGeneric("tgCorr")) {
 setMethod("tgCorr", "BSRInference", function(x) x@tg.corr)
 
 if (!isGeneric("tgCorr<-")) {
-    if (is.function("tgCorr<-"))
+    if (is.function("tgCorr<-")) {
         fun <- `tgCorr<-`
-    else
-        fun <- function(x,value) standardGeneric("tgCorr<-")
+    } else {
+        fun <- function(x, value) standardGeneric("tgCorr<-")
+    }
     setGeneric("tgCorr<-", fun)
 }
 #' Target gene correlations setter (internal use only)
 #' @param x BSRInference object
 #' @param value value to be set for bsrinf
 #' @keywords internal
-setMethod("tgCorr<-", "BSRInference", function(x, value){
+setMethod("tgCorr<-", "BSRInference", function(x, value) {
     x@tg.corr <- value
     methods::validObject(x)
     x
 })
 
 if (!isGeneric("infParam")) {
-    if (is.function("infParam"))
+    if (is.function("infParam")) {
         fun <- infParam
-    else
+    } else {
         fun <- function(x) standardGeneric("infParam")
+    }
     setGeneric("infParam", fun)
 }
 #' Inference parameters accessor
@@ -250,30 +274,59 @@ if (!isGeneric("infParam")) {
 #' @export
 setMethod("infParam", "BSRInference", function(x) x@inf.param)
 if (!isGeneric("infParam<-")) {
-    if (is.function("infParam<-"))
+    if (is.function("infParam<-")) {
         fun <- `infParam<-`
-    else
-        fun <- function(x,value) standardGeneric("infParam<-")
+    } else {
+        fun <- function(x, value) standardGeneric("infParam<-")
+    }
     setGeneric("infParam<-", fun)
 }
 #' Inference parameters setter (internal use only)
 #' @param x BRSInferecence object.
 #' @param value value to be set.
 #' @keywords internal
-setMethod("infParam<-", "BSRInference", function(x, value){
+setMethod("infParam<-", "BSRInference", function(x, value) {
     x@inf.param <- value
     methods::validObject(x)
     x
 })
 
 
+# simplified table view ========================================================
+
+if (!isGeneric("LRinterShort")) {
+    if (is.function("LRinterShort")) {
+        fun <- LRinterShort
+    } else {
+        fun <- function(x) standardGeneric("LRinterShort")
+    }
+    setGeneric("LRinterShort", fun)
+}
+#' Simplified LRinter accessor reporting the essential columns
+#'
+#' @name LRinterShort
+#' @aliases LRinterShort,BSRInference-method
+#' @param x BSRInference object
+#' @export
+setMethod(
+    "LRinterShort", "BSRInference",
+    function(x) {
+        x@LRinter[, c(
+            "L", "R", "pw.id", "pw.name",
+            "qval", "LR.corr", "len"
+        )]
+    }
+)
+
+
 # Rescoring ====================================================================
 
 if (!isGeneric("rescoreInference")) {
-    if (is.function("rescoreInference"))
+    if (is.function("rescoreInference")) {
         fun <- rescoreInference
-    else
+    } else {
         fun <- function(obj, ...) standardGeneric("rescoreInference")
+    }
     setGeneric("rescoreInference", fun)
 }
 #' Inference re-scoring
@@ -292,7 +345,7 @@ if (!isGeneric("rescoreInference")) {
 #' @param fdr.proc      The procedure for adjusting P-values according to
 #'   \code{\link[multtest]{mt.rawp2adjp}}.
 #'
-#' @details A BSRInference object should be created by calling 
+#' @details A BSRInference object should be created by calling
 #' \code{"\link[=BSRDataModel-class]{initialInference}"}
 #'
 #' Parameters controlling the estimation
@@ -307,25 +360,28 @@ if (!isGeneric("rescoreInference")) {
 #'
 #' @export
 #' @examples
-#' print('rescoreInference')
-#' data(sdc,package='BulkSignalR')
+#' print("rescoreInference")
+#' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
-#' bsrdm <- prepareDataset(sdc[,-normal])
-#' bsrdm <- learnParameters(bsrdm, 
-#'          null.model = "normal",
-#'          quick = FALSE, 
-#'          plot.folder = "./",
-#'          filename = "sdc",
-#'          verbose = TRUE)
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#' bsrdm <- learnParameters(bsrdm,
+#'     null.model = "normal",
+#'     quick = FALSE,
+#'     plot.folder = "./",
+#'     filename = "sdc",
+#'     verbose = TRUE
+#' )
 #' bsrinf <- initialInference(bsrdm)
-#' bsrinf.new <- rescoreInference(bsrinf, param=param(bsrdm), rank.p=0.75)
+#' bsrinf.new <- rescoreInference(bsrinf, param = param(bsrdm), rank.p = 0.75)
 #'
-setMethod("rescoreInference", "BSRInference", function(obj, param, rank.p=0.55,
-                    fdr.proc=c("BH", "Bonferroni", "Holm",
-                    "Hochberg", "SidakSS", "SidakSD", "BY", "ABH", "TSBH")) {
-
-    if (rank.p < 0 || rank.p > 1)
+setMethod("rescoreInference", "BSRInference", function(obj, param, rank.p = 0.55,
+                                                       fdr.proc = c(
+                                                           "BH", "Bonferroni", "Holm",
+                                                           "Hochberg", "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
+                                                       )) {
+    if (rank.p < 0 || rank.p > 1) {
         stop("rank.p must lie in [0;1]")
+    }
     fdr.proc <- match.arg(fdr.proc)
 
     # extract the necessary data from the BSRInference object
@@ -336,47 +392,52 @@ setMethod("rescoreInference", "BSRInference", function(obj, param, rank.p=0.55,
     # prepare the chosen model CDF
     LR.par <- param$LR.0$model
     RT.par <- param$RT.0$model
-    if (LR.par$distrib != RT.par$distrib)
+    if (LR.par$distrib != RT.par$distrib) {
         stop("Distinct statistical models for LR and RT nulls are not allowed")
-    if (LR.par$distrib == 'censored_normal')
+    }
+    if (LR.par$distrib == "censored_normal") {
         cdf <- .cdfGaussian
-    else if (LR.par$distrib == 'censored_mixed_normal')
+    } else if (LR.par$distrib == "censored_mixed_normal") {
         cdf <- .cdfMixedGaussian
-    else if (LR.par$distrib == 'empirical')
+    } else if (LR.par$distrib == "empirical") {
         cdf <- .cdfEmpirical
-    else if (LR.par$distrib == 'kernel_empirical')
+    } else if (LR.par$distrib == "kernel_empirical") {
         cdf <- .cdfKernelEmpirical
-    else if (LR.par$distrib == 'censored_stable')
+    } else if (LR.par$distrib == "censored_stable") {
         cdf <- .cdfAlphaStable
-    else
-        stop(paste0("Unknown statistical model: ", LR.par$LR.0$model$distrib))
+    } else {
+        stop("Unknown statistical model: ", LR.par$LR.0$model$distrib)
+    }
 
     # recompute P-values
-    for (i in 1:nrow(pairs)){
+    for (i in seq_len(nrow(pairs))) {
         tg <- t.genes[[i]]
         spears <- tg.corr[[i]]
 
         # estimate the LR correlation P-value
-        if (pairs$LR.corr[i] >= 0)
+        if (pairs$LR.corr[i] >= 0) {
             # normal case
             p.lr <- 1 - cdf(pairs$LR.corr[i], LR.par)
-        else
+        } else {
             # to enable searching for inhibitory L-R interactions
             p.lr <- cdf(pairs$LR.corr[i], LR.par)
-        
+        }
+
         # estimate the target gene correlation P-value based on rank statistics
         # for the individual correlation Gaussian model
         len <- pairs$len[i]
-        r <- min(max(1, trunc(rank.p*len)), len)
+        r <- min(max(1, trunc(rank.p * len)), len)
+        pairs$rank[i] <- r
         rank.corr <- spears[r]
-        p.rt <- stats::pbinom(r-1, len, cdf(rank.corr, RT.par))
-        pairs$pval[i] <- p.lr*p.rt
+        p.rt <- stats::pbinom(r - 1, len, cdf(rank.corr, RT.par))
+        pairs$pval[i] <- p.lr * p.rt
+        pairs$rank.corr[i] <- rank.corr
     }
 
     # recompute the Q-values
     rawp <- pairs$pval
-    adj <- multtest::mt.rawp2adjp(rawp,fdr.proc)
-    pairs$qval <- adj$adjp[order(adj$index),fdr.proc]
+    adj <- multtest::mt.rawp2adjp(rawp, fdr.proc)
+    pairs$qval <- adj$adjp[order(adj$index), fdr.proc]
 
     # update the BSRInference object
     inf.param <- infParam(obj)
@@ -386,7 +447,6 @@ setMethod("rescoreInference", "BSRInference", function(obj, param, rank.p=0.55,
     LRinter(obj) <- pairs
 
     obj
-
 }) # rescoreInference
 
 
@@ -394,10 +454,11 @@ setMethod("rescoreInference", "BSRInference", function(obj, param, rank.p=0.55,
 
 
 if (!isGeneric("getPathwayStats")) {
-    if (is.function("getPathwayStats"))
+    if (is.function("getPathwayStats")) {
         fun <- getPathwayStats
-    else
+    } else {
         fun <- function(obj, ...) standardGeneric("getPathwayStats")
+    }
     setGeneric("getPathwayStats", fun)
 }
 #' Basic statistics about hit pathways
@@ -426,41 +487,43 @@ if (!isGeneric("getPathwayStats")) {
 #' this (hypergeometric test) computation.
 #' @export
 #' @examples
-#' print('getPathwayStats')
-#' data(sdc,package='BulkSignalR')
+#' print("getPathwayStats")
+#' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
-#' bsrdm <- prepareDataset(sdc[,-normal])
-#' bsrdm <- learnParameters(bsrdm, 
-#'          null.model = "normal",
-#'          quick = FALSE, 
-#'          plot.folder = "./",
-#'          filename = "sdc",
-#'          verbose = TRUE)
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#' bsrdm <- learnParameters(bsrdm,
+#'     null.model = "normal",
+#'     quick = FALSE,
+#'     plot.folder = "./",
+#'     filename = "sdc",
+#'     verbose = TRUE
+#' )
 #' bsrinf <- initialInference(bsrdm)
 #'
 #' pw.stat <- getPathwayStats(bsrinf)
 #' head(pw.stat)
-#' 
+#'
 #' @importFrom foreach %do% %dopar%
 setMethod("getPathwayStats", "BSRInference", function(obj,
-                                pval.thres=NULL, qval.thres=NULL){
-
-    if (infParam(obj)$ligand.reduced || infParam(obj)$receptor.reduced)
-        stop(paste0("Cannot be applied to interactions involving",
-                    " reduced receptors or ligands"))
+                                                      pval.thres = NULL, qval.thres = NULL) {
+    if (infParam(obj)$ligand.reduced || infParam(obj)$receptor.reduced) {
+        stop("Cannot be applied to interactions involving",
+            " reduced receptors or ligands")
+    }
 
     # local binding
     id <- NULL
 
     pairs <- LRinter(obj)
-    if (!is.null(pval.thres))
-        pairs <- pairs[pairs$pval <= pval.thres,]
-    else
-        pairs <- pairs[pairs$qval <= qval.thres,]
+    if (!is.null(pval.thres)) {
+        pairs <- pairs[pairs$pval <= pval.thres, ]
+    } else {
+        pairs <- pairs[pairs$qval <= qval.thres, ]
+    }
 
     # pairs reduced to the receptor & pathway names
-    pairs.R <- unique(pairs[, c("R","pw.id","pw.name")])
-    upw <- unique(pairs[, c("pw.id","pw.name")])
+    pairs.R <- unique(pairs[, c("R", "pw.id", "pw.name")])
+    upw <- unique(pairs[, c("pw.id", "pw.name")])
     pw.names <- stats::setNames(upw$pw.name, upw$pw.id)
 
     # number of "hits" on a pathway with or without the ligand combinatorics
@@ -470,19 +533,20 @@ setMethod("getPathwayStats", "BSRInference", function(obj,
     # number of ligands for each receptor
     R.n.comb <- table(LRdb$receptor)
 
-    #reactome <- getResource(resourceName="Reactome")
-    #gobp <- getResource(resourceName="GO-BP")
-
-    foreach::foreach(id=names(pw.ids), .combine=rbind) %do% {
-
+    foreach::foreach(id = names(pw.ids), .combine = rbind) %do% {
         # number of receptors that are in the current pathway,
         # depending on whether it is a GOBP or Reactome pathway
-        if (regexpr("^R-",id) != -1)
-            Rs <- intersect(LRdb$receptor,
-                            reactome[reactome$`Reactome ID`==id,"Gene name"])
-        else
-            Rs <- intersect(LRdb$receptor,
-                            gobp[gobp$`GO ID`==id,"Gene name"])
+        if (regexpr("^R-", id) != -1) {
+            Rs <- intersect(
+                LRdb$receptor,
+                reactome[reactome$`Reactome ID` == id, "Gene name"]
+            )
+        } else {
+            Rs <- intersect(
+                LRdb$receptor,
+                gobp[gobp$`GO ID` == id, "Gene name"]
+            )
+        }
 
         # non-combinatorial version (ignore ligands)
         tot.R <- length(Rs)
@@ -490,19 +554,21 @@ setMethod("getPathwayStats", "BSRInference", function(obj,
         # ligand combinatorics included
         tot.LR <- sum(R.n.comb[Rs])
 
-        data.frame(pw.id=id, pw.name=pw.names[id], n.R=pw.ids.R[id],
-                   tot.R=tot.R, n.LR=pw.ids[id], tot.LR=tot.LR,
-                   stringsAsFactors=FALSE)
+        data.frame(
+            pw.id = id, pw.name = pw.names[id], n.R = pw.ids.R[id],
+            tot.R = tot.R, n.LR = pw.ids[id], tot.LR = tot.LR,
+            stringsAsFactors = FALSE
+        )
     }
-
 }) # getPathwayStats
 
 
 if (!isGeneric("reduceToBestPathway")) {
-    if (is.function("reduceToBestPathway"))
+    if (is.function("reduceToBestPathway")) {
         fun <- reduceToBestPathway
-    else
+    } else {
         fun <- function(obj, ...) standardGeneric("reduceToBestPathway")
+    }
     setGeneric("reduceToBestPathway", fun)
 }
 #' Keep one pathway per ligand-receptor pair
@@ -523,21 +589,21 @@ if (!isGeneric("reduceToBestPathway")) {
 #'
 #' @export
 #' @examples
-#' print('reduceToBestPathway')
-#' data(sdc,package='BulkSignalR')
+#' print("reduceToBestPathway")
+#' data(sdc, package = "BulkSignalR")
 #' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm, 
-#'          null.model = "normal",
-#'          quick = FALSE, 
-#'          plot.folder = "./",
-#'          filename = "sdc",
-#'          verbose = TRUE)
+#' bsrdm <- learnParameters(bsrdm,
+#'     null.model = "normal",
+#'     quick = FALSE,
+#'     plot.folder = "./",
+#'     filename = "sdc",
+#'     verbose = TRUE
+#' )
 #' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redBP  <- reduceToBestPathway(bsrinf)  
+#' bsrinf.redBP <- reduceToBestPathway(bsrinf)
 #'
 #' @importFrom rlang .data
 setMethod("reduceToBestPathway", "BSRInference", function(obj) {
-
     # Here we access the object slots directly as this procedure
     # is dependent of actual data representation
 
@@ -548,20 +614,19 @@ setMethod("reduceToBestPathway", "BSRInference", function(obj) {
     tg.corr <- list()
     LRinter <- NULL
     pairs <- obj@LRinter
-    LR <- unique(pairs[, c("L","R")])
-    for (i in seq_len(nrow(LR))){
-
+    LR <- unique(pairs[, c("L", "R")])
+    for (i in seq_len(nrow(LR))) {
         L <- LR$L[i]
         R <- LR$R[i]
 
-        pwr <- pairs[pairs$L==L & pairs$R==R,]
+        pwr <- pairs[pairs$L == L & pairs$R == R, ]
         k <- which.min(pwr$pval)
-        j <- which(pairs$L==L & pairs$R==R & pairs$pw.id==pwr$pw.id[k])
+        j <- which(pairs$L == L & pairs$R == R & pairs$pw.id == pwr$pw.id[k])
         ligands <- c(ligands, obj@ligands[j])
         receptors <- c(receptors, obj@receptors[j])
         t.genes <- c(t.genes, obj@t.genes[j])
         tg.corr <- c(tg.corr, obj@tg.corr[j])
-        LRinter <- rbind(LRinter, pairs[j,])
+        LRinter <- rbind(LRinter, pairs[j, ])
     }
 
     # update the object
@@ -573,15 +638,15 @@ setMethod("reduceToBestPathway", "BSRInference", function(obj) {
     obj@inf.param$pathway.reduced <- TRUE
 
     obj
-
 }) # reduceToBestPathway
 
 
 if (!isGeneric("reduceToReceptor")) {
-    if (is.function("reduceToReceptor"))
+    if (is.function("reduceToReceptor")) {
         fun <- reduceToReceptor
-    else
+    } else {
         fun <- function(obj, ...) standardGeneric("reduceToReceptor")
+    }
     setGeneric("reduceToReceptor", fun)
 }
 #' Aggregate the ligands of a same receptor
@@ -601,26 +666,27 @@ if (!isGeneric("reduceToReceptor")) {
 #' @param obj BRSInference object
 #' @export
 #' @examples
-#' print('reduceToReceptor')
-#' data(sdc,package='BulkSignalR')
+#' print("reduceToReceptor")
+#' data(sdc, package = "BulkSignalR")
 #' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm, 
-#'          null.model = "normal",
-#'          quick = FALSE, 
-#'          plot.folder = "./",
-#'          filename = "sdc",
-#'          verbose = TRUE)
+#' bsrdm <- learnParameters(bsrdm,
+#'     null.model = "normal",
+#'     quick = FALSE,
+#'     plot.folder = "./",
+#'     filename = "sdc",
+#'     verbose = TRUE
+#' )
 #' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redR  <- reduceToReceptor(bsrinf)  
+#' bsrinf.redR <- reduceToReceptor(bsrinf)
 #'
 #' @importFrom rlang .data
-setMethod("reduceToReceptor", "BSRInference", function(obj){
-
+setMethod("reduceToReceptor", "BSRInference", function(obj) {
     # Here we access the object slots directly as this procedure
     # is dependent of actual data representation
 
-    if (infParam(obj)$ligand.reduced)
-        stop("Already reduced to receptor") # because ligands were reduced
+    if (infParam(obj)$ligand.reduced) {
+        stop("Already reduced to receptor")
+    } # because ligands were reduced
 
     # pool the ligands
     ligands <- list()
@@ -629,16 +695,16 @@ setMethod("reduceToReceptor", "BSRInference", function(obj){
     tg.corr <- list()
     LRinter <- NULL
     pairs <- obj@LRinter
-    for (R in unique(pairs$R)){
-        lig <- pairs[pairs$R==R,]
+    for (R in unique(pairs$R)) {
+        lig <- pairs[pairs$R == R, ]
         k <- which.min(lig$pval)
-        j <- which(pairs$R==lig$R[k] & pairs$pw.id==lig$pw.id[k])[1]
+        j <- which(pairs$R == lig$R[k] & pairs$pw.id == lig$pw.id[k])[1]
         ligands <- c(ligands, list(unique(lig$L)))
         receptors <- c(receptors, list(R))
         t.genes <- c(t.genes, obj@t.genes[j])
         tg.corr <- c(tg.corr, obj@tg.corr[j])
-        to.add <- pairs[j,]
-        to.add[1, "L"] <- paste0("{", paste(unique(lig$L), collapse=";"), "}")
+        to.add <- pairs[j, ]
+        to.add[1, "L"] <- paste0("{", paste(unique(lig$L), collapse = ";"), "}")
         LRinter <- rbind(LRinter, to.add)
     }
 
@@ -652,15 +718,15 @@ setMethod("reduceToReceptor", "BSRInference", function(obj){
     obj@inf.param$ligand.reduced <- TRUE
 
     obj
-
 }) # reduceToReceptor
 
 
 if (!isGeneric("reduceToLigand")) {
-    if (is.function("reduceToLigand"))
+    if (is.function("reduceToLigand")) {
         fun <- reduceToLigand
-    else
+    } else {
         fun <- function(obj, ...) standardGeneric("reduceToLigand")
+    }
     setGeneric("reduceToLigand", fun)
 }
 #' Aggregate the receptors of a same ligand
@@ -680,26 +746,27 @@ if (!isGeneric("reduceToLigand")) {
 #' @param obj BSRInference object
 #' @export
 #' @examples
-#' print('reduceToLigand')
-#' data(sdc,package='BulkSignalR')
+#' print("reduceToLigand")
+#' data(sdc, package = "BulkSignalR")
 #' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm, 
-#'          null.model = "normal",
-#'          quick = FALSE, 
-#'          plot.folder = "./",
-#'          filename = "sdc",
-#'          verbose = TRUE)
+#' bsrdm <- learnParameters(bsrdm,
+#'     null.model = "normal",
+#'     quick = FALSE,
+#'     plot.folder = "./",
+#'     filename = "sdc",
+#'     verbose = TRUE
+#' )
 #' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redL  <- reduceToLigand(bsrinf)  
+#' bsrinf.redL <- reduceToLigand(bsrinf)
 #'
 #' @importFrom rlang .data
-setMethod("reduceToLigand", "BSRInference", function(obj){
-
+setMethod("reduceToLigand", "BSRInference", function(obj) {
     # Here we access the object slots directly as this procedure
     # is dependent of actual representation
 
-    if (infParam(obj)$receptor.reduced)
-        stop("Already reduced to ligand") # because receptors were reduced
+    if (infParam(obj)$receptor.reduced) {
+        stop("Already reduced to ligand")
+    } # because receptors were reduced
 
     # pool the receptors
     ligands <- list()
@@ -708,16 +775,16 @@ setMethod("reduceToLigand", "BSRInference", function(obj){
     tg.corr <- list()
     LRinter <- NULL
     pairs <- obj@LRinter
-    for (L in unique(pairs$L)){
-        rec <- pairs[pairs$L==L,]
+    for (L in unique(pairs$L)) {
+        rec <- pairs[pairs$L == L, ]
         k <- which.min(rec$pval)
-        j <- which(pairs$L==L & pairs$R==rec$R[k] & pairs$pw.id==rec$pw.id[k])
+        j <- which(pairs$L == L & pairs$R == rec$R[k] & pairs$pw.id == rec$pw.id[k])
         ligands <- c(ligands, list(L))
         receptors <- c(receptors, list(unique(rec$R)))
         t.genes <- c(t.genes, obj@t.genes[j])
         tg.corr <- c(tg.corr, obj@tg.corr[j])
-        to.add <- pairs[j,]
-        to.add[1, "R"] <- paste0("{", paste(unique(rec$R), collapse=";"), "}")
+        to.add <- pairs[j, ]
+        to.add[1, "R"] <- paste0("{", paste(unique(rec$R), collapse = ";"), "}")
         LRinter <- rbind(LRinter, to.add)
     }
 
@@ -731,15 +798,15 @@ setMethod("reduceToLigand", "BSRInference", function(obj){
     obj@inf.param$receptor.reduced <- TRUE
 
     obj
-
 }) # reduceToLigand
 
 
 if (!isGeneric("reduceToPathway")) {
-    if (is.function("reduceToPathway"))
+    if (is.function("reduceToPathway")) {
         fun <- reduceToPathway
-    else
+    } else {
         fun <- function(obj, ...) standardGeneric("reduceToPathway")
+    }
     setGeneric("reduceToPathway", fun)
 }
 #' Aggregate ligands and receptors at the pathway level
@@ -765,27 +832,29 @@ if (!isGeneric("reduceToPathway")) {
 #' @param obj BSRInference object
 #' @export
 #' @examples
-#' print('reduceToPathway')
-#' data(sdc,package='BulkSignalR')
+#' print("reduceToPathway")
+#' data(sdc, package = "BulkSignalR")
 #' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm, 
-#'          null.model = "normal",
-#'          quick = FALSE, 
-#'          plot.folder = "./",
-#'          filename = "sdc",
-#'          verbose = TRUE)
+#' bsrdm <- learnParameters(bsrdm,
+#'     null.model = "normal",
+#'     quick = FALSE,
+#'     plot.folder = "./",
+#'     filename = "sdc",
+#'     verbose = TRUE
+#' )
 #' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redP  <- reduceToPathway(bsrinf)  
+#' bsrinf.redP <- reduceToPathway(bsrinf)
 #' @importFrom rlang .data
-setMethod("reduceToPathway", "BSRInference", function(obj){
-
+setMethod("reduceToPathway", "BSRInference", function(obj) {
     # Here we access the object slots directly as this procedure
     # is dependent of actual representation
 
-    if (infParam(obj)$receptor.reduced)
-        stop("Already reduced to ligand") # because receptors were reduced
-    if (infParam(obj)$ligand.reduced)
-        stop("Already reduced to receptor") # because ligands were reduced
+    if (infParam(obj)$receptor.reduced) {
+        stop("Already reduced to ligand")
+    } # because receptors were reduced
+    if (infParam(obj)$ligand.reduced) {
+        stop("Already reduced to receptor")
+    } # because ligands were reduced
 
     # reduce to unique pathways
     ligands <- list()
@@ -794,17 +863,19 @@ setMethod("reduceToPathway", "BSRInference", function(obj){
     tg.corr <- list()
     LRinter <- NULL
     pairs <- obj@LRinter
-    for (p in unique(pairs$pw.id)){
-        j <- which(pairs$pw.id==p)[1]
-        ligands <- c(ligands, list(unique(pairs$L[pairs$pw.id==p])))
-        receptors <- c(receptors, list(unique(pairs$R[pairs$pw.id==p])))
+    for (p in unique(pairs$pw.id)) {
+        j <- which(pairs$pw.id == p)[1]
+        ligands <- c(ligands, list(unique(pairs$L[pairs$pw.id == p])))
+        receptors <- c(receptors, list(unique(pairs$R[pairs$pw.id == p])))
         t.genes <- c(t.genes, obj@t.genes[j])
         tg.corr <- c(tg.corr, obj@tg.corr[j])
-        to.add <- pairs[j,]
-        to.add[1, "L"] <- paste0("{", paste(unique(pairs$L[pairs$pw.id==p]),
-                                            collapse=";"), "}")
-        to.add[1, "R"] <- paste0("{", paste(unique(pairs$R[pairs$pw.id==p]),
-                                            collapse=";"), "}")
+        to.add <- pairs[j, ]
+        to.add[1, "L"] <- paste0("{", paste(unique(pairs$L[pairs$pw.id == p]),
+            collapse = ";"
+        ), "}")
+        to.add[1, "R"] <- paste0("{", paste(unique(pairs$R[pairs$pw.id == p]),
+            collapse = ";"
+        ), "}")
         LRinter <- rbind(LRinter, to.add)
     }
 
@@ -818,17 +889,17 @@ setMethod("reduceToPathway", "BSRInference", function(obj){
     obj@inf.param$receptor.reduced <- TRUE
 
     obj
-
 }) # reduceToPathway
 
 
 # Obtain gene signatures from a BSRInference object ============================
 
 if (!isGeneric("getLRGeneSignatures")) {
-    if (is.function("getLRGeneSignatures"))
+    if (is.function("getLRGeneSignatures")) {
         fun <- getLRGeneSignatures
-    else
+    } else {
         fun <- function(obj, ...) standardGeneric("getLRGeneSignatures")
+    }
     setGeneric("getLRGeneSignatures", fun)
 }
 #' Extract gene signatures of LR pair activity
@@ -853,57 +924,61 @@ if (!isGeneric("getLRGeneSignatures")) {
 #' and all the target genes with rank equal or superior to \code{pairs$rank}.
 #' @export
 #' @examples
-#' print('getLRGeneSignatures')
-#' data(sdc,package='BulkSignalR')
+#' print("getLRGeneSignatures")
+#' data(sdc, package = "BulkSignalR")
 #' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm, 
-#'          null.model = "normal",
-#'          quick = FALSE, 
-#'          plot.folder = "./",
-#'          filename = "sdc",
-#'          verbose = TRUE)
+#' bsrdm <- learnParameters(bsrdm,
+#'     null.model = "normal",
+#'     quick = FALSE,
+#'     plot.folder = "./",
+#'     filename = "sdc",
+#'     verbose = TRUE
+#' )
 #' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redP  <- reduceToPathway(bsrinf)  
-#' bsrsig.redP <- getLRGeneSignatures(bsrinf.redP,qval.thres=0.001)
+#' bsrinf.redP <- reduceToPathway(bsrinf)
+#' bsrsig.redP <- getLRGeneSignatures(bsrinf.redP, qval.thres = 0.001)
 #'
 #' @importFrom foreach %do% %dopar%
 #' @importFrom methods new
 setMethod("getLRGeneSignatures", "BSRInference", function(obj,
-        pval.thres=NULL, qval.thres=NULL, with.pw.id=FALSE){
-
-    if (is.null(pval.thres) && is.null(qval.thres))
+                                                          pval.thres = NULL, qval.thres = NULL, with.pw.id = FALSE) {
+    if (is.null(pval.thres) && is.null(qval.thres)) {
         stop("Either a P- or a Q-value threshold must be provided")
+    }
 
     # reduce and select
     obj <- reduceToBestPathway(obj)
     pairs <- LRinter(obj)
-    if (!is.null(pval.thres))
+    if (!is.null(pval.thres)) {
         selected <- pairs$pval <= pval.thres
-    else
+    } else {
         selected <- pairs$qval <= qval.thres
-
-    # obtain the signature object
-    pairs     <- pairs[selected,]
-    ligands   <- ligands(obj)[selected]
-    receptors <- receptors(obj)[selected]
-    if (with.pw.id)
-        pathways  <- paste0(pairs$pw.id, ": ", pairs$pw.name)
-    else
-        pathways  <- pairs$pw.name
-    t.genes   <- tGenes(obj)[selected]
-    t.corrs   <- tgCorr(obj)[selected]
-
-    for (i in seq_len(nrow(pairs))){
-        tg <- t.genes[[i]]
-            t.genes[[i]] <- tg[pairs$rank[i]:length(tg)]
-
-        tc <- t.corrs[[i]]
-            t.corrs[[i]] <- tc[pairs$rank[i]:length(tc)]
     }
 
-    new("BSRSignature", pathways=pathways, ligands=ligands,
-        receptors=receptors, t.genes=t.genes, tg.corr=t.corrs)
+    # obtain the signature object
+    pairs <- pairs[selected, ]
+    ligands <- ligands(obj)[selected]
+    receptors <- receptors(obj)[selected]
+    if (with.pw.id) {
+        pathways <- paste0(pairs$pw.id, ": ", pairs$pw.name)
+    } else {
+        pathways <- pairs$pw.name
+    }
+    t.genes <- tGenes(obj)[selected]
+    t.corrs <- tgCorr(obj)[selected]
 
+    for (i in seq_len(nrow(pairs))) {
+        tg <- t.genes[[i]]
+        t.genes[[i]] <- tg[pairs$rank[i]:length(tg)]
+
+        tc <- t.corrs[[i]]
+        t.corrs[[i]] <- tc[pairs$rank[i]:length(tc)]
+    }
+
+    new("BSRSignature",
+        pathways = pathways, ligands = ligands,
+        receptors = receptors, t.genes = t.genes, tg.corr = t.corrs
+    )
 }) # getLRGeneSignatures
 
 
@@ -911,11 +986,12 @@ setMethod("getLRGeneSignatures", "BSRInference", function(obj,
 # ====================================
 
 if (!isGeneric("resetToInitialOrganism")) {
-  if (is.function("resetToInitialOrganism"))
-    fun <- resetToInitialOrganism
-  else
-    fun <- function(obj, ...) standardGeneric("resetToInitialOrganism")
-  setGeneric("resetToInitialOrganism", fun)
+    if (is.function("resetToInitialOrganism")) {
+        fun <- resetToInitialOrganism
+    } else {
+        fun <- function(obj, ...) standardGeneric("resetToInitialOrganism")
+    }
+    setGeneric("resetToInitialOrganism", fun)
 }
 
 #'  Reset gene names to initial organism providen in first instance
@@ -932,42 +1008,47 @@ if (!isGeneric("resetToInitialOrganism")) {
 #'
 #' @export
 #' @examples
-#'data(bodyMap.mouse)
-#'ortholog.dict    <- findOrthoGenes (from_organism = "mmusculus", 
-#'                                     from_values = rownames(bodyMap.mouse))
-#' 
-#'matrix.expression.human <- convertToHuman(counts = bodyMap.mouse, 
-#'                                           dictionary = ortholog.dict)
+#' data(bodyMap.mouse)
+#' ortholog.dict <- findOrthoGenes(
+#'     from_organism = "mmusculus",
+#'     from_values = rownames(bodyMap.mouse)
+#' )
 #'
-#'bsrdm  <- prepareDataset(counts = matrix.expression.human,
-#'           species = "mmusculus",
-#'           conversion.dict = ortholog.dict)
+#' matrix.expression.human <- convertToHuman(
+#'     counts = bodyMap.mouse,
+#'     dictionary = ortholog.dict
+#' )
 #'
-#'bsrdm <- learnParameters(bsrdm, null.model="normal" , quick = FALSE, 
-#'           plot.folder="./",filename = "bodyMap.mouse",
-#'           verbose = TRUE)
-#' 
-#'bsrinf  <- initialInference(bsrdm)
-#' 
-#'bsrinf  <- resetToInitialOrganism(bsrinf, conversion.dict=ortholog.dict)
+#' bsrdm <- prepareDataset(
+#'     counts = matrix.expression.human,
+#'     species = "mmusculus",
+#'     conversion.dict = ortholog.dict
+#' )
+#'
+#' bsrdm <- learnParameters(bsrdm,
+#'     null.model = "normal", quick = FALSE,
+#'     plot.folder = "./", filename = "bodyMap.mouse",
+#'     verbose = TRUE
+#' )
+#'
+#' bsrinf <- initialInference(bsrdm)
+#'
+#' bsrinf <- resetToInitialOrganism(bsrinf, conversion.dict = ortholog.dict)
 #'
 setMethod("resetToInitialOrganism", "BSRInference", function(obj,
-                  conversion.dict){
+                                                             conversion.dict) {
+    # Need to check conversion.dict format
 
-     print("resetToInitialOrganism")
-     # Need to check conversion.dict format
+    conversion.dict$human.gene.name <- rownames(conversion.dict)
 
-     conversion.dict$human.gene.name  <- rownames(conversion.dict)
+    LRinter(obj)$L <- .geneNameConversion(LRinter(obj)$L, conversion.dict)
+    LRinter(obj)$R <- .geneNameConversion(LRinter(obj)$R, conversion.dict)
 
-     LRinter(obj)$L <- .geneNameConversion(LRinter(obj)$L,conversion.dict)
-     LRinter(obj)$R <- .geneNameConversion(LRinter(obj)$R,conversion.dict)
-
-     ligands(obj)   <- .geneNameConversion(ligands(obj),conversion.dict)
-     receptors(obj) <- .geneNameConversion(receptors(obj),conversion.dict)
-     tGenes(obj)    <- .geneNameConversion(tGenes(obj),conversion.dict)
+    ligands(obj) <- .geneNameConversion(ligands(obj), conversion.dict)
+    receptors(obj) <- .geneNameConversion(receptors(obj), conversion.dict)
+    tGenes(obj) <- .geneNameConversion(tGenes(obj), conversion.dict)
 
     obj
-
 }) # resetToInitialOrganism
 
 
@@ -984,46 +1065,44 @@ setMethod("resetToInitialOrganism", "BSRInference", function(obj,
 #' LRinter return a vector of genes
 #' tGenes receptors ligands : return list of list of genes
 #' @keywords internal
-.geneNameConversion <- function(genes, conversion.dict){
-
-    #print(".geneNameConversion")
-    if(typeof(genes) == "character"){
+.geneNameConversion <- function(genes, conversion.dict) {
+    # print(".geneNameConversion")
+    if (typeof(genes) == "character") {
         genes.df <- data.frame(human.gene.name = genes)
 
-        genes.df$id <- 1:nrow(genes.df)
+        genes.df$id <- seq_len(nrow(genes.df))
 
         genes.converted <- merge(genes.df, conversion.dict,
-                                 by.x='human.gene.name', sort=FALSE, all=FALSE)
+            by.x = "human.gene.name", sort = FALSE, all = FALSE
+        )
         genes.converted <- genes.converted[order(genes.converted$id), ]
 
         genes.converted$human.gene.name <- NULL
         genes.converted$id <- NULL
 
         as.vector(unlist(genes.converted))
-    }
-    else if (typeof(genes) == "list") {
+    } else if (typeof(genes) == "list") {
         list <- list()
 
-        for (i in seq_len(length(genes))){
+        for (i in seq_len(length(genes))) {
             genes.df <- data.frame(human.gene.name = genes[[i]])
-            genes.df$id <- 1:nrow(genes.df)
+            genes.df$id <- seq_len(nrow(genes.df))
             genes.converted <- merge(genes.df, conversion.dict,
-                                     by.x='human.gene.name',
-                                     sort=FALSE, all=FALSE)
+                by.x = "human.gene.name",
+                sort = FALSE, all = FALSE
+            )
             genes.converted <- genes.converted[order(genes.converted$id), ]
 
             genes.converted$human.gene.name <- NULL
             genes.converted$id <- NULL
 
-            list[[i]] <-  as.vector(unlist(genes.converted))
+            list[[i]] <- as.vector(unlist(genes.converted))
             rm(genes.df)
             rm(genes.converted)
         }
 
         list
-    }
-    else {
+    } else {
         stop("Something went wrong during gene conversion.", call. = FALSE)
     }
-
 } # .geneNameConversion

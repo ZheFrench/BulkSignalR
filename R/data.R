@@ -11,7 +11,7 @@
 #' Mouse transcriptomes across tissues
 #'
 #' A dataset containing rpkm values of  brain and liver.
-#'   
+#'
 #'
 #' @format A data frame with 24543 rows and 8 variables.
 #' @source Bin Li & al., Scientific Reports, 2017;

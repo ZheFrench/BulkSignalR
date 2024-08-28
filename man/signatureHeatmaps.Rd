@@ -42,9 +42,9 @@ to display on screen.}
 \value{
 A plot is created.
 
-This is a convenience function 
+This is a convenience function
 to propose a simple way
-of representing expression of genes 
+of representing expression of genes
 involved in a specific pathway.
 }
 \description{
@@ -53,28 +53,30 @@ receptor and target genes
 for a specific pathway
 }
 \examples{
-print('signatureHeatmaps')
-data(sdc,package='BulkSignalR')
+print("signatureHeatmaps")
+data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm, 
-         null.model = "normal",
-         quick = FALSE, 
-         plot.folder = "./",
-         filename = "sdc",
-         verbose = TRUE)
+bsrdm <- learnParameters(bsrdm,
+    null.model = "normal",
+    quick = FALSE,
+    plot.folder = "./",
+    filename = "sdc",
+    verbose = TRUE
+)
 bsrinf <- initialInference(bsrdm)
-bsrinf.redP  <- reduceToPathway(bsrinf)  
-bsrinf.redPBP <- reduceToBestPathway(bsrinf.redP) 
-bsrsig.redPBP <- getLRGeneSignatures(bsrinf.redPBP,qval.thres=0.001)
+bsrinf.redP <- reduceToPathway(bsrinf)
+bsrinf.redPBP <- reduceToBestPathway(bsrinf.redP)
+bsrsig.redPBP <- getLRGeneSignatures(bsrinf.redPBP, qval.thres = 0.001)
 pathway1 <- "Elastic fibre formation"
 signatureHeatmaps(
-       pathway = pathway1,
-       bsrdm = bsrdm,
-       bsrsig = bsrsig.redPBP,
-       path = "./",
-       filename = "sdc_signatureheatmap",
-       h.width=6,
-       h.height=9,
-       fontsize=6,
-       show_column_names = TRUE)
+    pathway = pathway1,
+    bsrdm = bsrdm,
+    bsrsig = bsrsig.redPBP,
+    path = "./",
+    filename = "sdc_signatureheatmap",
+    h.width = 6,
+    h.height = 9,
+    fontsize = 6,
+    show_column_names = TRUE
+)
 }

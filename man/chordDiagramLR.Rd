@@ -6,7 +6,7 @@
 \usage{
 chordDiagramLR(
   bsrinf,
-  pw.id.filter,
+  pw.id.filter = NULL,
   qval.thres = 1,
   ligand = NULL,
   receptor = NULL,
@@ -26,7 +26,7 @@ chordDiagramLR(
 \item{qval.thres}{threshold over Q-value.}
 
 \item{ligand}{Ligand
-of the LR pair that you want to 
+of the LR pair that you want to
 highlight in the chord diagram.}
 
 \item{receptor}{Receptor
@@ -42,9 +42,9 @@ on screen.}
 
 \item{format}{pdf / png / svg.}
 
-\item{width}{width of image in cm.}
+\item{width}{width of image in inches.}
 
-\item{height}{height of image in cm.}
+\item{height}{height of image in inches.}
 }
 \value{
 Circos Plot on the screen or a file
@@ -53,24 +53,25 @@ Circos Plot on the screen or a file
 Chord diagram.
 }
 \examples{
-print('chordDiagramLR')
-data(sdc,package='BulkSignalR')
+print("chordDiagramLR")
+data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm, 
-         null.model = "normal",
-         quick = FALSE, 
-         plot.folder = "./",
-         filename = "sdc",
-         verbose = TRUE)
+bsrdm <- learnParameters(bsrdm,
+    null.model = "normal",
+    quick = FALSE,
+    plot.folder = "./",
+    filename = "sdc",
+    verbose = TRUE
+)
 bsrinf <- initialInference(bsrdm)
-chordDiagramLR (bsrinf,
-                 pw.id.filter="R-HSA-202733",
-                 ligand="COL18A1",
-                 receptor="ITGA3",
-                 path="./",
-                 filename="sdc_chord",
-                 limit=20,
-                 width=5, 
-                 height=4.5
-   )
+chordDiagramLR(bsrinf,
+    pw.id.filter = "R-HSA-202733",
+    ligand = "COL18A1",
+    receptor = "ITGA3",
+    path = "./",
+    filename = "sdc_chord",
+    limit = 20,
+    width = 5,
+    height = 4.5
+)
 }

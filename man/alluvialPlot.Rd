@@ -25,16 +25,16 @@ alluvialPlot(
 
 \item{qval.thres}{threshold over Q-value.}
 
-\item{format}{pdf / png / sg. By default, it will 
+\item{format}{pdf / png / sg. By default, it will
 plot in pdf format.}
 
 \item{path}{directory where to plot file.}
 
 \item{filename}{file name, NULL by default (plot on screen).}
 
-\item{width}{width of image in cm.}
+\item{width}{width of image in inches.}
 
-\item{height}{height of image in cm.}
+\item{height}{height of image in inches.}
 }
 \value{
 NULL
@@ -48,23 +48,24 @@ Representation of the links
 between Ligands,Receptors and Pathways.
 }
 \examples{
-print('alluvialPlot')
-data(sdc,package='BulkSignalR')
+print("alluvialPlot")
+data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm, 
-         null.model = "normal",
-         quick = FALSE, 
-         plot.folder = "./",
-         filename = "sdc",
-         verbose = TRUE)
+bsrdm <- learnParameters(bsrdm,
+    null.model = "normal",
+    quick = FALSE,
+    plot.folder = "./",
+    filename = "sdc",
+    verbose = TRUE
+)
 bsrinf <- initialInference(bsrdm)
 alluvialPlot(bsrinf,
-             keywords = c("COL4A1"),
-             type = "L",
-             qval.thres = 0.001,
-             path = "./",
-             filename = "sdc_alluvial", 
-             width  = 16, 
-             height = 12
-             )
+    keywords = c("COL4A1"),
+    type = "L",
+    qval.thres = 0.001,
+    path = "./",
+    filename = "sdc_alluvial",
+    width = 16,
+    height = 12
+)
 }

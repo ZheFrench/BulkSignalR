@@ -7,6 +7,7 @@
 .getRegulatedLR(
   ds,
   cc,
+  scc = NULL,
   max.pval = 0.01,
   min.logFC = 1,
   neg.receptors = FALSE,
@@ -17,6 +18,9 @@
 \item{ds}{A BSRDataModel object}
 
 \item{cc}{A BSRClusterComp object.}
+
+\item{scc}{An optional BSRClusterComp object in case ligand
+regulation was assessed in a separate cluster comparison.}
 
 \item{max.pval}{The maximum P-value imposed to both the ligand
 and the receptor.}
@@ -43,6 +47,8 @@ having both a P-value below a given threshold.
 The \code{restrict.genes} parameter is used for special cases where
   LRdb must be further restricted to a subset.
   The putative ligand-receptor pairs has 6 columns : R, L, LR.pval, corr,
-  L.logFC, and R.logFC.
+  L.logFC, and R.logFC. Note that correlations are currently set to 1 to avoid
+  lengthy computations with scRNA-seq data and multiple cell
+  populations.
 }
 \keyword{internal}

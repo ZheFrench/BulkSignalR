@@ -9,9 +9,13 @@
   cc,
   lr,
   reference = c("REACTOME-GOBP", "REACTOME", "GOBP"),
-  max.pw.size = 200,
+  pos.targets = FALSE,
+  neg.targets = FALSE,
+  min.t.logFC = 0.5,
+  use.full.network = FALSE,
+  max.pw.size = 400,
   min.pw.size = 5,
-  min.positive = 4,
+  min.positive = 2,
   restrict.pw = NULL,
   with.complex = TRUE
 )
@@ -26,6 +30,18 @@
 \item{reference}{Which pathway reference should be used ("REACTOME"
 for Reactome, "GOBP" for GO Biological Process,
 or "REACTOME-GOBP" for both).}
+
+\item{pos.targets}{A logical imposing that all the network targets must
+display positive logFC, i.e. logFC >= min.t.logFC.}
+
+\item{neg.targets}{A logical imposing that all the network targets must
+display negative logFC, i.e. logFC <= - min.t.logFC.}
+
+\item{min.t.logFC}{The minimum log2 fold-change allowed for
+targets in case pos.targets or neg.targets are used.}
+
+\item{use.full.network}{A logical to avoid limiting the reference network
+to the detected genes and use the whole reference network.}
 
 \item{max.pw.size}{Maximum pathway size to consider from the pathway
 reference.}
@@ -53,7 +69,8 @@ decreasing order.
 In case \code{ds} is set, then correlations between the receptor and
 target genes will be computed for documentation or additional use. The
 row names of \code{stats(cc)} and \code{ncounts(ds)} must match
-exactly (not necessarily in the same order).
+exactly (not necessarily in the same order). The same is true for
+\code{stats(scc)} in case \code{scc} is provided.
 
 In a pathway of the reference, i.e., a Reactome pathway or the genes of a
 GOBP term, the target genes are the

@@ -20,7 +20,7 @@ This can be used to extend or replace the existing
 LRdb.
 }
 \examples{
-print('resetLRdb')
-data(sdc,package='BulkSignalR')
-resetLRdb(db=data.frame(ligand="A2M", receptor="LRP1"), switch=FALSE)
+print("resetLRdb")
+data(sdc, package = "BulkSignalR")
+resetLRdb(db = data.frame(ligand = "A2M", receptor = "LRP1"), switch = FALSE)
 }

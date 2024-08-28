@@ -18,11 +18,10 @@ A rotated raster image.
 (Counter-)clockwise 90 degree rotation
 }
 \examples{
-print('coordsFlip')
-if(FALSE){
-img <- png::readPNG(path.to.file)
-my.image.as.raster <- grDevices::as.raster(path.to.file)  
-my.image.rotated <- coordsFlip(my.image.as.raster,degrees=90)
-
- }
+print("coordsFlip")
+if (FALSE) {
+    img <- png::readPNG(path.to.file)
+    my.image.as.raster <- grDevices::as.raster(path.to.file)
+    my.image.rotated <- coordsFlip(my.image.as.raster, degrees = 90)
+}
 }

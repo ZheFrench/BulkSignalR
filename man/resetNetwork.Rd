@@ -8,8 +8,8 @@ resetNetwork(network)
 }
 \arguments{
 \item{network}{Network dataframe is defined with 3 columns
-a.gn, b.gn & type. 'a.gn' & 'b.gn' should be gene symbols 
-of gene interactions. 'type'  should be set as 
+a.gn, b.gn & type. 'a.gn' & 'b.gn' should be gene symbols
+of gene interactions. 'type'  should be set as
 'controls-expression-of' when user provide
 his own file.}
 }
@@ -27,8 +27,9 @@ When the user provide his own network
 'type' should be set to 'controls-expression-of'.
 }
 \examples{
-print('resetNetwork')
-if(FALSE)
-   resetNetwork(network)
+print("resetNetwork")
+if (FALSE) {
+    resetNetwork(network)
+}
 
 }

@@ -45,7 +45,8 @@ bubblePlotPathwaysLR(
 \item{format}{File format.}
 }
 \value{
-A plot is created with the given filename. 
+A bubble plot displayed in the current viewport or in a file
+in case a filename was provided.
 
 This is a convenience function to propose a simple way
 of representing LR - Pathways association
@@ -58,25 +59,26 @@ with their respective correlation
 and Q-values.
 }
 \examples{
-print('bubblePlotPathwaysLR')
-data(sdc,package='BulkSignalR')
+print("bubblePlotPathwaysLR")
+data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm, 
-         null.model = "normal",
-         quick = FALSE, 
-         plot.folder = "./",
-         filename = "sdc",
-         verbose = TRUE)
+bsrdm <- learnParameters(bsrdm,
+    null.model = "normal",
+    quick = FALSE,
+    plot.folder = "./",
+    filename = "sdc",
+    verbose = TRUE
+)
 bsrinf <- initialInference(bsrdm)
-pathways <- c("PD-1 signaling","Interferon gamma signaling")
+pathways <- c("PD-1 signaling", "Interferon gamma signaling")
 bubblePlotPathwaysLR(bsrinf,
-   pathways = pathways, 
-   qval.thres = 1,
-   path = "./",
-   color = "red",
-   filename  = "sdc_bubble", 
-   width  = 16, 
-   height = 7,
-   pointsize = 8
-   )  
+    pathways = pathways,
+    qval.thres = 1,
+    path = "./",
+    color = "red",
+    filename = "sdc_bubble",
+    width = 16,
+    height = 7,
+    pointsize = 8
+)
 }

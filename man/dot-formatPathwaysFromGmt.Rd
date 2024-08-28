@@ -15,13 +15,13 @@
 Dataframe with pathwayID, geneName and pathwayName
 }
 \description{
-We note discrepancy between format available 
+We note discrepancy between format available
 over internet.
 }
 \details{
 Here we consider a valid gmt file format defined
-on each lines as follows :  
-First is Pathway name, 
+on each lines as follows :
+First is Pathway name,
 Then comes the ID,
 Finally you will find genes symbols
 according to the pathway defined on the line.

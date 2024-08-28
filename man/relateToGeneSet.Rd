@@ -27,17 +27,18 @@ Finds ligands related to a gene set by following receptor, and
 receptor downstream pathway targets.
 }
 \examples{
-print('relateToGeneSet')
-data(sdc,package='BulkSignalR')
+print("relateToGeneSet")
+data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm, 
-         null.model = "normal",
-         quick = FALSE, 
-         plot.folder = "./",
-         filename = "sdc",
-         verbose = TRUE)
+bsrdm <- learnParameters(bsrdm,
+    null.model = "normal",
+    quick = FALSE,
+    plot.folder = "./",
+    filename = "sdc",
+    verbose = TRUE
+)
 bsrinf <- initialInference(bsrdm)
-data(p.EMT, package='BulkSignalR')
+data(p.EMT, package = "BulkSignalR")
 p.EMT <- p.EMT$gene
 triggers <- relateToGeneSet(bsrinf, p.EMT) # Here in SDC instead of HNSCC!
 }

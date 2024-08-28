@@ -28,14 +28,15 @@ at \url{https://www.gsea-msigdb.org/}
 }
 \details{
 \code{resetDownstreamPathways} is a function
-we provide to user to refresh REACTOME 
+we provide to user to refresh REACTOME
 and GO-BP content included in BulkSignalR.
 
 Gmt file format also can be imported.
 }
 \examples{
-print('resetPathwaysFromFile')
-if(FALSE)
-   resetPathwaysFromFile(file,"GO-BP")
+print("resetPathwaysFromFile")
+if (FALSE) {
+    resetPathwaysFromFile(file, "GO-BP")
+}
 
 }

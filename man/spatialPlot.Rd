@@ -93,13 +93,14 @@ A single (scores) or side-by-side (reference tissue & scores) plot
 is generated.
 }
 \examples{
-print('spatialPlot')
-if(FALSE){
-img <- png::readPNG(path.to.file)
+print("spatialPlot")
+if (FALSE) {
+    img <- png::readPNG(path.to.file)
 
-spatialPlot(v,
-    areas,
-    inter.name="L->R",
-    image.raster=img)
+    spatialPlot(v,
+        areas,
+        inter.name = "L->R",
+        image.raster = img
+    )
 }
 }

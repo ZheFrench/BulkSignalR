@@ -105,15 +105,16 @@ reference tissue plot (image or areas represented), the gene signature
 scores, the ligand expression values, and the receptor expression values.
 }
 \examples{
-print('separatedLRPlot')
-if(FALSE){
-img <- png::readPNG(path.to.file)
+print("separatedLRPlot")
+if (FALSE) {
+    img <- png::readPNG(path.to.file)
 
-separatedLRPlot(v,
-    L,
-    R,
-    ncounts,
-    areas,
-    image.raster=img)
+    separatedLRPlot(v,
+        L,
+        R,
+        ncounts,
+        areas,
+        image.raster = img
+    )
 }
 }

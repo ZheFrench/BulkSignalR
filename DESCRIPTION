@@ -17,7 +17,7 @@ BugReports: https://github.com/jcolinge/BulkSignalR/issues
 License: CeCILL | file LICENSE
 Encoding: UTF-8
 LazyData: FALSE
-Depends: R (>= 4.0)
+Depends: R (>= 4.4)
 biocViews: Network, RNASeq, Software, Proteomics, Transcriptomics, NetworkInference, Spatial
 Imports:
     BiocFileCache,
@@ -26,8 +26,8 @@ Imports:
     DBI,
     RSQLite,
     cli,
-    rlang,
     dplyr,
+    rlang,
     jsonlite,
     methods,
     doParallel,
@@ -53,5 +53,5 @@ Suggests:
     knitr,
     markdown,
     rmarkdown
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr

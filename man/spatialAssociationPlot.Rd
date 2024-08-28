@@ -34,10 +34,8 @@ L-R interaction score spatial distributions and tissue area labels.
 Display a heatmap linking L-R interactions to labels.
 }
 \examples{
-print('spatialAssociationPlot')
-if(FALSE){
-
-spatialAssociationPlot(associations)
-
+print("spatialAssociationPlot")
+if (FALSE) {
+    spatialAssociationPlot(associations)
 }
 }

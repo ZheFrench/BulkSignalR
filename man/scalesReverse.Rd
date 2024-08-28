@@ -18,11 +18,10 @@ A flipped raster image
 Flip over horizontal/vertical axis
 }
 \examples{
-print('scalesReverse')
-if(FALSE){
-img <- png::readPNG(path.to.file)
-my.image.as.raster <- grDevices::as.raster(path.to.file)  
-my.image.flipped <- scalesReverse(my.image.as.raster, axis="x")
-
- }
+print("scalesReverse")
+if (FALSE) {
+    img <- png::readPNG(path.to.file)
+    my.image.as.raster <- grDevices::as.raster(path.to.file)
+    my.image.flipped <- scalesReverse(my.image.as.raster, axis = "x")
+}
 }

@@ -9,7 +9,7 @@
   n.rand = 5,
   min.cor = -1,
   with.complex = TRUE,
-  max.pw.size = 200,
+  max.pw.size = 400,
   min.pw.size = 5,
   min.positive = 4
 )

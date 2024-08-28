@@ -7,13 +7,13 @@
 .cacheCheckIn(bfc, resourceName)
 }
 \arguments{
-\item{bfc}{Object of class BiocFileCache, created by a call to 
+\item{bfc}{Object of class BiocFileCache, created by a call to
 BiocFileCache::BiocFileCache()}
 
 \item{resourceName}{keyword associated to a specific resource name.}
 }
 \value{
-logical This function returns TRUE if a record with 
+logical This function returns TRUE if a record with
 the requested keyword already  exists in the file cache,
  otherwise returns FALSE.
 }

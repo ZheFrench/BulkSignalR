@@ -95,10 +95,8 @@ Not limited to BulkSignalR gene signature scores.
 A set of PDF files are created in the provided folder.
 }
 \examples{
-print('generateSpatialPlots')
-if(FALSE){
-
-generateSpatialPlots(scores, areas, plot.folder)
-
+print("generateSpatialPlots")
+if (FALSE) {
+    generateSpatialPlots(scores, areas, plot.folder)
 }
 }

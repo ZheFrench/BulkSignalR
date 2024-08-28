@@ -75,7 +75,7 @@ A heatmap. Since heatmap plotting tend to be slow on the screen,
 it is advisable to provide a
 PDF file name and plot in a file (much faster).
 
-If hcl.palette is set, the colors parameter won't be used. 
+If hcl.palette is set, the colors parameter won't be used.
 
 Extreme values (top and bottom) can be replaced by global quantiles at
 \code{cut.p} and \code{1-cut.p}
@@ -92,28 +92,31 @@ Generate a heatmap representing ligand-receptor gene
 signature scores.
 }
 \examples{
-print('simpleHeatmap')
-data(sdc,package='BulkSignalR')
+print("simpleHeatmap")
+data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm, 
-         null.model = "normal",
-         quick = FALSE, 
-         plot.folder = "./",
-         filename = "sdc",
-         verbose = TRUE)
+bsrdm <- learnParameters(bsrdm,
+    null.model = "normal",
+    quick = FALSE,
+    plot.folder = "./",
+    filename = "sdc",
+    verbose = TRUE
+)
 bsrinf <- initialInference(bsrdm)
-bsrinf.redBP <- reduceToBestPathway(bsrinf) 
+bsrinf.redBP <- reduceToBestPathway(bsrinf)
 bsrsig.redBP <- getLRGeneSignatures(bsrinf.redBP,
-qval.thres=0.001)
+    qval.thres = 0.001
+)
 
-scoresLR <- scoreLRGeneSignatures(bsrdm,bsrsig.redBP,
-                       name.by.pathway=FALSE)
-simpleHeatmap(scoresLR[1:20,], 
-                  path = "./",
-                  filename = "sdc_scoresLR",
-                  column.names = TRUE, 
-                  height = 5, width = 9,
-                  pointsize = 10,
-                  hcl.palette = "Cividis"                   
-                  )
+scoresLR <- scoreLRGeneSignatures(bsrdm, bsrsig.redBP,
+    name.by.pathway = FALSE
+)
+simpleHeatmap(scoresLR[1:20, ],
+    path = "./",
+    filename = "sdc_scoresLR",
+    column.names = TRUE,
+    height = 5, width = 9,
+    pointsize = 10,
+    hcl.palette = "Cividis"
+)
 }

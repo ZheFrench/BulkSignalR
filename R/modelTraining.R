@@ -11,16 +11,15 @@
 #' @importFrom stats quantile
 #' @keywords internal
 .buildPermutationIndices <- function(ncounts, n.bins = 20) {
-
-    rm <-  rowMeans(ncounts, na.rm = TRUE)
-    breaks <- stats::quantile(rm, prob = (seq(0,n.bins))/n.bins)
+    rm <- rowMeans(ncounts, na.rm = TRUE)
+    breaks <- stats::quantile(rm, prob = (seq(0, n.bins)) / n.bins)
     breaks[1] <- 0
 
-    lapply(seq(2,length(breaks)),
-           function(i) which(rm>breaks[i-1] & rm<=breaks[i])
+    lapply(
+        seq(2, length(breaks)),
+        function(i) which(rm > breaks[i - 1] & rm <= breaks[i])
     )
-
-}  # .buildPermutationIndices
+} # .buildPermutationIndices
 
 
 #' Internal function to shuffle permutation indices
@@ -34,11 +33,10 @@
 #' @importFrom foreach %do% %dopar%
 #' @keywords internal
 .shufflePermutationIndices <- function(pind) {
-
-    lapply(pind,
-           function(x) sample(x, length(x))
+    lapply(
+        pind,
+        function(x) sample(x, length(x))
     )
-
 } # .shufflePermutationIndices
 
 
@@ -53,17 +51,16 @@
 #'
 #' @keywords internal
 .buildPermutatedCountMatrix <- function(ncounts, pind) {
-
     symbols <- rownames(ncounts)
     rind <- .shufflePermutationIndices(pind)
 
-    for (i in seq_len(length(pind)))
+    for (i in seq_len(length(pind))) {
         symbols[pind[[i]]] <- symbols[rind[[i]]]
+    }
     rownames(ncounts) <- symbols
 
     ncounts
-
-}  # .buildPermutatedCountMatrix
+} # .buildPermutatedCountMatrix
 
 
 #' Internal function to fit a censored Gaussian distribution
@@ -83,74 +80,85 @@
 #'   plot a main title.
 #' @keywords internal
 .getGaussianParam <- function(d, title, verbose = FALSE, file.name = NULL) {
-
     if (!is.null(file.name)) {
-        grDevices::pdf(file = file.name, width = 4, height = 4,
-                       pointsize = 10, useDingbats = FALSE)
-        graphics::hist(d, freq=FALSE, main=paste0(title, " / censored normal"),
-                       xlab = "Spearman correlation", breaks = 30)
+        grDevices::pdf(
+            file = file.name, width = 4, height = 4,
+            pointsize = 10, useDingbats = FALSE
+        )
+        graphics::hist(d,
+            freq = FALSE, main = paste0(title, " / censored normal"),
+            xlab = "Spearman correlation", breaks = 30
+        )
     }
 
     # initial fit with a Gaussian over ]-infty;+infty[]
     mu <- mean(d)
     sigma <- stats::sd(d)
-    if (verbose){
-        cat("Initial estimate of the mean: ", mu, "\n", sep="")
-        cat("Initial estimate of the standard deviation: ", sigma, "\n", sep="")
+    if (verbose) {
+        message("Initial estimate of the mean: ", mu, "\n")
+        message("Initial estimate of the standard deviation: ", sigma, "\n")
     }
 
     # ML fit of a censored Gaussian on [-1;1]
-    GaussianLL <- function(par){
+    GaussianLL <- function(par) {
         q <- stats::pnorm(1, par[1], par[2]) - stats::pnorm(-1, par[1], par[2])
-        -sum(stats::dnorm(d, par[1], par[2], log=TRUE)) + length(d)*log(q)
+        -sum(stats::dnorm(d, par[1], par[2], log = TRUE)) + length(d) * log(q)
     }
     par.0 <- c(mu, sigma)
-    lo.bound <- c(mu-0.5, 0.5*sigma)
-    hi.bound <- c(mu+0.5, 1.5*sigma)
-    res <- stats::optim(par.0, GaussianLL, method="L-BFGS-B",
-                        lower=lo.bound, upper=hi.bound,
-                        control=list(maxit=2000))
-    if (res$convergence != 0)
+    lo.bound <- c(mu - 0.5, 0.5 * sigma)
+    hi.bound <- c(mu + 0.5, 1.5 * sigma)
+    res <- stats::optim(par.0, GaussianLL,
+        method = "L-BFGS-B",
+        lower = lo.bound, upper = hi.bound,
+        control = list(maxit = 2000)
+    )
+    if (res$convergence != 0) {
         stop("optim() could not fit the normal distribution parameters")
+    }
     mu <- res$par[1]
     sigma <- res$par[2]
-    if (verbose){
-        cat("Censored normal mean: ", mu, "\n", sep="")
-        cat("Censored normal standard deviation: ", sigma, "\n", sep="")
+    if (verbose) {
+        message("Censored normal mean: ", mu, "\n")
+        message("Censored normal standard deviation: ", sigma, "\n")
     }
     q <- stats::pnorm(1, mu, sigma) - stats::pnorm(-1, mu, sigma)
     start <- stats::pnorm(-1, mu, sigma)
-    params <- list(mu = mu, sigma = sigma, factor = q,
-                   start = start, distrib = "censored_normal")
+    params <- list(
+        mu = mu, sigma = sigma, factor = q,
+        start = start, distrib = "censored_normal"
+    )
 
     # KS test D statistics
     x <- seq(-1, 1, by = 0.005)
-    y <- stats::dnorm(x, mu, sigma)/q
+    y <- stats::dnorm(x, mu, sigma) / q
     params$D <- as.numeric(suppressWarnings(stats::ks.test(d, y)$statistic))
 
     # Chi2
     x <- seq(-1, 1, by = 0.05)
-    h <- graphics::hist(d, breaks=x, plot=FALSE)
-    hist.rf <- h$counts/length(d)
+    h <- graphics::hist(d, breaks = x, plot = FALSE)
+    hist.rf <- h$counts / length(d)
     gauss.rf <- .cdfGaussian(h$breaks[-1], params) -
         .cdfGaussian(h$breaks[-length(h$breaks)], params)
-    params$Chi2 <- sum((hist.rf-gauss.rf)**2)
+    params$Chi2 <- sum((hist.rf - gauss.rf)**2)
 
     # control plot
     if (!is.null(file.name)) {
         x <- seq(-1, 1, by = 0.002)
-        graphics::lines(x = x, y = stats::dnorm(x, mu, sigma)/q,
-                        col = "blue", type = "l")
-        graphics::legend(x = "topright", lty = 1, legend = "Model",
-                         col = "blue", bty = "n", pt.cex = 0.5)
+        graphics::lines(
+            x = x, y = stats::dnorm(x, mu, sigma) / q,
+            col = "blue", type = "l"
+        )
+        graphics::legend(
+            x = "topright", lty = 1, legend = "Model",
+            col = "blue", bty = "n", pt.cex = 0.5
+        )
         grDevices::dev.off()
         # fn <- gsub("pdf$", "txt", file.name)
         # write.table(d, file=fn, row.names = FALSE)
     }
 
     params
-
-}  # .getGaussianParam
+} # .getGaussianParam
 
 
 #' Internal function to compute a censored Gaussian CDF
@@ -160,10 +168,8 @@
 #'
 #' @return A vector of probabilities P(X<x|par).
 #' @keywords internal
-.cdfGaussian <- function(x, par){
-
+.cdfGaussian <- function(x, par) {
     (stats::pnorm(x, par$mu, par$sigma) - par$start) / par$factor
-
 } # .cdfGaussian
 
 
@@ -186,85 +192,98 @@
 #' @keywords internal
 .getMixedGaussianParam <- function(d, title, verbose = FALSE, file.name = NULL) {
     if (!is.null(file.name)) {
-        grDevices::pdf(file = file.name, width = 4, height = 4,
-                       pointsize = 10, useDingbats = FALSE)
-        graphics::hist(d, freq=FALSE,
-                       main=paste0(title, " / censored mixed normal"),
-                       xlab = "Spearman correlation", breaks = 30)
+        grDevices::pdf(
+            file = file.name, width = 4, height = 4,
+            pointsize = 10, useDingbats = FALSE
+        )
+        graphics::hist(d,
+            freq = FALSE,
+            main = paste0(title, " / censored mixed normal"),
+            xlab = "Spearman correlation", breaks = 30
+        )
     }
 
     # ML fit of a censored mixed-Gaussian on [-1;1]
-    mixedGaussianLL <- function(par){
+    mixedGaussianLL <- function(par) {
         alpha <- par[1]
         mu1 <- par[2]
         sigma1 <- par[3]
         mu2 <- par[4]
         sigma2 <- par[5]
-        q <- alpha*stats::pnorm(1, mu1, sigma1) +
-            (1-alpha)*stats::pnorm(1, mu2, sigma2) -
-            (alpha*stats::pnorm(-1, mu1, sigma1) +
-                 (1-alpha)*stats::pnorm(-1, mu2, sigma2)
+        q <- alpha * stats::pnorm(1, mu1, sigma1) +
+            (1 - alpha) * stats::pnorm(1, mu2, sigma2) -
+            (alpha * stats::pnorm(-1, mu1, sigma1) +
+                (1 - alpha) * stats::pnorm(-1, mu2, sigma2)
             )
-        -sum(log(alpha*stats::dnorm(d, mu1, sigma1) +
-                     (1-alpha)*stats::dnorm(d, mu2, sigma2))
-        ) + length(d)*log(q)
+        -sum(log(alpha * stats::dnorm(d, mu1, sigma1) +
+            (1 - alpha) * stats::dnorm(d, mu2, sigma2))) + length(d) * log(q)
     }
     mu <- mean(d)
     sigma <- stats::sd(d)
-    par.0 <- c(0.7, mu-0.1, 0.75*sigma, mu+0.1, 3*sigma)
-    lo.bound <- c(0.5, mu-0.5, 0.5*sigma, mu-0.2, 2*sigma)
-    hi.bound <- c(1.0, mu+0.2, 1.5*sigma, mu+0.4, 10*sigma)
-    res <- stats::optim(par.0, mixedGaussianLL, method="L-BFGS-B",
-                        lower=lo.bound, upper=hi.bound,
-                        control=list(maxit=2000))
-    if (res$convergence != 0)
+    par.0 <- c(0.7, mu - 0.1, 0.75 * sigma, mu + 0.1, 3 * sigma)
+    lo.bound <- c(0.5, mu - 0.5, 0.5 * sigma, mu - 0.2, 2 * sigma)
+    hi.bound <- c(1.0, mu + 0.2, 1.5 * sigma, mu + 0.4, 10 * sigma)
+    res <- stats::optim(par.0, mixedGaussianLL,
+        method = "L-BFGS-B",
+        lower = lo.bound, upper = hi.bound,
+        control = list(maxit = 2000)
+    )
+    if (res$convergence != 0) {
         stop("optim() could not fit the mixed normal distribution parameters")
-    if (verbose)
-        cat("Censored mixed normal parameters (alpha, mean1, sd1, mean2, sd2): ",
-            paste(res$par, collapse=", "), "\n", sep="")
+    }
+    if (verbose) {
+        message("Censored mixed normal parameters (alpha, mean1, sd1, mean2, sd2): ",
+           paste(res$par, collapse = ", ") , "\n"
+        )
+    }
     alpha <- res$par[1]
     mu1 <- res$par[2]
     sigma1 <- res$par[3]
     mu2 <- res$par[4]
     sigma2 <- res$par[5]
-    q <- alpha*stats::pnorm(1, mu1, sigma1) +
-        (1-alpha)*stats::pnorm(1, mu2, sigma2) -
-        (alpha*stats::pnorm(-1, mu1, sigma1) +
-             (1-alpha)*stats::pnorm(-1, mu2, sigma2)
+    q <- alpha * stats::pnorm(1, mu1, sigma1) +
+        (1 - alpha) * stats::pnorm(1, mu2, sigma2) -
+        (alpha * stats::pnorm(-1, mu1, sigma1) +
+            (1 - alpha) * stats::pnorm(-1, mu2, sigma2)
         )
-    start <- alpha*stats::pnorm(-1, mu1, sigma1) +
-        (1-alpha)*stats::pnorm(-1, mu2, sigma2)
-    params <- list(alpha=alpha, mu1=mu1, sigma1=sigma1, mu2=mu2, sigma2=sigma2,
-                   factor=q, start=start, distrib="censored_mixed_normal")
+    start <- alpha * stats::pnorm(-1, mu1, sigma1) +
+        (1 - alpha) * stats::pnorm(-1, mu2, sigma2)
+    params <- list(
+        alpha = alpha, mu1 = mu1, sigma1 = sigma1, mu2 = mu2, sigma2 = sigma2,
+        factor = q, start = start, distrib = "censored_mixed_normal"
+    )
 
     # KS test D statistics
     x <- seq(-1, 1, by = 0.005)
-    y <- alpha*stats::dnorm(x, mu1, sigma1) +
-        (1-alpha)*stats::dnorm(x, mu2, sigma2)/q
+    y <- alpha * stats::dnorm(x, mu1, sigma1) +
+        (1 - alpha) * stats::dnorm(x, mu2, sigma2) / q
     params$D <- as.numeric(suppressWarnings(stats::ks.test(d, y)$statistic))
 
     # Chi2
     x <- seq(-1, 1, by = 0.05)
-    h <- graphics::hist(d, breaks=x, plot=FALSE)
-    hist.rf <- h$counts/length(d)
+    h <- graphics::hist(d, breaks = x, plot = FALSE)
+    hist.rf <- h$counts / length(d)
     mixed.rf <- .cdfMixedGaussian(h$breaks[-1], params) -
         .cdfMixedGaussian(h$breaks[-length(h$breaks)], params)
-    params$Chi2 <- sum((hist.rf-mixed.rf)**2)
+    params$Chi2 <- sum((hist.rf - mixed.rf)**2)
 
     # control plot
     if (!is.null(file.name)) {
         x <- seq(-1, 1, by = 0.002)
-        graphics::lines(x = x, y = alpha*stats::dnorm(x, mu1, sigma1) +
-                            (1-alpha)*stats::dnorm(x, mu2, sigma2)/q,
-                        col = "blue", type = "l")
-        graphics::legend(x = "topright", lty = 1, legend = "Model",
-                         col = "blue", bty = "n", pt.cex = 0.5)
+        graphics::lines(
+            x = x, y = alpha * stats::dnorm(x, mu1, sigma1) +
+                (1 - alpha) * stats::dnorm(x, mu2, sigma2) / q,
+            col = "blue", type = "l"
+        )
+        graphics::legend(
+            x = "topright", lty = 1, legend = "Model",
+            col = "blue", bty = "n", pt.cex = 0.5
+        )
         grDevices::dev.off()
     }
 
     params
-
-}  # .getMixedGaussianParam
+} # .getMixedGaussianParam
 
 
 #' Internal function to compute a censored mixed-Gaussian CDF
@@ -274,13 +293,11 @@
 #'
 #' @return A vector of probabilities P(X<x|par).
 #' @keywords internal
-.cdfMixedGaussian <- function(x, par){
-
-    (par$alpha*stats::pnorm(x, par$mu1, par$sigma1) +
-         (1-par$alpha)*stats::pnorm(x, par$mu2, par$sigma2) -
-         par$start
+.cdfMixedGaussian <- function(x, par) {
+    (par$alpha * stats::pnorm(x, par$mu1, par$sigma1) +
+        (1 - par$alpha) * stats::pnorm(x, par$mu2, par$sigma2) -
+        par$start
     ) / par$factor
-
 } # .cdfMixedGaussian
 
 
@@ -301,12 +318,15 @@
 #'   plot a main title.
 #' @keywords internal
 .getEmpiricalParam <- function(d, title, verbose = FALSE, file.name = NULL) {
-
     if (!is.null(file.name)) {
-        grDevices::pdf(file = file.name, width = 4, height = 4,
-                       pointsize = 10, useDingbats = FALSE)
-        graphics::hist(d, freq=FALSE, main=paste0(title, " / empirical"),
-                       xlab = "Spearman correlation", breaks=30)
+        grDevices::pdf(
+            file = file.name, width = 4, height = 4,
+            pointsize = 10, useDingbats = FALSE
+        )
+        graphics::hist(d,
+            freq = FALSE, main = paste0(title, " / empirical"),
+            xlab = "Spearman correlation", breaks = 30
+        )
     }
 
     empir <- stats::ecdf(d)
@@ -317,18 +337,19 @@
         x <- seq(-1, 1, by = step)
         cd <- empir(x)
         n <- length(x)
-        left <- cd[-c(n-1,n)]
-        right <- cd[-c(1,2)]
-        dens <- c(0, (right-left)/2/step, 0)
+        left <- cd[-c(n - 1, n)]
+        right <- cd[-c(1, 2)]
+        dens <- c(0, (right - left) / 2 / step, 0)
         graphics::lines(x = x, y = dens, col = "blue", type = "l")
-        graphics::legend(x = "topright", lty = 1, legend = "Model",
-                         col = "blue", bty = "n", pt.cex = 0.5)
+        graphics::legend(
+            x = "topright", lty = 1, legend = "Model",
+            col = "blue", bty = "n", pt.cex = 0.5
+        )
         grDevices::dev.off()
     }
 
     list(empirCDF = empir, distrib = "empirical")
-
-}  # .getEmpiricalParam
+} # .getEmpiricalParam
 
 
 #' Internal function to compute an empirical CDF
@@ -338,9 +359,8 @@
 #'
 #' @return A vector of probabilities P(X<x|par).
 #' @keywords internal
-.cdfEmpirical <- function(x, par){
+.cdfEmpirical <- function(x, par) {
     par$empirCDF(x)
-
 } # .cdfEmpirical
 
 
@@ -362,31 +382,36 @@
 #'   plot a main title.
 #' @keywords internal
 .getKernelEmpiricalParam <- function(d, title, verbose = FALSE,
-                                     file.name = NULL, n=512) {
-
+                                     file.name = NULL, n = 512) {
     if (!is.null(file.name)) {
-        grDevices::pdf(file = file.name, width = 4, height = 4,
-                       pointsize = 10, useDingbats = FALSE)
-        graphics::hist(d, freq=FALSE, main=paste0(title, " / kernel empirical"),
-                       xlab = "Spearman correlation", breaks=30)
+        grDevices::pdf(
+            file = file.name, width = 4, height = 4,
+            pointsize = 10, useDingbats = FALSE
+        )
+        graphics::hist(d,
+            freq = FALSE, main = paste0(title, " / kernel empirical"),
+            xlab = "Spearman correlation", breaks = 30
+        )
     }
 
-    df <- stats::density(d, from=-1, to=1, n=n)
+    df <- stats::density(d, from = -1, to = 1, n = n)
     cd <- cumsum(df$y)
-    cd <- cd/cd[n]
-    params <- list(kernelCDF = stats::stepfun(df$x, c(0, cd)),
-                   distrib = "kernel_empirical")
+    cd <- cd / cd[n]
+    params <- list(
+        kernelCDF = stats::stepfun(df$x, c(0, cd)),
+        distrib = "kernel_empirical"
+    )
 
     # KS test D statistics
     params$D <- as.numeric(suppressWarnings(stats::ks.test(d, df$y)$statistic))
 
     # Chi2
     x <- seq(-1, 1, by = 0.05)
-    h <- graphics::hist(d, breaks=x, plot=FALSE)
-    hist.rf <- h$counts/length(d)
+    h <- graphics::hist(d, breaks = x, plot = FALSE)
+    hist.rf <- h$counts / length(d)
     kernel.rf <- .cdfKernelEmpirical(h$breaks[-1], params) -
         .cdfKernelEmpirical(h$breaks[-length(h$breaks)], params)
-    params$Chi2 <- sum((hist.rf-kernel.rf)**2)
+    params$Chi2 <- sum((hist.rf - kernel.rf)**2)
 
     # control plot
     if (!is.null(file.name)) {
@@ -396,14 +421,15 @@
         # dens <- c(0, (right-left)/2/step, 0)
         # graphics::lines(x = df$x, y = dens, col = "blue", type = "l")
         graphics::lines(df, col = "blue", type = "l")
-        graphics::legend(x = "topright", lty = 1, legend = "Model",
-                         col = "blue", bty = "n", pt.cex = 0.5)
+        graphics::legend(
+            x = "topright", lty = 1, legend = "Model",
+            col = "blue", bty = "n", pt.cex = 0.5
+        )
         grDevices::dev.off()
     }
 
     params
-
-}  # .getKernelEmpiricalParam
+} # .getKernelEmpiricalParam
 
 
 #' Internal function to compute a Gaussian kernel-based empirical CDF
@@ -413,9 +439,8 @@
 #'
 #' @return A vector of probabilities P(X<x|par).
 #' @keywords internal
-.cdfKernelEmpirical <- function(x, par){
+.cdfKernelEmpirical <- function(x, par) {
     par$kernelCDF(x)
-
 } # .cdfKernelEmpirical
 
 
@@ -438,60 +463,91 @@
 #' @keywords internal
 .getAlphaStableParam <- function(d, title, verbose = FALSE, file.name = NULL) {
     if (!is.null(file.name)) {
-        grDevices::pdf(file = file.name, width = 4, height = 4,
-                       pointsize = 10, useDingbats = FALSE)
-        graphics::hist(d, freq=FALSE,
-                       main=paste0(title, " / censored stable"),
-                       breaks = 30, xlab = "Spearman correlation")
+        grDevices::pdf(
+            file = file.name, width = 4, height = 4,
+            pointsize = 10, useDingbats = FALSE
+        )
+        graphics::hist(d,
+            freq = FALSE,
+            main = paste0(title, " / censored stable"),
+            breaks = 30, xlab = "Spearman correlation"
+        )
     }
 
     # ML fit of a censored stable on [-1;1]
-    stableLL <- function(par){
-        q <- stabledist::pstable(1, alpha=par[1], beta=par[2],
-                     gamma=(par[3])**2,delta=par[4]) -
-            stabledist::pstable(-1, alpha=par[1], beta=par[2],
-                    gamma=(par[3])**2, delta=par[4])
-        -sum(stabledist::dstable(d, alpha=par[1], beta=par[2],
-                                 gamma=(par[3])**2, delta=par[4], log=TRUE)
-             ) + length(d)*log(q)
+    stableLL <- function(par) {
+        q <- stabledist::pstable(1,
+            alpha = par[1], beta = par[2],
+            gamma = (par[3])**2, delta = par[4]
+        ) -
+            stabledist::pstable(-1,
+                alpha = par[1], beta = par[2],
+                gamma = (par[3])**2, delta = par[4]
+            )
+        -sum(stabledist::dstable(d,
+            alpha = par[1], beta = par[2],
+            gamma = (par[3])**2, delta = par[4], log = TRUE
+        )) + length(d) * log(q)
     }
     par.0 <- c(1.5, 0.5, sqrt(stats::sd(d)), mean(d))
-    if (verbose)
-        cat(paste0("Starting stable distribution parameter estimation. ",
-                   "This can take a few dozens of minutes...\n"))
+    if (verbose) {
+        message(
+            "Starting stable distribution parameter estimation. ",
+            "This can take a few dozens of minutes...\n"
+        )
+    }
     res <- stats::optim(par.0, stableLL,
-                        control=list(reltol=1e-5, maxit=800,
-                                     trace=ifelse(verbose,1,0)))
-    if (res$convergence != 0)
+        control = list(
+            reltol = 1e-5, maxit = 800,
+            trace = ifelse(verbose, 1, 0)
+        )
+    )
+    if (res$convergence != 0) {
         stop("optim() could not fit the censored stable distribution")
-    if (verbose)
-        cat("Censored stable parameters (alpha, beta, gamma, delta): ",
-            paste(res$par, collapse=", "), "\n", sep="")
+    }
+    if (verbose) {
+        message("Censored stable parameters (alpha, beta, gamma, delta): ",
+            paste(res$par, collapse = ", "), "\n"
+        )
+    }
     alpha <- res$par[1]
     beta <- res$par[2]
     gamma <- (res$par[3])**2
     delta <- res$par[4]
-    q <- stabledist::pstable(1, alpha=alpha, beta=beta,
-                             gamma=gamma, delta=delta) -
-        stabledist::pstable(-1, alpha=alpha, beta=beta,
-                            gamma=gamma, delta=delta)
-    start <- stabledist::pstable(-1, alpha=alpha, beta=beta,
-                                 gamma=gamma, delta=delta)
+    q <- stabledist::pstable(1,
+        alpha = alpha, beta = beta,
+        gamma = gamma, delta = delta
+    ) -
+        stabledist::pstable(-1,
+            alpha = alpha, beta = beta,
+            gamma = gamma, delta = delta
+        )
+    start <- stabledist::pstable(-1,
+        alpha = alpha, beta = beta,
+        gamma = gamma, delta = delta
+    )
 
     # control plot
     if (!is.null(file.name)) {
         x <- seq(-1, 1, by = 0.002)
-        graphics::lines(x = x, y = stabledist::dstable(x, alpha=alpha,
-                            beta=beta, gamma=gamma, delta=delta)/q,
-                        col = "blue", type = "l")
-        graphics::legend(x = "topright", lty = 1, legend = "Model",
-                         col = "blue", bty = "n", pt.cex = 0.5)
+        graphics::lines(
+            x = x, y = stabledist::dstable(x,
+                alpha = alpha,
+                beta = beta, gamma = gamma, delta = delta
+            ) / q,
+            col = "blue", type = "l"
+        )
+        graphics::legend(
+            x = "topright", lty = 1, legend = "Model",
+            col = "blue", bty = "n", pt.cex = 0.5
+        )
         grDevices::dev.off()
     }
-    list(alpha=alpha, beta=beta, gamma=gamma, delta=delta, factor=q,
-         start=start, distrib="censored_stable")
-
-}  # .getAlphaStableParam
+    list(
+        alpha = alpha, beta = beta, gamma = gamma, delta = delta, factor = q,
+        start = start, distrib = "censored_stable"
+    )
+} # .getAlphaStableParam
 
 
 #' Internal function to compute a censored alpha-) stable CDF
@@ -502,11 +558,11 @@
 #' @return A vector of probabilities P(X<x|par).
 #' @importFrom stabledist pstable dstable
 #' @keywords internal
-.cdfAlphaStable <- function(x, par){
-
-    (stabledist::pstable(x, alpha=par$alpha, beta=par$beta, gamma=par$gamma,
-                         delta=par$delta) - par$start) / par$factor
-
+.cdfAlphaStable <- function(x, par) {
+    (stabledist::pstable(x,
+        alpha = par$alpha, beta = par$beta, gamma = par$gamma,
+        delta = par$delta
+    ) - par$start) / par$factor
 } # .cdfAlphaStable
 
 
@@ -544,31 +600,35 @@
 #' @importFrom foreach %do% %dopar%
 #' @keywords internal
 .getEmpiricalNull <- function(ncounts, n.rand = 5, min.cor = -1,
-                             with.complex = TRUE, max.pw.size = 200,
-                             min.pw.size = 5, min.positive = 4) {
-
+                              with.complex = TRUE, max.pw.size = 400,
+                              min.pw.size = 5, min.positive = 4) {
     pindices <- .buildPermutationIndices(ncounts)
-    r.ds <- prepareDataset(ncounts, normalize = FALSE, method = "ALREADY")
-    if (foreach::getDoParWorkers() > 1)
+    r.ds <- prepareDataset(ncounts,
+        normalize = FALSE, method = "ALREADY",
+        min.LR.found = 0
+    )
+    if (foreach::getDoParWorkers() > 1) {
         foreach::foreach(k = seq_len(n.rand), .combine = c) %dopar% {
             ncounts(r.ds) <- .buildPermutatedCountMatrix(ncounts, pindices)
             r.LR <- .getCorrelatedLR(r.ds, min.cor = min.cor)
             list(.checkReceptorSignaling(r.ds, r.LR,
-                        with.complex = with.complex, max.pw.size = max.pw.size,
-                        min.pw.size = min.pw.size, min.positive = min.positive)
-            )
+                with.complex = with.complex, max.pw.size = max.pw.size,
+                min.pw.size = min.pw.size, min.positive = min.positive,
+                use.full.network = FALSE
+            ))
         }
-    else
+    } else {
         foreach::foreach(k = seq_len(n.rand), .combine = c) %do% {
             ncounts(r.ds) <- .buildPermutatedCountMatrix(ncounts, pindices)
             r.LR <- .getCorrelatedLR(r.ds, min.cor = min.cor)
             list(.checkReceptorSignaling(r.ds, r.LR,
-                         with.complex = with.complex, max.pw.size = max.pw.size,
-                         min.pw.size = min.pw.size, min.positive = min.positive)
-            )
+                with.complex = with.complex, max.pw.size = max.pw.size,
+                min.pw.size = min.pw.size, min.positive = min.positive,
+                use.full.network = FALSE
+            ))
         }
-
-}  # .getEmpiricalNull
+    }
+} # .getEmpiricalNull
 
 
 #' Sampling of ligand-receptor correlation null distribution
@@ -594,22 +654,24 @@
 #' @importFrom foreach %do% %dopar%
 #' @keywords internal
 .getEmpiricalNullCorrLR <- function(ncounts, n.rand = 5, min.cor = -1) {
-
     pindices <- .buildPermutationIndices(ncounts)
-    r.ds <- prepareDataset(ncounts, normalize = FALSE, method = "ALREADY")
+    r.ds <- prepareDataset(ncounts,
+        normalize = FALSE, method = "ALREADY",
+        min.LR.found = 0
+    )
 
-    if (foreach::getDoParWorkers() > 1)
-        foreach::foreach(k = seq_len(n.rand), .combine = 'c',
-            .packages="BulkSignalR"
-            ) %dopar% {
+    if (foreach::getDoParWorkers() > 1) {
+        foreach::foreach(
+            k = seq_len(n.rand), .combine = "c",
+            .packages = "BulkSignalR"
+        ) %dopar% {
             ncounts(r.ds) <- .buildPermutatedCountMatrix(ncounts, pindices)
             list(.getCorrelatedLR(r.ds, min.cor = min.cor))
         }
-    else
-    foreach::foreach(k = seq_len(n.rand), .combine = c) %do% {
-        ncounts(r.ds) <- .buildPermutatedCountMatrix(ncounts, pindices)
-        list(.getCorrelatedLR(r.ds, min.cor = min.cor))
+    } else {
+        foreach::foreach(k = seq_len(n.rand), .combine = c) %do% {
+            ncounts(r.ds) <- .buildPermutatedCountMatrix(ncounts, pindices)
+            list(.getCorrelatedLR(r.ds, min.cor = min.cor))
+        }
     }
-
-}  # .getEmpiricalNullCorrLR
-
+} # .getEmpiricalNullCorrLR

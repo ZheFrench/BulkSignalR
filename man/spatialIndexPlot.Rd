@@ -90,10 +90,8 @@ in a PDF. Not limited to BulkSignalR gene signature scores.
 A PDF file is created that contains the index.
 }
 \examples{
-print('spatialIndexPlot')
-if(FALSE){
-
-spatialIndexPlot(scores, areas, out.file)
-
+print("spatialIndexPlot")
+if (FALSE) {
+    spatialIndexPlot(scores, areas, out.file)
 }
 }

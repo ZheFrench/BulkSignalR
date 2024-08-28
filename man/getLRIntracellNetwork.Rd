@@ -10,6 +10,9 @@ getLRIntracellNetwork(
   qval.thres = NULL,
   min.cor = 0.25,
   max.pval = NULL,
+  min.logFC = 0,
+  pos.targets = FALSE,
+  neg.targets = FALSE,
   restrict.pw = NULL,
   node.size = 5
 )
@@ -25,6 +28,17 @@ getLRIntracellNetwork(
 
 \item{max.pval}{Maximum P-value required for the target genes in case
 a BSRInferenceComp object is provided.}
+
+\item{min.logFC}{Minimum logFC required for the target genes in case
+a BSRInferenceComp object is provided.}
+
+\item{pos.targets}{A logical imposing that all the network targets must
+display positive correlation or logFC in case of a BSRInferenceComp object.}
+
+\item{neg.targets}{A logical imposing that all the network targets must
+display negative correlation or logFC in case of a BSRInferenceComp object.
+Correlations must be <= -min.cor or logFC <= - min.logFC
+with this option activated.}
 
 \item{restrict.pw}{A vector of pathway IDs to which receptor downstream
 signaling is restricted.}
@@ -49,25 +63,28 @@ the shortest paths from the receptors to correlated
 target genes following Reactome and KEGG pathways.
 }
 \examples{
-print('getLRIntracellNetwork')
-data(sdc,package='BulkSignalR')
+print("getLRIntracellNetwork")
+data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm, 
-         null.model = "normal",
-         quick = FALSE, 
-         plot.folder = "./",
-         filename = "sdc",
-         verbose = TRUE)
+bsrdm <- learnParameters(bsrdm,
+    null.model = "normal",
+    quick = FALSE,
+    plot.folder = "./",
+    filename = "sdc",
+    verbose = TRUE
+)
 bsrinf <- initialInference(bsrdm)
 bsrinf.redBP <- reduceToBestPathway(bsrinf)
 
 pairs <- LRinter(bsrinf.redBP)
-top   <- unique(pairs[pairs$pval<1e-20,c("pw.id","pw.name")])
+top <- unique(pairs[pairs$pval < 1e-20, c("pw.id", "pw.name")])
 
-gLRintra.res <- getLRIntracellNetwork(bsrinf.redBP, qval.thres=0.01,
-                                     restrict.pw=top$pw.id)
+gLRintra.res <- getLRIntracellNetwork(bsrinf.redBP,
+    qval.thres = 0.01,
+    restrict.pw = top$pw.id
+)
 
 # write.graph(gLRintra, file="SDC-LR-intracellular-network.reduced.graphml",
-          # format="graphml")
+# format="graphml")
 
 }

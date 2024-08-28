@@ -13,10 +13,10 @@ getResource(resourceName = NULL, cache = FALSE)
 If True, you will use environment variables.}
 }
 \description{
-Get  resources (pathways, or PathwayCommons network 
+Get  resources (pathways, or PathwayCommons network
 from \url{https://www.pathwaycommons.org/})
 stored in the cache.
 }
 \examples{
-reactome <-  getResource(resourceName="Reactome")
+reactome <- getResource(resourceName = "Reactome")
 }

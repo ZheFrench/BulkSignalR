@@ -22,22 +22,30 @@ Reset gene names to initial organism providen in first instance
 }
 \examples{
 data(bodyMap.mouse)
-ortholog.dict    <- findOrthoGenes (from_organism = "mmusculus", 
-                                    from_values = rownames(bodyMap.mouse))
+ortholog.dict <- findOrthoGenes(
+    from_organism = "mmusculus",
+    from_values = rownames(bodyMap.mouse)
+)
 
-matrix.expression.human <- convertToHuman(counts = bodyMap.mouse, 
-                                          dictionary = ortholog.dict)
+matrix.expression.human <- convertToHuman(
+    counts = bodyMap.mouse,
+    dictionary = ortholog.dict
+)
 
-bsrdm  <- prepareDataset(counts = matrix.expression.human,
-          species = "mmusculus",
-          conversion.dict = ortholog.dict)
+bsrdm <- prepareDataset(
+    counts = matrix.expression.human,
+    species = "mmusculus",
+    conversion.dict = ortholog.dict
+)
 
-bsrdm <- learnParameters(bsrdm, null.model="normal" , quick = FALSE, 
-          plot.folder="./",filename = "bodyMap.mouse",
-          verbose = TRUE)
+bsrdm <- learnParameters(bsrdm,
+    null.model = "normal", quick = FALSE,
+    plot.folder = "./", filename = "bodyMap.mouse",
+    verbose = TRUE
+)
 
-bsrinf  <- initialInference(bsrdm)
+bsrinf <- initialInference(bsrdm)
 
-bsrinf  <- resetToInitialOrganism(bsrinf, conversion.dict=ortholog.dict)
+bsrinf <- resetToInitialOrganism(bsrinf, conversion.dict = ortholog.dict)
 
 }

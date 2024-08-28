@@ -12,7 +12,7 @@
   n.rand.LR = 5L,
   n.rand.RT = 2L,
   with.complex = TRUE,
-  max.pw.size = 200,
+  max.pw.size = 400,
   min.pw.size = 5,
   min.positive = 4,
   quick = FALSE,
@@ -99,20 +99,29 @@ Estimates the model parameters that are stored in the
   selection mode, the choice of the actual model will be done based on
   the L-R null assuming a similar shape for the R-T null (with
   different parameters though, unless \code{quick} was set to \code{TRUE}).
+
+Note that since the introduction of the use.full.network parameter
+(April 29, 2024) in the initialInference method parameters,
+the pathway sizes are always computed before potential
+intersection with the observed data (use.full.network set to FALSE) for
+consistency. Accordingly, the minimum and maximum pathway default values
+have been raised from 5 & 200 to 5 & 400 respectively. By default,
+use.full.network is set to TRUE, meaning no intersection and hence larger
+pathways.
 }
 \examples{
-print('prepareDataset')
-data(sdc,package='BulkSignalR')
+print("prepareDataset")
+data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
-bsrdm <- prepareDataset(sdc[,-normal])
+bsrdm <- prepareDataset(sdc[, -normal])
 
 print("learnParameters")
-print('prepareDataset')
-data(sdc,package='BulkSignalR')
+print("prepareDataset")
+data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
-bsrdm <- prepareDataset(sdc[,-normal])
+bsrdm <- prepareDataset(sdc[, -normal])
 
 print("learnParameters")
-bsrdm <- learnParameters(bsrdm,plot.folder="./")
+bsrdm <- learnParameters(bsrdm, plot.folder = "./")
 bsrdm
 }

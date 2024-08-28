@@ -24,28 +24,28 @@
 
 \item{fontsize}{Fontsize.}
 
-\item{scoring}{Vector of scored sample for a 
+\item{scoring}{Vector of scored sample for a
 a previously choosen pathway.}
 
 \item{cols.scoring}{Fixed colorRamp2 object.}
 
-\item{hcl.palette}{Palette from 
+\item{hcl.palette}{Palette from
 HCL colormaps supported by ComplexHeatmap.}
 
 \item{show_column_names}{Add column names on heatmap.}
 }
 \value{
-ComplexHeatmap object. 
+ComplexHeatmap object.
 
-This is a convenience function that relies 
+This is a convenience function that relies
 on the \code{ComplexHeatmap}
 package to propose a simple way
 of representing expression of genes involved in a specific
 pathway.
 }
 \description{
-Generate one heatmap re-used by 
-by  
+Generate one heatmap re-used by
+by
 \code{"\link[=BSRDataModel-class]{scoreLRGeneSignatures}"}
 }
 \keyword{internal}

@@ -8,7 +8,7 @@ createResources(onRequest = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{onRequest}{logical True if you force
-download again. This will overwrite 
+download again. This will overwrite
 pre-existing database. Default is True.}
 
 \item{verbose}{Default is FALSE}
@@ -21,6 +21,7 @@ Otherwise datatabase, is handled by another process
 not relying on BiocFileCache instance.
 }
 \examples{
-if(FALSE)
- createResources() 
+if (FALSE) {
+    createResources()
+}
 }

@@ -6,9 +6,10 @@
 #' is specific to bulk data sets. Different visualization and data
 #' summary functions are proposed to help navigating results.
 #'
-#' @docType package
 #' @name BulkSignalR
 NULL
 
-utils::globalVariables(c("LRdb",
-	"%v%","%>%","%do%","%dopar%","ComplexHeatmap"))
+utils::globalVariables(c(
+    "LRdb",
+    "%v%", "%>%", "%do%", "%dopar%", "ComplexHeatmap"
+))

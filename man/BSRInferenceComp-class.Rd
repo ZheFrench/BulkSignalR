@@ -6,7 +6,7 @@
 \title{BulkSignalR cluster comparison-based inference object}
 \description{
 An S4 class to represent ligand-receptor interactions inferred from
-a comparison of two clusters of samples. This class inherits from
+a comparison between two clusters of samples. This class inherits from
 BSRInference.
 }
 \details{
@@ -24,29 +24,42 @@ reductions to pathways, etc. See reduction functions
 \item{\code{cmp.name}}{The name of the BSRClusterComp object in a BSRDataModelComp
 object comp list.}
 
+\item{\code{src.cmp.name}}{The name of an optional BSRClusterComp object in a
+BSRDataModelComp object comp list in case paracrine inferences were
+performed.}
+
 \item{\code{tg.pval}}{A list of target gene P-values, one
+entry per interaction}
+
+\item{\code{tg.logFC}}{A list of target gene logFC, one
+entry per interaction}
+
+\item{\code{tg.expr}}{A list of target gene expression, one
 entry per interaction}
 }}
 
 \examples{
-print('BSRInferenceComp class')
+print("BSRInferenceComp class")
 
 # prepare data
-data(sdc,package='BulkSignalR')
+data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
-bsrdm <- prepareDataset(sdc[,-normal])
+bsrdm <- prepareDataset(sdc[, -normal])
 
 # define the comparison
 bsrdm.comp <- as.BSRDataModelComp(bsrdm)
 colA <- as.integer(1:5)
 colB <- as.integer(8:15)
 n <- nrow(ncounts(bsrdm.comp))
-stats <- data.frame(pval=runif(n), logFC=rnorm(n, 0, 2))
+stats <- data.frame(
+    pval = runif(n), logFC = rnorm(n, 0, 2),
+    expr = runif(n, 0, 10)
+)
 rownames(stats) <- rownames(ncounts(bsrdm.comp))
 bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
 bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
 
 # infer ligand-receptor interactions from the comparison
-bsrinf <- initialInference(bsrdm.comp,max.pval=1,"random.example")
+bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 }

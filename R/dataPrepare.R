@@ -15,35 +15,35 @@
 #' @importFrom cli cli_alert_info
 #' @export
 #' @examples
-#' print('resetLRdb')
-#' data(sdc,package='BulkSignalR')
-#' resetLRdb(db=data.frame(ligand="A2M", receptor="LRP1"), switch=FALSE)
-resetLRdb <- function(db, switch=FALSE) {
-
-
-    if(colnames(db)[1]=='ligand' & colnames(db)[2]=='receptor'){
-      
-        if(switch){
-            assign("LRdb", unique(db[, c('ligand', 'receptor')]),
-                   envir=as.environment(get("nameEnv")))
-        }
-        else {  
-            db <- rbind(LRdb[, c('ligand', 'receptor')],
-                                  db[, c('ligand', 'receptor')])
-            assign("LRdb", unique(db), envir=as.environment(get("nameEnv")))
+#' print("resetLRdb")
+#' data(sdc, package = "BulkSignalR")
+#' resetLRdb(db = data.frame(ligand = "A2M", receptor = "LRP1"), switch = FALSE)
+resetLRdb <- function(db, switch = FALSE) {
+    if (colnames(db)[1] == "ligand" & colnames(db)[2] == "receptor") {
+        if (switch) {
+            assign("LRdb", unique(db[, c("ligand", "receptor")]),
+                envir = as.environment(get("nameEnv"))
+            )
+        } else {
+            db <- rbind(
+                LRdb[, c("ligand", "receptor")],
+                db[, c("ligand", "receptor")]
+            )
+            assign("LRdb", unique(db), envir = as.environment(get("nameEnv")))
         }
     } else {
-      stop(paste0("db should be a data frame with ",
-            "2 columns named 'ligand' and 'receptor'."))
+        stop("db should be a data frame with ",
+            "2 columns named 'ligand' and 'receptor'."
+        )
     }
 
-    cat("\n")
-    cat(cli::cli_alert_info("New database defined for {.val LRdb}.","\n"))
-    print(utils::head(db))
+    message("\n")
+    message(cli::cli_alert_info("New database defined for {.val LRdb}.", "\n"))
+    message(utils::head(db))
 
-return(invisible(NULL))
-  
+    return(invisible(NULL))
 } # resetLRdb
+
 
 
 #' Prepare a BSRDataModel object from expression data
@@ -105,37 +105,46 @@ return(invisible(NULL))
 #'
 #'   In case proteomic or microarray data are provided, \code{min.count} must be
 #'   understood as its equivalent with respect to those data.
-#' 
-#' 
+#'
+#'
 #' @export
 #' @examples
-#' print('prepareDataset')
-#' data(sdc,package='BulkSignalR')
+#' print("prepareDataset")
+#' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
-#' bsrdm <- prepareDataset(sdc[,-normal])
+#' bsrdm <- prepareDataset(sdc[, -normal])
 #'
-prepareDataset <- function(counts, normalize = TRUE, symbol.col = NULL, min.count = 10,
-    prop = 0.1, method = c("UQ", "TC"), log.transformed = FALSE, min.LR.found = 80, 
+prepareDataset <- function(
+    counts, normalize = TRUE, symbol.col = NULL, min.count = 10,
+    prop = 0.1, method = c("UQ", "TC"), log.transformed = FALSE, min.LR.found = 80,
     species = "hsapiens", conversion.dict = NULL,
     UQ.pc = 0.75) {
-
-    if (normalize){
-        if (prop < 0 || prop > 1)
-            stop("prop must lie in [0;1]")
-        if (UQ.pc <= 0 || UQ.pc > 1)
-            stop("UQ.pc must lie in ]0;1]")
-        if (min.count < 0)
-            stop("min.count must be positive")
-        method <- match.arg(method)
+    if ((species != "hsapiens") && is.null(conversion.dict)) {
+        stop("Non-human species but no conversion.dict provided")
     }
-    else
-        if (nchar(method) == 0)
-            stop(paste0("In case of user-normalized counts, the name of the ",
-            "normalization must be documented through the parameter 'method'"))
+
+    if (normalize) {
+        if (prop < 0 || prop > 1) {
+            stop("prop must lie in [0;1]")
+        }
+        if (UQ.pc <= 0 || UQ.pc > 1) {
+            stop("UQ.pc must lie in ]0;1]")
+        }
+        if (min.count < 0) {
+            stop("min.count must be positive")
+        }
+        method <- match.arg(method)
+    } else if (nchar(method) == 0) {
+        stop(
+            "In case of user-normalized counts, the name of the ",
+            "normalization must be documented through the parameter 'method'"
+        )
+    }
 
     if (!is.null(symbol.col)) {
-        if (!is.numeric(symbol.col))
+        if (!is.numeric(symbol.col)) {
             stop("symbol.col must be the index of the column containing the gene symbols")
+        }
 
         # simple but desperately slow counts <-
         # aggregate(.~symbol,data=counts,FUN=max)
@@ -151,22 +160,23 @@ prepareDataset <- function(counts, normalize = TRUE, symbol.col = NULL, min.coun
         }
 
         # remove duplicates and the gene symbol column
-        if (!is.null(bad)){
+        if (!is.null(bad)) {
             counts <- counts[-bad, -symbol.col]
             rownames(counts) <- symbols[-bad]
-        }
-        else{
-            counts <- counts[,-symbol.col]
+        } else {
+            counts <- counts[, -symbol.col]
             rownames(counts) <- symbols
         }
     }
 
-    if (is.null(rownames(counts)) || typeof(rownames(counts)) != "character")
+    if (is.null(rownames(counts)) || typeof(rownames(counts)) != "character") {
         stop("The read count matrix must be provided with gene symbols as row names")
+    }
 
     # as of now we ensure that counts is a matrix
-    if (!is.matrix(counts))
+    if (!is.matrix(counts)) {
         counts <- data.matrix(counts)
+    }
 
     # avoid empty rows even if no normalization is performed here
     counts <- counts[rowSums(abs(counts)) > 0, ]
@@ -174,117 +184,134 @@ prepareDataset <- function(counts, normalize = TRUE, symbol.col = NULL, min.coun
     if (normalize) {
         good.c <- rowSums(counts >= min.count) >= prop * ncol(counts)
         counts <- counts[good.c, ]
-        if (method == "UQ"){
-            tot <- apply(counts, 2, function(x) stats::quantile(x[x > 0],
-                                                                prob=UQ.pc))
-            if (sum(tot == 0) > 0)
-                stop(paste0("Cannot perform UQ normalization (percentile=",
-                            UQ.pc," ), not enough signal in sample(s) ",
-                            paste(colnames(counts)[tot==0], collapse=", ")))
-        }
-        else
+        if (method == "UQ") {
+            tot <- apply(counts, 2, function(x) {
+                stats::quantile(x[x > 0],
+                    prob = UQ.pc
+                )
+            })
+            if (sum(tot == 0) > 0) {
+                stop(paste0(
+                    "Cannot perform UQ normalization (percentile=",
+                    UQ.pc, " ), not enough signal in sample(s) ",
+                    paste(colnames(counts)[tot == 0], collapse = ", ")
+                ))
+            }
+        } else {
             tot <- colSums(counts)
-        ncounts <- sweep(counts, 2, tot/stats::median(tot), "/")
-    }
-    else
+        }
+        ncounts <- sweep(counts, 2, tot / stats::median(tot), "/")
+    } else {
         ncounts <- counts
+    }
 
     homolog.genes <- list()
-    if (species != "hsapiens"){
-          ncounts <- as.data.frame(ncounts) 
-          ncounts$human.gene.name <- rownames(ncounts)
-          conversion.dict$human.gene.name  <- rownames(conversion.dict) 
-          ncounts$id <- 1:nrow(ncounts) 
+    if (species != "hsapiens") {
+        ncounts <- as.data.frame(ncounts)
+        ncounts$human.gene.name <- rownames(ncounts)
+        conversion.dict$human.gene.name <- rownames(conversion.dict)
+        ncounts$id <- seq_len(nrow(ncounts))
 
-          counts.transposed <- merge(ncounts, conversion.dict,
-                                     by.x='human.gene.name',
-                                     all=FALSE, sort=FALSE)
-          counts.transposed <- counts.transposed[order(counts.transposed$id), ]
+        counts.transposed <- merge(ncounts, conversion.dict,
+            by.x = "human.gene.name",
+            all = FALSE, sort = FALSE
+        )
+        counts.transposed <- counts.transposed[order(counts.transposed$id), ]
 
-          homolog.genes <- list(counts.transposed$Gene.name)
-          
-          counts.transposed$id <- NULL
-          ncounts$id <- NULL
-          ncounts$human.gene.name <- NULL
-          ncounts <- data.matrix(ncounts) 
-          rm(counts.transposed)
+        homolog.genes <- list(counts.transposed$Gene.name)
+
+        counts.transposed$id <- NULL
+        ncounts$id <- NULL
+        ncounts$human.gene.name <- NULL
+        ncounts <- data.matrix(ncounts)
+        rm(counts.transposed)
     }
-    
+
     nLR <- length(intersect(
         c(LRdb$ligand, LRdb$receptor),
-        rownames(ncounts)))
-    if (nLR < min.LR.found)
-        stop(paste0("Not enough LR genes (",nLR," < ", min.LR.found,
-                    " were found).\n"))
+        rownames(ncounts)
+    ))
+    if (nLR < min.LR.found) {
+        stop(
+            "Not enough LR genes (", nLR, " < ", min.LR.found,
+            " were found).\n"
+        )
+    }
 
-    new("BSRDataModel", ncounts=ncounts, log.transformed=log.transformed,
-        normalization=toupper(method),initial.organism=species,
-        initial.orthologs=homolog.genes)
+    new("BSRDataModel",
+        ncounts = ncounts, log.transformed = log.transformed,
+        normalization = toupper(method), initial.organism = species,
+        initial.orthologs = homolog.genes
+    )
+} # prepareDataset
 
-}  # prepareDataset
 
-
-#' @title Orthologs Gene Names 
+#' @title Orthologs Gene Names
 #'
 #' @description By default, BulkSignalR is designed to work with Homo sapiens.
 #' In order to work with other organisms, gene names need to be first converted
 #' to human following an orthology mapping process.
-#' @param from_organism    An organism defined as in Ensembl: 
-#' drerio, mmusculus, celegans, dmelanogaster, etc. This is the source organism 
+#' @param from_organism    An organism defined as in Ensembl:
+#' drerio, mmusculus, celegans, dmelanogaster, etc. This is the source organism
 #' from which you want to convert the gene names to Homo sapiens.
 #' @param from_values   A vector of gene names from the current species studied.
 #' @param method  Ortholog mapping method.
 #' @return Return a data frame with 2 columns containing the gene names
-#' for the two species.  
-#' First column is the gene name from the source organism 
+#' for the two species.
+#' First column is the gene name from the source organism
 #' and the second column corresponds to the  homologous gene name
 #' in  Homo sapiens.
 #' @importFrom orthogene convert_orthologs
 #'
 #' @export
 #' @examples
-#' print('findOrthoGenes')
+#' print("findOrthoGenes")
 #' data(bodyMap.mouse)
-#' ortholog.dict    <- findOrthoGenes (from_organism = "mmusculus", 
-#'                                     from_values = rownames(bodyMap.mouse))
+#' ortholog.dict <- findOrthoGenes(
+#'     from_organism = "mmusculus",
+#'     from_values = rownames(bodyMap.mouse)
+#' )
 #'
-findOrthoGenes<- function(from_organism, from_values,
-        method = c("gprofiler","homologene","babelgene")) {
+findOrthoGenes <- function(from_organism, from_values,
+                           method = c("gprofiler", "homologene", "babelgene")) {
+    method <- match.arg(method)
+    if (!method %in% c("gprofiler", "homologene", "babelgene")) {
+        stop("Method selected should be gprofiler,homologene or babelgene")
+    }
 
-        method <- match.arg(method)
-        if (!method  %in% c("gprofiler","homologene","babelgene"))
-                stop("Method selected should be gprofiler,homologene or babelgene")
+    orthologs_dictionary <- orthogene::convert_orthologs(
+        gene_df = from_values,
+        gene_input = "rownames",
+        gene_output = "rownames",
+        input_species = from_organism,
+        output_species = "human",
+        non121_strategy = "drop_both_species", # assure 1.1
+        method = method,
+        verbose = FALSE
+    )
 
-          orthologs_dictionary <- orthogene::convert_orthologs(gene_df = from_values,
-                                        gene_input = "rownames", 
-                                        gene_output = "rownames", 
-                                        input_species = from_organism,
-                                        output_species = "human",
-                                        non121_strategy = "drop_both_species", # assure 1.1 
-                                        method = method,
-                                        verbose = FALSE) 
-           
-          orthologs_dictionary$index <- NULL  
-          names(orthologs_dictionary)[1] <- paste("Gene.name")
-    
-    cat("Dictionary Size: ", 
+    orthologs_dictionary$index <- NULL
+    names(orthologs_dictionary)[1] <- paste("Gene.name")
+
+    message("Dictionary Size: ",
         dim(orthologs_dictionary)[1],
-         " genes \n", sep="") 
+        " genes \n"
+    )
 
     nL <- length(intersect(
         LRdb$ligand,
-        rownames(orthologs_dictionary)) )
-    cat("-> ",nL, " : Ligands \n", sep="") 
+        rownames(orthologs_dictionary)
+    ))
+    message("-> ", nL, " : Ligands \n")
 
     nR <- length(intersect(
         LRdb$receptor,
-        rownames(orthologs_dictionary))) 
-    cat("-> ", nR, " : Receptors \n", sep="") 
-      
+        rownames(orthologs_dictionary)
+    ))
+    message("-> ", nR, " : Receptors \n")
+
     orthologs_dictionary
-
-
-} #findOrthoGenes 
+} # findOrthoGenes
 
 
 #' @title Transpose to Human Gene Names
@@ -300,46 +327,64 @@ findOrthoGenes<- function(from_organism, from_values,
 #'
 #' @export
 #' @examples
-#' print('convertToHuman')
+#' print("convertToHuman")
 #' data(bodyMap.mouse)
-#' 
-#' ortholog.dict    <- findOrthoGenes (from_organism = "mmusculus", 
-#'                                     from_values = rownames(bodyMap.mouse))
-#' 
-#' matrix.expression.human <- convertToHuman(counts = bodyMap.mouse,   
-#' dictionary = ortholog.dict)
+#'
+#' ortholog.dict <- findOrthoGenes(
+#'     from_organism = "mmusculus",
+#'     from_values = rownames(bodyMap.mouse)
+#' )
+#'
+#' matrix.expression.human <- convertToHuman(
+#'     counts = bodyMap.mouse,
+#'     dictionary = ortholog.dict
+#' )
 #'
 convertToHuman <- function(counts, dictionary) {
+    # we need counts to be a data.frame
+    if (is.matrix(counts)) {
+        was.matrix <- TRUE
+        counts <- as.data.frame(counts)
+    } else {
+        was.matrix <- FALSE
+    }
+    # counts should have row names
+    if (all(row.names(counts) == seq(1, nrow(counts)))) {
+        stop("Rownames should be set as human gene names for counts.", call. = FALSE)
+    }
+    if (all(row.names(dictionary) == seq(1, nrow(dictionary)))) {
+        stop("Rownames should be set as human gene names dictionary.", call. = FALSE)
+    }
+    if (dim(dictionary)[2] != 1) {
+        stop("Unique column must be set for dictionary.", call. = FALSE)
+    }
+    if (!all(apply(counts, 2, function(x) is.numeric(x)))) {
+        stop("Some variables are not defined as numerics.", call. = FALSE)
+    }
 
-          # Should test counts have rownames.
-          if(all(row.names(counts)==seq(1, nrow(counts))))
-            stop("Rownames should be set as human gene names for counts.", call. = FALSE)
-         if(all(row.names(dictionary)==seq(1, nrow(dictionary))))
-            stop("Rownames should be set ashuman gene names dictionary.", call. = FALSE)
-          if(dim(dictionary)[2]!=1)
-            stop("Unique column must be set for dictionary.", call. = FALSE)
-         if(! all(apply(counts, 2, function(x) is.numeric(x)))) 
-            stop("Some variables are not defined as numerics.", call. = FALSE)
+    # Transform Matrice using orthologs_dictionary
+    counts$Gene.name <- rownames(counts)
+    dictionary$human.gene.name <- rownames(dictionary)
 
-          # Transform Matrice using orthologs_dictionary
-          counts$Gene.name  <- rownames(counts)
-          dictionary$human.gene.name  <- rownames(dictionary) 
-      
-          counts$id <- 1:nrow(counts) 
+    counts$id <- seq_len(nrow(counts))
 
-          counts.transposed <- merge(counts,dictionary, by.x='Gene.name',all=FALSE,sort=FALSE)
-          counts.transposed <- counts.transposed[order(counts.transposed$id), ]
-          counts.transposed$id <- NULL
+    counts.transposed <- merge(counts, dictionary, by.x = "Gene.name", all = FALSE, sort = FALSE)
+    counts.transposed <- counts.transposed[order(counts.transposed$id), ]
+    counts.transposed$id <- NULL
 
-          # aesthetics only
-          counts.transposed <-counts.transposed[,c(which(colnames(counts.transposed)=="human.gene.name"),which(colnames(counts.transposed)!="human.gene.name"))]
-          #counts.transposed <-counts.transposed[c("human.gene.name", setdiff(names(counts.transposed), "human.gene.name"))]
+    # aesthetics only
+    counts.transposed <- counts.transposed[, c(which(colnames(counts.transposed) == "human.gene.name"), which(colnames(counts.transposed) != "human.gene.name"))]
+    # counts.transposed <-counts.transposed[c("human.gene.name", setdiff(names(counts.transposed), "human.gene.name"))]
 
-          counts.transposed$Gene.name <- NULL
+    counts.transposed$Gene.name <- NULL
 
-          rownames(counts.transposed) <- counts.transposed[,1]
-          counts.transposed           <- counts.transposed[,-1]
-        
-          counts.transposed
+    rownames(counts.transposed) <- counts.transposed[, 1]
+    counts.transposed <- counts.transposed[, -1]
 
- } # convertToHuman
+    if (was.matrix) {
+        # convert back to a matrix
+        data.matrix(counts.transposed)
+    } else {
+        counts.transposed
+    }
+} # convertToHuman

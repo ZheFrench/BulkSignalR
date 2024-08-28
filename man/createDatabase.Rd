@@ -8,7 +8,7 @@ createDatabase(onRequest = TRUE, verbose = FALSE)
 }
 \arguments{
 \item{onRequest}{logical True if you force
-download again. This will overwrite 
+download again. This will overwrite
 pre-existing database. Default is True.}
 
 \item{verbose}{Logical TRUE/FALSE}

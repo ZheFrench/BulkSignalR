@@ -7,13 +7,13 @@
 .readRDSFromCache(bfc, resourceName)
 }
 \arguments{
-\item{bfc}{Object of class BiocFileCache, created by a call to 
+\item{bfc}{Object of class BiocFileCache, created by a call to
 BiocFileCache::BiocFileCache()}
 
 \item{resourceName}{keyword associated to a specific resourceName}
 }
 \description{
-Access  resources (pathways, or PathwayCommons network 
+Access  resources (pathways, or PathwayCommons network
 from \url{https://www.pathwaycommons.org/})
 stored in the cache.
 }

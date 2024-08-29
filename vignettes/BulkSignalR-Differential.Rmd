@@ -28,8 +28,8 @@ vignette: >
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = FALSE, 
-  comment = "##"
+    collapse = FALSE,
+    comment = "##"
 )
 knitr::knit_hooks$set(optipng = knitr::hook_optipng)
 ```
@@ -56,9 +56,9 @@ of patients.
 ```{r diffmode,eval=FALSE}
 library(BulkSignalR)
 
-data(sdc,package='BulkSignalR')
+data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
-bsrdm <- prepareDataset(sdc[,-normal])
+bsrdm <- prepareDataset(sdc[, -normal])
 
 # define the comparison
 
@@ -66,12 +66,12 @@ bsrdm.comp <- as.BSRDataModelComp(bsrdm)
 colA <- as.integer(1:5)
 colB <- as.integer(8:15)
 
-# As an example here, we generate random values 
+# As an example here, we generate random values
 # but user should provide his own logFC and
-# associated pvalues from DGE ouputs. 
+# associated pvalues from DGE ouputs.
 
 n <- nrow(ncounts(bsrdm.comp))
-stats <- data.frame(pval=runif(n), logFC=rnorm(n, 0, 2))
+stats <- data.frame(pval = runif(n), logFC = rnorm(n, 0, 2))
 rownames(stats) <- rownames(ncounts(bsrdm.comp))
 
 # we first define the cluster comparison and add it
@@ -82,9 +82,7 @@ bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
 
 # finally we infer ligand-receptor interactions from the comparison
 
-bsrinf.comp <- initialInference(bsrdm.comp, max.pval=1,"random.example")
-
-
+bsrinf.comp <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 ```  
 
 ##  Technical notes

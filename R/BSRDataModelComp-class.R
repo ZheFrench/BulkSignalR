@@ -345,7 +345,7 @@ if (!isGeneric("addClusterComp")) {
 #'
 #' @importFrom methods new
 setMethod("addClusterComp", "BSRDataModelComp", function(obj, cmp,
-                                                         cmp.name) {
+    cmp.name) {
     if (!is(cmp, "BSRClusterComp")) {
         stop("cmp must be of class BSRClusterComp")
     }
@@ -573,17 +573,18 @@ if (!isGeneric("initialInference")) {
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #' @importFrom methods new
 setMethod("initialInference", "BSRDataModelComp", function(obj, cmp.name, src.cmp.name = NULL, rank.p = 0.55,
-                                                           max.pval = 0.01, min.logFC = 1, neg.receptors = FALSE,
-                                                           pos.targets = FALSE, neg.targets = FALSE,
-                                                           min.t.logFC = 0.5, restrict.genes = NULL,
-                                                           use.full.network = FALSE,
-                                                           reference = c("REACTOME-GOBP", "REACTOME", "GOBP"),
-                                                           max.pw.size = 400, min.pw.size = 5, min.positive = 2,
-                                                           restrict.pw = NULL, with.complex = TRUE,
-                                                           fdr.proc = c(
-                                                               "BH", "Bonferroni", "Holm", "Hochberg",
-                                                               "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
-                                                           )) {
+    max.pval = 0.01, min.logFC = 1, neg.receptors = FALSE,
+    pos.targets = FALSE, neg.targets = FALSE,
+    min.t.logFC = 0.5, restrict.genes = NULL,
+    use.full.network = FALSE,
+    reference = c("REACTOME-GOBP", "REACTOME", "GOBP"),
+    max.pw.size = 400, min.pw.size = 5, min.positive = 2,
+    restrict.pw = NULL, with.complex = TRUE,
+    fdr.proc = c(
+        "BH", "Bonferroni", "Holm", "Hochberg",
+        "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
+        )) {
+    
     if (!(cmp.name %in% names(comp(obj)))) {
         stop("cmp.name must exist in the names of comparisons contained in obj")
     }
@@ -817,18 +818,18 @@ setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
     t.genes <- list()
 
     for (i in seq_along(ligands(sig))) {
-      ligands[[i]] <- intersect(ligands(sig)[[i]], all.genes)
+        ligands[[i]] <- intersect(ligands(sig)[[i]], all.genes)
     }
     for (i in seq_along(receptors(sig))) {
-      receptors[[i]] <- intersect(receptors(sig)[[i]], all.genes)
+        receptors[[i]] <- intersect(receptors(sig)[[i]], all.genes)
     }
     for (i in seq_along(tGenes(sig))) {
-      t.genes[[i]] <- intersect(tGenes(sig)[[i]], all.genes)
+        t.genes[[i]] <- intersect(tGenes(sig)[[i]], all.genes)
     }
 
-    good <- vapply(ligands, length, integer(1)) > 0 & 
-    vapply(receptors, length, integer(1)) > 0 & 
-    vapply(t.genes, length, integer(1)) > 0
+    good <- vapply(ligands, length, integer(1)) > 0 &
+        vapply(receptors, length, integer(1)) > 0 &
+        vapply(t.genes, length, integer(1)) > 0
 
     ligands <- ligands[good]
     receptors <- receptors[good]

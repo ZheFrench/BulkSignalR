@@ -375,10 +375,10 @@ if (!isGeneric("rescoreInference")) {
 #' bsrinf.new <- rescoreInference(bsrinf, param = param(bsrdm), rank.p = 0.75)
 #'
 setMethod("rescoreInference", "BSRInference", function(obj, param, rank.p = 0.55,
-                                                       fdr.proc = c(
-                                                           "BH", "Bonferroni", "Holm",
-                                                           "Hochberg", "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
-                                                       )) {
+    fdr.proc = c("BH", "Bonferroni", "Holm",
+        "Hochberg", "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
+        )) {
+
     if (rank.p < 0 || rank.p > 1) {
         stop("rank.p must lie in [0;1]")
     }
@@ -505,10 +505,12 @@ if (!isGeneric("getPathwayStats")) {
 #'
 #' @importFrom foreach %do% %dopar%
 setMethod("getPathwayStats", "BSRInference", function(obj,
-                                                      pval.thres = NULL, qval.thres = NULL) {
+    pval.thres = NULL, qval.thres = NULL) {
     if (infParam(obj)$ligand.reduced || infParam(obj)$receptor.reduced) {
-        stop("Cannot be applied to interactions involving",
-            " reduced receptors or ligands")
+        stop(
+            "Cannot be applied to interactions involving",
+            " reduced receptors or ligands"
+        )
     }
 
     # local binding
@@ -941,7 +943,7 @@ if (!isGeneric("getLRGeneSignatures")) {
 #' @importFrom foreach %do% %dopar%
 #' @importFrom methods new
 setMethod("getLRGeneSignatures", "BSRInference", function(obj,
-                                                          pval.thres = NULL, qval.thres = NULL, with.pw.id = FALSE) {
+    pval.thres = NULL, qval.thres = NULL, with.pw.id = FALSE) {
     if (is.null(pval.thres) && is.null(qval.thres)) {
         stop("Either a P- or a Q-value threshold must be provided")
     }
@@ -1036,7 +1038,7 @@ if (!isGeneric("resetToInitialOrganism")) {
 #' bsrinf <- resetToInitialOrganism(bsrinf, conversion.dict = ortholog.dict)
 #'
 setMethod("resetToInitialOrganism", "BSRInference", function(obj,
-                                                             conversion.dict) {
+    conversion.dict) {
     # Need to check conversion.dict format
 
     conversion.dict$human.gene.name <- rownames(conversion.dict)

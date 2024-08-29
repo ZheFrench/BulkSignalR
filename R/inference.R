@@ -96,7 +96,7 @@
 #' @importFrom foreach %do% %dopar%
 #' @keywords internal
 .downstreamSignaling <- function(lr, pw, pw.size, rncounts, id.col, gene.col,
-                                 pw.col, min.positive, with.complex = TRUE) {
+    pw.col, min.positive, with.complex = TRUE) {
     if (!is.matrix(rncounts)) {
         stop("rncounts must be a matrix")
     }
@@ -381,8 +381,8 @@
     # merge
     if (reference == "REACTOME-GOBP") {
         pairs <- unique(rbind(
-            results$reactome.pairs[, c(1,2)],
-            results$gobp.pairs[, c(1,2)]
+            results$reactome.pairs[, c(1, 2)],
+            results$gobp.pairs[, c(1, 2)]
         ))
         react.keys <- paste(results$reactome.pairs[[1]],
             results$reactome.pairs[[2]],
@@ -422,10 +422,10 @@
 #' P-values and adjusted P-values.
 #' @keywords internal
 .pValuesLR <- function(pairs, param, rank.p = 0.75,
-                       fdr.proc = c(
-                           "BH", "Bonferroni", "Holm", "Hochberg",
-                           "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
-                       )) {
+    fdr.proc = c(
+        "BH", "Bonferroni", "Holm", "Hochberg",
+        "SidakSS", "SidakSD", "BY", "ABH", "TSBH")) {
+    
     if (rank.p < 0 || rank.p > 1) {
         stop("rank.p must lie in [0;1]")
     }

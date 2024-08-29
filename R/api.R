@@ -25,10 +25,12 @@ getComplexes <- function(idRelease = NULL) {
 
     BulkSignalRCon <- DBI::dbConnect(RSQLite::SQLite(), databaseFilePath)
     if (is.null(idRelease)) {
-        release <- DBI::dbGetQuery(BulkSignalRCon, 
-            "SELECT id FROM Release ORDER BY id DESC LIMIT 1")
+        release <- DBI::dbGetQuery(
+            BulkSignalRCon,
+            "SELECT id FROM Release ORDER BY id DESC LIMIT 1"
+        )
     } else {
-        release <- DBI::dbGetQuery(BulkSignalRCon, 
+        release <- DBI::dbGetQuery(BulkSignalRCon,
             "SELECT id FROM Release WHERE id = ?",
             params = list(idRelease)
         )
@@ -36,32 +38,36 @@ getComplexes <- function(idRelease = NULL) {
 
     if (nrow(release) == 0) {
         cli::cli_abort(
-            "ID Release {idRelease} doesn't exist.")
+            "ID Release {idRelease} doesn't exist."
+        )
     }
 
     complexes <- DBI::dbGetQuery(BulkSignalRCon, 'SELECT
-      Clex.name,
-      Clex.description,
-      Clex.size,
-      CC.stoichiometry,
-      Clex.sources,
-      Clex.pmids
-      FROM Complex as Clex
-      inner join Component as Comp
-      inner join Complex_Component as CC
-      on Comp.id = CC."id.component_fk" AND  Clex.id = CC."id.complex_fk"
-      where Comp."id.release_fk" = ?;', release$id)
+Clex.name,
+Clex.description,
+Clex.size,
+CC.stoichiometry,
+Clex.sources,
+Clex.pmids
+FROM Complex as Clex
+inner join Component as Comp
+inner join Complex_Component as CC
+on Comp.id = CC."id.component_fk" AND  Clex.id = CC."id.complex_fk"
+where Comp."id.release_fk" = ?;', release$id)
 
     if (nrow(complexes) == 0) {
         cli::cli_alert(
-            "No complexes found for ID Release {release$id}.")
+            "No complexes found for ID Release {release$id}."
+        )
     }
 
 
     complexes <- complexes %>%
         dplyr::group_by(name) %>%
-        dplyr::mutate(pool.stoichiometry = 
-            paste0(stoichiometry, collapse = ",")) %>%
+        dplyr::mutate(
+            pool.stoichiometry =
+                paste0(stoichiometry, collapse = ",")
+        ) %>%
         dplyr::distinct(name, pool.stoichiometry, .keep_all = TRUE)
 
     complexes$stoichiometry <- NULL
@@ -110,7 +116,7 @@ getInteractions <- function(idRelease = NULL) {
             "SELECT id FROM Release ORDER BY id DESC LIMIT 1"
         )
     } else {
-        release <- DBI::dbGetQuery(BulkSignalRCon, 
+        release <- DBI::dbGetQuery(BulkSignalRCon,
             "SELECT id FROM Release WHERE id = ?",
             params = list(idRelease)
         )
@@ -118,7 +124,8 @@ getInteractions <- function(idRelease = NULL) {
 
     if (nrow(release) == 0) {
         cli::cli_abort(
-            "ID Release {idRelease} doesn't exist.")
+            "ID Release {idRelease} doesn't exist."
+        )
     }
 
     pairsReference <- DBI::dbGetQuery(BulkSignalRCon,
@@ -136,36 +143,38 @@ getInteractions <- function(idRelease = NULL) {
 
 
     receptors <- DBI::dbGetQuery(BulkSignalRCon,
-        'SELECT
-      DISTINCT(Comp."id"),
-      Comp."name",
-      Comp."type",
-      Comp."description"
-      FROM Component as Comp
-      inner join Interaction as Inter
-      on Comp."id" = Inter."id.receptor_fk"
-      where Comp."id.release_fk" = ?',
+'SELECT
+DISTINCT(Comp."id"),
+Comp."name",
+Comp."type",
+Comp."description"
+FROM Component as Comp
+inner join Interaction as Inter
+on Comp."id" = Inter."id.receptor_fk"
+where Comp."id.release_fk" = ?',
         params = list(release$id)
     )
 
     ligands <- DBI::dbGetQuery(BulkSignalRCon,
-        'SELECT
-      DISTINCT(Comp."id"),
-      Comp."name",
-      Comp."type",
-      Comp."description"
-      FROM Component as Comp
-      inner join Interaction as Inter
-      on Comp."id" = Inter."id.ligand_fk"
-      WHERE Comp."id.release_fk" = ?',
+'SELECT
+DISTINCT(Comp."id"),
+Comp."name",
+Comp."type",
+Comp."description"
+FROM Component as Comp
+inner join Interaction as Inter
+on Comp."id" = Inter."id.ligand_fk"
+WHERE Comp."id.release_fk" = ?',
         params = list(release$id)
     )
 
 
     colnames(ligands)[which(
-        colnames(ligands) == "description")] <- "d.ligand"
+        colnames(ligands) == "description"
+    )] <- "d.ligand"
     colnames(receptors)[which(
-        colnames(receptors) == "description")] <- "d.receptor"
+        colnames(receptors) == "description"
+    )] <- "d.receptor"
 
     # id   name  description
     colnames(receptors)[1] <- "id.receptor_fk"
@@ -174,14 +183,22 @@ getInteractions <- function(idRelease = NULL) {
     colnames(receptors)[2] <- "receptor"
     colnames(ligands)[2] <- "ligand"
 
-    pairsReference <- dplyr::left_join(pairsReference, 
-        receptors, by = "id.receptor_fk")
-    pairsReference <- dplyr::left_join(pairsReference, 
-        ligands, by = "id.ligand_fk")
+    pairsReference <- dplyr::left_join(pairsReference,
+        receptors,
+        by = "id.receptor_fk"
+    )
+    pairsReference <- dplyr::left_join(pairsReference,
+        ligands,
+        by = "id.ligand_fk"
+    )
 
-    pairsReference <- pairsReference[,
-    c("ligand", "receptor", "d.ligand",
-     "d.receptor", "sources", "pmids")]
+    pairsReference <- pairsReference[
+        ,
+        c(
+            "ligand", "receptor", "d.ligand",
+            "d.receptor", "sources", "pmids"
+        )
+    ]
 
     DBI::dbDisconnect(BulkSignalRCon)
 

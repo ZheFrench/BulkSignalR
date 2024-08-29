@@ -35,8 +35,10 @@ setClass("BSRDataModel",
     prototype = list(
         initial.organism = "hsapiens",
         initial.orthologs = list("A", "B", "C"),
-        ncounts = matrix(1.0, nrow = 2, ncol = 1,
-         dimnames = list(c("A", "B"), "C")),
+        ncounts = matrix(1.0,
+            nrow = 2, ncol = 1,
+            dimnames = list(c("A", "B"), "C")
+        ),
         log.transformed = FALSE,
         normalization = "UQ",
         param = list(spatial.smooth = FALSE)
@@ -310,199 +312,205 @@ if (!isGeneric("learnParameters")) {
 #' bsrdm <- learnParameters(bsrdm, plot.folder = "./")
 #' bsrdm
 #' @importFrom methods new
-setMethod("learnParameters", "BSRDataModel", 
+setMethod(
+    "learnParameters", "BSRDataModel",
     function(obj, plot.folder = NULL,
         verbose = FALSE, n.rand.LR = 5L, n.rand.RT = 2L, with.complex = TRUE,
-            max.pw.size = 400, min.pw.size = 5, min.positive = 4, quick = FALSE,
-                null.model = c(
-                "automatic", "mixedNormal", "normal", "kernelEmpirical",
-                 "empirical", "stable"
-                ), filename = "distribution") {
-
-    obj@param$n.rand.LR <- as.integer(n.rand.LR)
-    if (obj@param$n.rand.LR < 1) {
-        stop("Parameter n.rand.LR must be an integer > 0")
-    }
-    obj@param$n.rand.RT <- as.integer(n.rand.RT)
-    if (obj@param$n.rand.RT < 1) {
-        stop("Parameter n.rand.RT must be an integer > 0")
-    }
-    obj@param$plot.folder <- plot.folder
-    if (!is.null(plot.folder) && !file.exists(plot.folder)) {
-        stop("The provided plot.folder does not exist")
-    }
-    obj@param$file.name <- filename
-    obj@param$with.complex <- with.complex
-    obj@param$max.pw.size <- trunc(max.pw.size)
-    if (obj@param$max.pw.size < 1) {
-        stop("Parameter max.pw.size must be an integer > 0")
-    }
-    obj@param$min.pw.size <- trunc(min.pw.size)
-    if (obj@param$min.pw.size < 1 || obj@param$min.pw.size > obj@param$max.pw.size) {
-        stop("Parameter min.pw.size must be", 
-            "an integer > 0 and <= than max.pw.size")
-    }
-    obj@param$min.positive <- trunc(min.positive)
-    if (obj@param$min.positive < 1) {
-        stop("Parameter min.positive must be an integer > 0")
-    }
-    obj@param$quick <- quick
-    null.model <- match.arg(null.model)
-    if (null.model == "normal") {
-        trainModel <- .getGaussianParam
-    } else if (null.model == "mixedNormal") {
-        trainModel <- .getMixedGaussianParam
-    } else if (null.model == "kernelEmpirical") {
-        trainModel <- .getKernelEmpiricalParam
-    } else if (null.model == "empirical") {
-        trainModel <- .getEmpiricalParam
-    } else if (null.model == "stable") {
-        trainModel <- .getAlphaStableParam
-    } else if (null.model == "automatic") {
-        trainModel <- NULL
-    } else {
-        stop("No valid null model specified")
-    }
-
-    # LR correlation null ----------------
-
-    if (verbose) {
-        message("Learning ligand-receptor correlation null distribution...")
-    }
-    obj@param$min.corr.LR <- -1.0
-    ds.LR.null <- .getEmpiricalNullCorrLR(obj@ncounts,
-        n.rand = obj@param$n.rand.LR,
-        min.cor = obj@param$min.corr.LR
-    )
-    rc <- ds.LR.null[[1]]$corr
-    if (length(ds.LR.null) > 1) {
-        for (i in 2:length(ds.LR.null)) rc <- c(rc, ds.LR.null[[i]]$corr)
-    }
-    obj@param$LR.0$n <- length(rc)
-
-    # Null distribution model
-    if (!is.null(plot.folder)) {
-        file.name <- paste0(plot.folder, "/", filename, "_LR-null.pdf")
-    } else {
-        file.name <- NULL
-    }
-
-    if (is.null(trainModel)) {
-        # automatic selection of the model
-        np <- try(.getGaussianParam(rc, "LR correlation (null)"), silent = TRUE)
-        if (inherits(np, "try-error")) {
-            np <- NULL
+        max.pw.size = 400, min.pw.size = 5, min.positive = 4, quick = FALSE,
+        null.model = c(
+            "automatic", "mixedNormal", "normal", "kernelEmpirical",
+            "empirical", "stable"
+            ), filename = "distribution") {
+        obj@param$n.rand.LR <- as.integer(n.rand.LR)
+        if (obj@param$n.rand.LR < 1) {
+            stop("Parameter n.rand.LR must be an integer > 0")
         }
-        mp <- try(.getMixedGaussianParam(rc, "LR correlation (null)"),
-            silent = TRUE
-        )
-        if (inherits(mp, "try-error")) {
-            mp <- NULL
+        obj@param$n.rand.RT <- as.integer(n.rand.RT)
+        if (obj@param$n.rand.RT < 1) {
+            stop("Parameter n.rand.RT must be an integer > 0")
         }
-        kp <- .getKernelEmpiricalParam(rc, "LR correlation (null)")
-        if (verbose) {
-            message("Automatic null model choice:")
-            if (is.null(np)) {
-                message("  Censored normal estimation did not converge")
-            } else {
-                message("  Censored normal D=", np$D,
-                    ", Chi2=", np$Chi2
-                )
-            }
-            if (is.null(mp)) {
-                message("  Censored Mixture of normals estimation did not converge")
-            } else {
-                message("  Censored mixture D=", mp$D,
-                    ", Chi2=", mp$Chi2
-                )
-            }
-            message("  Gaussian kernel empirical D=", kp$D,
-                ", Chi2=", kp$Chi2
+        obj@param$plot.folder <- plot.folder
+        if (!is.null(plot.folder) && !file.exists(plot.folder)) {
+            stop("The provided plot.folder does not exist")
+        }
+        obj@param$file.name <- filename
+        obj@param$with.complex <- with.complex
+        obj@param$max.pw.size <- trunc(max.pw.size)
+        if (obj@param$max.pw.size < 1) {
+            stop("Parameter max.pw.size must be an integer > 0")
+        }
+        obj@param$min.pw.size <- trunc(min.pw.size)
+        if (obj@param$min.pw.size < 1 || obj@param$min.pw.size > obj@param$max.pw.size) {
+            stop(
+                "Parameter min.pw.size must be",
+                "an integer > 0 and <= than max.pw.size"
             )
         }
-        npchi <- ifelse(is.null(np), 100, sqrt(np$Chi2))
-        mpchi <- ifelse(is.null(mp), 100, sqrt(mp$Chi2))
-        kpchi <- sqrt(kp$Chi2)
-        if ((npchi < 1.25 * mpchi) && (npchi < 2 * kpchi)) {
+        obj@param$min.positive <- trunc(min.positive)
+        if (obj@param$min.positive < 1) {
+            stop("Parameter min.positive must be an integer > 0")
+        }
+        obj@param$quick <- quick
+        null.model <- match.arg(null.model)
+        if (null.model == "normal") {
             trainModel <- .getGaussianParam
-            if (verbose) {
-                message("  ==> select censored normal")
-            }
-        } else if (mpchi < 2 * kpchi) {
+        } else if (null.model == "mixedNormal") {
             trainModel <- .getMixedGaussianParam
-            if (verbose) {
-                message("  ==> select censored mixture of 2 normals")
-            }
-        } else {
+        } else if (null.model == "kernelEmpirical") {
             trainModel <- .getKernelEmpiricalParam
-            if (verbose) {
-                message("  ==> select Gaussian kernel-based empirical")
-            }
+        } else if (null.model == "empirical") {
+            trainModel <- .getEmpiricalParam
+        } else if (null.model == "stable") {
+            trainModel <- .getAlphaStableParam
+        } else if (null.model == "automatic") {
+            trainModel <- NULL
+        } else {
+            stop("No valid null model specified")
         }
-    }
-    # actual training with the chosen model
-    gp <- trainModel(rc, "LR correlation (null)",
-        verbose = verbose,
-        file.name = file.name
-    )
-    obj@param$LR.0$model <- gp
 
-    # RT correlation null ------------------------------------
+        # LR correlation null ----------------
 
-    if (obj@param$quick) {
-        # RT correlations are assumed to be equal to LR correlations
         if (verbose) {
-            message("Quick learning, receptor-target correlation null ", "
-                   distribution assumed to be equal to ligand-receptor...")
+            message("Learning ligand-receptor correlation null distribution...")
         }
-        obj@param$RT.0$n <- obj@param$LR.0$n
-        obj@param$RT.0$model <- obj@param$LR.0$model
-    } else {
-        # RT correlations are actually learnt
-        if (verbose) {
-            message("Learning receptor-target correlation null distribution...")
-        }
-        ds.RT.null <- .getEmpiricalNull(obj@ncounts,
-            n.rand = obj@param$n.rand.RT,
-            with.complex = obj@param$with.complex,
-            max.pw.size = obj@param$max.pw.size,
-            min.pw.size = obj@param$min.pw.size,
-            min.positive = obj@param$min.positive,
+        obj@param$min.corr.LR <- -1.0
+        ds.LR.null <- .getEmpiricalNullCorrLR(obj@ncounts,
+            n.rand = obj@param$n.rand.LR,
             min.cor = obj@param$min.corr.LR
         )
-        t <- ds.RT.null[[1]]
-        if (length(ds.RT.null) > 1) {
-            for (i in 2:length(ds.RT.null)) t <- rbind(t, ds.RT.null[[i]])
+        rc <- ds.LR.null[[1]]$corr
+        if (length(ds.LR.null) > 1) {
+            for (i in 2:length(ds.LR.null)) rc <- c(rc, ds.LR.null[[i]]$corr)
         }
-        above <- unlist(strsplit(t$target.corr, split = "\\|"))
-        r.corrs <- NULL
-        for (i in seq_len(length(above))) {
-            corr <- as.numeric(strsplit(above[i], split = ";")[[1]])
-            r.corrs <- c(r.corrs, corr)
-        }
-        if (null.model == "stable") {
-            # sub-sample randomized R-T correlations to limit compute time
-            r.corrs <- sample(r.corrs, obj@param$LR.0$n)
-        }
-        obj@param$RT.0$n <- length(r.corrs)
+        obj@param$LR.0$n <- length(rc)
 
-        # fit null model
+        # Null distribution model
         if (!is.null(plot.folder)) {
-            file.name <- paste0(plot.folder, "/", filename, "_RT-null.pdf")
+            file.name <- paste0(plot.folder, "/", filename, "_LR-null.pdf")
         } else {
             file.name <- NULL
         }
-        gp <- trainModel(r.corrs, "RT correlation (null)",
-            verbose = verbose, file.name = file.name
-        )
-        obj@param$RT.0$model <- gp
-    }
 
-    if (verbose) {
-        message("Learning of statistical model parameters completed")
+        if (is.null(trainModel)) {
+            # automatic selection of the model
+            np <- try(.getGaussianParam(rc, "LR correlation (null)"), silent = TRUE)
+            if (inherits(np, "try-error")) {
+                np <- NULL
+            }
+            mp <- try(.getMixedGaussianParam(rc, "LR correlation (null)"),
+                silent = TRUE
+            )
+            if (inherits(mp, "try-error")) {
+                mp <- NULL
+            }
+            kp <- .getKernelEmpiricalParam(rc, "LR correlation (null)")
+            if (verbose) {
+                message("Automatic null model choice:")
+                if (is.null(np)) {
+                    message("  Censored normal estimation did not converge")
+                } else {
+                    message(
+                        "  Censored normal D=", np$D,
+                        ", Chi2=", np$Chi2
+                    )
+                }
+                if (is.null(mp)) {
+                    message("  Censored Mixture of normals estimation did not converge")
+                } else {
+                    message(
+                        "  Censored mixture D=", mp$D,
+                        ", Chi2=", mp$Chi2
+                    )
+                }
+                message(
+                    "  Gaussian kernel empirical D=", kp$D,
+                    ", Chi2=", kp$Chi2
+                )
+            }
+            npchi <- ifelse(is.null(np), 100, sqrt(np$Chi2))
+            mpchi <- ifelse(is.null(mp), 100, sqrt(mp$Chi2))
+            kpchi <- sqrt(kp$Chi2)
+            if ((npchi < 1.25 * mpchi) && (npchi < 2 * kpchi)) {
+                trainModel <- .getGaussianParam
+                if (verbose) {
+                    message("  ==> select censored normal")
+                }
+            } else if (mpchi < 2 * kpchi) {
+                trainModel <- .getMixedGaussianParam
+                if (verbose) {
+                    message("  ==> select censored mixture of 2 normals")
+                }
+            } else {
+                trainModel <- .getKernelEmpiricalParam
+                if (verbose) {
+                    message("  ==> select Gaussian kernel-based empirical")
+                }
+            }
+        }
+        # actual training with the chosen model
+        gp <- trainModel(rc, "LR correlation (null)",
+            verbose = verbose,
+            file.name = file.name
+        )
+        obj@param$LR.0$model <- gp
+
+        # RT correlation null ------------------------------------
+
+        if (obj@param$quick) {
+            # RT correlations are assumed to be equal to LR correlations
+            if (verbose) {
+                message("Quick learning, receptor-target correlation null ", "
+                distribution assumed to be equal to ligand-receptor...")
+            }
+            obj@param$RT.0$n <- obj@param$LR.0$n
+            obj@param$RT.0$model <- obj@param$LR.0$model
+        } else {
+            # RT correlations are actually learnt
+            if (verbose) {
+                message("Learning receptor-target correlation null distribution...")
+            }
+            ds.RT.null <- .getEmpiricalNull(obj@ncounts,
+                n.rand = obj@param$n.rand.RT,
+                with.complex = obj@param$with.complex,
+                max.pw.size = obj@param$max.pw.size,
+                min.pw.size = obj@param$min.pw.size,
+                min.positive = obj@param$min.positive,
+                min.cor = obj@param$min.corr.LR
+            )
+            t <- ds.RT.null[[1]]
+            if (length(ds.RT.null) > 1) {
+                for (i in 2:length(ds.RT.null)) t <- rbind(t, ds.RT.null[[i]])
+            }
+            above <- unlist(strsplit(t$target.corr, split = "\\|"))
+            r.corrs <- NULL
+            for (i in seq_len(length(above))) {
+                corr <- as.numeric(strsplit(above[i], split = ";")[[1]])
+                r.corrs <- c(r.corrs, corr)
+            }
+            if (null.model == "stable") {
+                # sub-sample randomized R-T correlations to limit compute time
+                r.corrs <- sample(r.corrs, obj@param$LR.0$n)
+            }
+            obj@param$RT.0$n <- length(r.corrs)
+
+            # fit null model
+            if (!is.null(plot.folder)) {
+                file.name <- paste0(plot.folder, "/", filename, "_RT-null.pdf")
+            } else {
+                file.name <- NULL
+            }
+            gp <- trainModel(r.corrs, "RT correlation (null)",
+                verbose = verbose, file.name = file.name
+            )
+            obj@param$RT.0$model <- gp
+        }
+
+        if (verbose) {
+            message("Learning of statistical model parameters completed")
+        }
+        obj
     }
-    obj
-}) # learnParameters
+) # learnParameters
 
 
 # performing initial inference ===========================================
@@ -592,14 +600,14 @@ if (!isGeneric("initialInference")) {
 #' bsrinf
 #' @importFrom methods new
 setMethod("initialInference", "BSRDataModel", function(obj, rank.p = 0.55,
-                                                       min.cor = 0.25, restrict.genes = NULL,
-                                                       reference = c("REACTOME-GOBP", "REACTOME", "GOBP"),
-                                                       max.pw.size = NULL, min.pw.size = NULL, min.positive = NULL,
-                                                       use.full.network = FALSE, restrict.pw = NULL,
-                                                       with.complex = NULL, fdr.proc = c(
-                                                           "BH", "Bonferroni", "Holm", "Hochberg",
-                                                           "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
-                                                       )) {
+    min.cor = 0.25, restrict.genes = NULL,
+    reference = c("REACTOME-GOBP", "REACTOME", "GOBP"),
+    max.pw.size = NULL, min.pw.size = NULL, min.positive = NULL,
+    use.full.network = FALSE, restrict.pw = NULL,
+    with.complex = NULL, fdr.proc = c(
+        "BH", "Bonferroni", "Holm", "Hochberg",
+        "SidakSS", "SidakSD", "BY", "ABH", "TSBH")) {
+
     if (is.null(max.pw.size)) {
         max.pw.size <- param(obj)$max.pw.size
     }
@@ -746,20 +754,20 @@ setMethod("scoreLRGeneSignatures", "BSRDataModel", function(obj,
     ligands <- list()
     receptors <- list()
     t.genes <- list()
-    
+
     for (i in seq_along(ligands(sig))) {
-      ligands[[i]] <- intersect(ligands(sig)[[i]], all.genes)
+        ligands[[i]] <- intersect(ligands(sig)[[i]], all.genes)
     }
     for (i in seq_along(receptors(sig))) {
-      receptors[[i]] <- intersect(receptors(sig)[[i]], all.genes)
+        receptors[[i]] <- intersect(receptors(sig)[[i]], all.genes)
     }
     for (i in seq_along(tGenes(sig))) {
-      t.genes[[i]] <- intersect(tGenes(sig)[[i]], all.genes)
+        t.genes[[i]] <- intersect(tGenes(sig)[[i]], all.genes)
     }
 
-    good <- vapply(ligands, length, integer(1)) > 0 & 
-    vapply(receptors, length, integer(1)) > 0 & 
-    vapply(t.genes, length, integer(1)) > 0
+    good <- vapply(ligands, length, integer(1)) > 0 &
+        vapply(receptors, length, integer(1)) > 0 &
+        vapply(t.genes, length, integer(1)) > 0
 
     ligands <- ligands[good]
     receptors <- receptors[good]

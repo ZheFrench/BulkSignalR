@@ -397,10 +397,10 @@ if (!isGeneric("rescoreInference")) {
 #' bsrinf.less <- rescoreInference(bsrinf, param = param(bsrdm.comp), rank.p = 0.75)
 #'
 setMethod("rescoreInference", "BSRInferenceComp", function(obj, param, rank.p = 0.55,
-                                                           fdr.proc = c(
-                                                               "BH", "Bonferroni", "Holm",
-                                                               "Hochberg", "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
-                                                           )) {
+    fdr.proc = c("BH", "Bonferroni", "Holm",
+    "Hochberg", "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
+    )) {
+
     if (rank.p < 0 || rank.p > 1) {
         stop("rank.p must lie in [0;1]")
     }
@@ -548,15 +548,15 @@ if (!isGeneric("updateInference")) {
 #' bsrinf.updated <- updateInference(bsrinf, bsrcc.2)
 #'
 setMethod("updateInference", "BSRInferenceComp", function(obj, bsrcc,
-                                                          src.bsrcc = NULL, rank.p = 0.55,
-                                                          max.pval = 0.01, min.logFC = 1, min.LR.score = 0,
-                                                          neg.receptors = FALSE,
-                                                          pos.targets = FALSE, neg.targets = FALSE,
-                                                          min.t.logFC = 0.5, min.positive = 2,
-                                                          fdr.proc = c(
-                                                              "BH", "Bonferroni", "Holm", "Hochberg",
-                                                              "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
-                                                          )) {
+    src.bsrcc = NULL, rank.p = 0.55,
+    max.pval = 0.01, min.logFC = 1, min.LR.score = 0,
+    neg.receptors = FALSE,
+    pos.targets = FALSE, neg.targets = FALSE,
+    min.t.logFC = 0.5, min.positive = 2,
+    fdr.proc = c(
+        "BH", "Bonferroni", "Holm", "Hochberg",
+        "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
+        )) {
     if (!is(obj, "BSRInferenceComp")) {
         stop("obj must be a BSRInferenceComp object")
     }
@@ -1222,7 +1222,7 @@ if (!isGeneric("getLRGeneSignatures")) {
 #' @importFrom foreach %do% %dopar%
 #' @importFrom methods new
 setMethod("getLRGeneSignatures", "BSRInferenceComp", function(obj,
-                                                              pval.thres = NULL, qval.thres = NULL, with.pw.id = FALSE) {
+    pval.thres = NULL, qval.thres = NULL, with.pw.id = FALSE) {
     if (is.null(pval.thres) && is.null(qval.thres)) {
         stop("Either a P- or a Q-value threshold must be provided")
     }

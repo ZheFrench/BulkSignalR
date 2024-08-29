@@ -66,9 +66,9 @@
 #' @import glmnet
 #' @importFrom foreach %do%
 assignCellTypesToInteractions <- function(bsrdm, bsrinf, ct.scores,
-                                          normalize.scores = TRUE, min.weight = 0.1,
-                                          min.r2 = 0.25, min.r2.after = 0.35,
-                                          lasso = TRUE, qval.thres = 1e-3) {
+    normalize.scores = TRUE, min.weight = 0.1,
+    min.r2 = 0.25, min.r2.after = 0.35,
+    lasso = TRUE, qval.thres = 1e-3) {
     # local binding
     i <- NULL
 

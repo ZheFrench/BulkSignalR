@@ -237,7 +237,6 @@ bubblePlotPathwaysLR <- function(
     cols.scoring,
     hcl.palette = "Blues 3",
     show_column_names = FALSE) {
-
     counts <- data.matrix(counts)
     counts.scaled <- t(scale(t(counts)))
 
@@ -597,8 +596,10 @@ simpleHeatmap <- function(mat.c, width, height,
                           column.names = TRUE, hcl.palette = NULL,
                           reverse = FALSE, format = c("pdf", "svg", "png")) {
     if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
-        stop("Package \"ComplexHeatmap\" needed for this function ",
-            "to work. Please install it.")
+        stop(
+            "Package \"ComplexHeatmap\" needed for this function ",
+            "to work. Please install it."
+        )
     }
     if (cut.p < 0 || cut.p > 0.1) {
         stop("cut.p must lie in [0;0.1]")
@@ -610,8 +611,10 @@ simpleHeatmap <- function(mat.c, width, height,
 
     if (is.null(cols)) {
         if (!requireNamespace("circlize", quietly = TRUE)) {
-            stop("Package \"circlize\" needed for this function to ",
-                "work (generation of color scale). Please install it.")
+            stop(
+                "Package \"circlize\" needed for this function to ",
+                "work (generation of color scale). Please install it."
+            )
         }
 
         cols <- circlize::colorRamp2(
@@ -847,9 +850,10 @@ alluvialPlot <- function(bsrinf, keywords, type = c("L", "R", "pw.id"),
         pw.name = LRinter(bsrinf)$pw.name,
         pw.id = LRinter(bsrinf)$pw.id,
         qval = LRinter(bsrinf)$qval,
-        targets = vapply(tGenes(bsrinf), 
-            FUN = function(x) paste(x, collapse = "  ")
-            ,character(1))
+        targets = vapply(tGenes(bsrinf),
+            FUN = function(x) paste(x, collapse = "  "),
+            character(1)
+        )
     )
 
     type <- match.arg(type)

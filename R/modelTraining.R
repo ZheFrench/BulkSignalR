@@ -232,9 +232,10 @@
         stop("optim() could not fit the mixed normal distribution parameters")
     }
     if (verbose) {
-        message("Censored mixed normal parameters (alpha, mean1, sd1, mean2, sd2): ",
-           paste(res$par, collapse = ", ")) 
-        
+        message(
+            "Censored mixed normal parameters (alpha, mean1, sd1, mean2, sd2): ",
+            paste(res$par, collapse = ", ")
+        )
     }
     alpha <- res$par[1]
     mu1 <- res$par[2]
@@ -382,7 +383,7 @@
 #'   plot a main title.
 #' @keywords internal
 .getKernelEmpiricalParam <- function(d, title, verbose = FALSE,
-                                     file.name = NULL, n = 512) {
+    file.name = NULL, n = 512) {
     if (!is.null(file.name)) {
         grDevices::pdf(
             file = file.name, width = 4, height = 4,
@@ -506,8 +507,10 @@
         stop("optim() could not fit the censored stable distribution")
     }
     if (verbose) {
-        message("Censored stable parameters (alpha, beta, gamma, delta): ",
-            paste(res$par, collapse = ", "))
+        message(
+            "Censored stable parameters (alpha, beta, gamma, delta): ",
+            paste(res$par, collapse = ", ")
+        )
     }
     alpha <- res$par[1]
     beta <- res$par[2]
@@ -599,8 +602,8 @@
 #' @importFrom foreach %do% %dopar%
 #' @keywords internal
 .getEmpiricalNull <- function(ncounts, n.rand = 5, min.cor = -1,
-                              with.complex = TRUE, max.pw.size = 400,
-                              min.pw.size = 5, min.positive = 4) {
+    with.complex = TRUE, max.pw.size = 400,
+    min.pw.size = 5, min.positive = 4) {
     pindices <- .buildPermutationIndices(ncounts)
     r.ds <- prepareDataset(ncounts,
         normalize = FALSE, method = "ALREADY",

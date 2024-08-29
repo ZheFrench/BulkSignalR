@@ -53,7 +53,8 @@ createResources <- function(onRequest = TRUE, verbose = FALSE) {
 getResource <- function(resourceName = NULL, cache = FALSE) {
     if (!resourceName %in% c("GO-BP", "Reactome", "Network")) {
         cli::cli_alert_danger(
-            ".val {GO-BP, Reactome & Network} are the only keywords alllowed.\n")
+            ".val {GO-BP, Reactome & Network} are the only keywords alllowed.\n"
+        )
         stop()
     }
 
@@ -190,8 +191,9 @@ resetNetwork <- function(network) {
 #' }
 #'
 resetPathwaysFromFile <- function(file,
-                                  fileType = c("json", "gmt", "txt"),
-                                  resourceName = NULL) {
+    fileType = c("json", "gmt", "txt"),
+    resourceName = NULL) {
+    
     fileType <- match.arg(fileType)
 
     if (!resourceName %in% c("GO-BP", "Reactome")) {

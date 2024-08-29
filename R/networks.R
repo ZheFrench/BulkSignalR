@@ -31,7 +31,7 @@
 #'
 #' @importFrom methods is
 getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
-                         node.size = 5, red.pairs = NULL) {
+    node.size = 5, red.pairs = NULL) {
     if (!is(bsrinf, "BSRInference")) {
         stop("bsrinf must be a BSRInference object")
     }
@@ -40,8 +40,10 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     }
     ipar <- infParam(bsrinf)
     if (ipar$ligand.reduced || ipar$receptor.reduced) {
-        stop("Does not work with inferences already reduced to the ",
-            "ligands or the receptors")   
+        stop(
+            "Does not work with inferences already reduced to the ",
+            "ligands or the receptors"
+        )
     }
 
     # get unique LR pairs with required statistical significance
@@ -129,9 +131,9 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
 #' @importFrom foreach %do% %dopar%
 #' @keywords internal
 .edgesLRIntracell <- function(pairs, pw, t.genes, tg.corr, id.col, gene.col,
-                              min.cor = 0.25, pos.targets = FALSE,
-                              neg.targets = FALSE, tg.pval = NULL,
-                              max.pval = NULL, tg.logFC = NULL, min.logFC = 0) {
+    min.cor = 0.25, pos.targets = FALSE,
+    neg.targets = FALSE, tg.pval = NULL,
+    max.pval = NULL, tg.logFC = NULL, min.logFC = 0) {
     # local binding
     i <- NULL
 
@@ -301,9 +303,9 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
 #' # format="graphml")
 #'
 getLRIntracellNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
-                                  min.cor = 0.25, max.pval = NULL, min.logFC = 0,
-                                  pos.targets = FALSE, neg.targets = FALSE,
-                                  restrict.pw = NULL, node.size = 5) {
+    min.cor = 0.25, max.pval = NULL, min.logFC = 0,
+    pos.targets = FALSE, neg.targets = FALSE,
+    restrict.pw = NULL, node.size = 5) {
     comp.obj <- is(bsrinf, "BSRInferenceComp")
     if (!is(bsrinf, "BSRInference") && !comp.obj) {
         stop("bsrinf must be a BSRInference or BSRInferenceComp object")
@@ -319,8 +321,10 @@ getLRIntracellNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     }
     ipar <- infParam(bsrinf)
     if (ipar$ligand.reduced || ipar$receptor.reduced) {
-        stop("Does not work with inferences already reduced to the ",
-            "ligands or the receptors")
+        stop(
+            "Does not work with inferences already reduced to the ",
+            "ligands or the receptors"
+        )
     }
     if (neg.targets && pos.targets) {
         stop("neg.targets and pos.targets cannot be TRUE simultaneously")

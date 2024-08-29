@@ -32,13 +32,16 @@ resetLRdb <- function(db, switch = FALSE) {
             assign("LRdb", unique(db), envir = as.environment(get("nameEnv")))
         }
     } else {
-        stop("db should be a data frame with",
-            "2 columns named 'ligand' and 'receptor'.")
+        stop(
+            "db should be a data frame with",
+            "2 columns named 'ligand' and 'receptor'."
+        )
     }
 
     message("")
     cli::cli_alert_info(
-        "New database defined for {.val LRdb}.")
+        "New database defined for {.val LRdb}."
+    )
 
     return(invisible(NULL))
 } # resetLRdb
@@ -272,7 +275,8 @@ prepareDataset <- function(
 #' )
 #'
 findOrthoGenes <- function(from_organism, from_values,
-                           method = c("gprofiler", "homologene", "babelgene")) {
+    method = c("gprofiler", "homologene", "babelgene")) {
+
     method <- match.arg(method)
     if (!method %in% c("gprofiler", "homologene", "babelgene")) {
         stop("Method selected should be gprofiler,homologene or babelgene")
@@ -292,7 +296,8 @@ findOrthoGenes <- function(from_organism, from_values,
     orthologs_dictionary$index <- NULL
     names(orthologs_dictionary)[1] <- paste("Gene.name")
 
-    message("Dictionary Size: ",
+    message(
+        "Dictionary Size: ",
         dim(orthologs_dictionary)[1],
         " genes "
     )

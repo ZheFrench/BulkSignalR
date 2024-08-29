@@ -338,8 +338,10 @@ spatialPlot <- function(v, areas, inter.name, rev.y = TRUE, ref.plot = FALSE,
     }
 
     if (!all(c(x.col, y.col, label.col, idSpatial.col) %in% names(areas))) {
-        stop("One of x.col, y.col, idSpatial.col, or label.col is not in ",
-            "names(areas)")
+        stop(
+            "One of x.col, y.col, idSpatial.col, or label.col is not in ",
+            "names(areas)"
+        )
     }
 
     # put the scores in the right order for display at (x,y) coordinates

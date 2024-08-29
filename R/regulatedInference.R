@@ -144,10 +144,10 @@
 #' @importFrom foreach %do% %dopar%
 #' @keywords internal
 .downstreamRegulatedSignaling <- function(lr, pw, pw.size, rncounts, stats,
-                                          id.col, gene.col, pw.col,
-                                          min.positive, pos.targets = FALSE,
-                                          neg.targets = FALSE, min.t.logFC = 0.5,
-                                          with.complex = TRUE) {
+    id.col, gene.col, pw.col,
+    min.positive, pos.targets = FALSE,
+    neg.targets = FALSE, min.t.logFC = 0.5,
+    with.complex = TRUE) {
     if (!is.data.frame(stats)) {
         stop("stats must be a data.frame")
     }
@@ -408,12 +408,13 @@
 #' @importFrom methods is
 #' @keywords internal
 .checkRegulatedReceptorSignaling <- function(ds, cc, lr,
-                                             reference = c("REACTOME-GOBP", "REACTOME", "GOBP"),
-                                             pos.targets = FALSE, neg.targets = FALSE, min.t.logFC = 0.5,
-                                             use.full.network = FALSE,
-                                             max.pw.size = 400, min.pw.size = 5,
-                                             min.positive = 2, restrict.pw = NULL,
-                                             with.complex = TRUE) {
+    reference = c("REACTOME-GOBP", "REACTOME", "GOBP"),
+    pos.targets = FALSE, neg.targets = FALSE, min.t.logFC = 0.5,
+    use.full.network = FALSE,
+    max.pw.size = 400, min.pw.size = 5,
+    min.positive = 2, restrict.pw = NULL,
+    with.complex = TRUE) {
+    
     if (!is(cc, "BSRClusterComp")) {
         stop("cc must be a BSRClusterComp object")
     }
@@ -491,8 +492,8 @@
     # merge
     if (reference == "REACTOME-GOBP") {
         pairs <- unique(rbind(
-            results$reactome.pairs[, c(1,2)],
-            results$gobp.pairs[, c(1,2)]
+            results$reactome.pairs[, c(1, 2)],
+            results$gobp.pairs[, c(1, 2)]
         ))
         react.keys <- paste(results$reactome.pairs[[1]],
             results$reactome.pairs[[2]],

@@ -54,10 +54,13 @@ setValidity(
 )
 setMethod("show", "BSRSignature", function(object) {
     print(data.frame(
-        L = sapply(object@ligands, function(x) paste(x, collapse = ";")),
-        R = sapply(object@receptors, function(x) paste(x, collapse = ";")),
+        L = vapply(object@ligands, function(x) paste(x, collapse = ";"),
+            character(1)),
+        R = vapply(object@receptors, function(x) paste(x, collapse = ";"),
+            character(1)),
         pathways = object@pathways,
-        tGenes = sapply(object@t.genes, function(x) paste(x, collapse = ";"))
+        tGenes = vapply(object@t.genes, function(x) paste(x, collapse = ";"),
+            character(1))
     )[seq_len(min(5, length(object@ligands))), ])
 })
 

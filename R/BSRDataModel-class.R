@@ -742,12 +742,25 @@ setMethod("scoreLRGeneSignatures", "BSRDataModel", function(obj,
 
     # intersect signature gene names with RNA-seq data
     ncounts <- ncounts(obj)
-    ligands <- sapply(ligands(sig), function(x) intersect(x, all.genes))
-    receptors <- sapply(receptors(sig), function(x) intersect(x, all.genes))
-    t.genes <- sapply(tGenes(sig), function(x) intersect(x, all.genes))
 
-    good <- sapply(ligands, length) > 0 & sapply(receptors, length) > 0 &
-        sapply(t.genes, length) > 0
+    ligands <- list()
+    receptors <- list()
+    t.genes <- list()
+    
+    for (i in seq_along(ligands(sig))) {
+      ligands[[i]] <- intersect(ligands(sig)[[i]], all.genes)
+    }
+    for (i in seq_along(receptors(sig))) {
+      receptors[[i]] <- intersect(receptors(sig)[[i]], all.genes)
+    }
+    for (i in seq_along(tGenes(sig))) {
+      t.genes[[i]] <- intersect(tGenes(sig)[[i]], all.genes)
+    }
+
+    good <- vapply(ligands, length, integer(1)) > 0 & 
+    vapply(receptors, length, integer(1)) > 0 & 
+    vapply(t.genes, length, integer(1)) > 0
+
     ligands <- ligands[good]
     receptors <- receptors[good]
     t.genes <- t.genes[good]

@@ -847,7 +847,9 @@ alluvialPlot <- function(bsrinf, keywords, type = c("L", "R", "pw.id"),
         pw.name = LRinter(bsrinf)$pw.name,
         pw.id = LRinter(bsrinf)$pw.id,
         qval = LRinter(bsrinf)$qval,
-        targets = sapply(tGenes(bsrinf), paste, collapse = "  ")
+        targets = vapply(tGenes(bsrinf), 
+            FUN = function(x) paste(x, collapse = "  ")
+            ,character(1))
     )
 
     type <- match.arg(type)

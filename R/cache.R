@@ -29,7 +29,7 @@
     # safeguard
     cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName, field = "rname")
     if (nrow(cacheHits) >= 1) {
-        message(cli::cli_alert_danger("Multiple cache results found for {.var {dir}}.", "\n"))
+        cli::cli_alert_danger("Multiple cache results found for {.var {dir}}.")
         stop("Please clear your cache with `cacheClear()`!", "\n")
     }
 
@@ -42,8 +42,8 @@
 
     if (verbose) {
         cli::cli_alert("{.path {BiocFileCache::bfccache(bfc)}}")
-        message(BiocFileCache::bfcinfo(bfc))
-        message("\n")
+        BiocFileCache::bfcinfo(bfc)
+        message("")
     }
 
     return(invisible(NULL))
@@ -174,8 +174,7 @@ cacheInfo <- function(dir = c("both", "resources", "database")) {
             "- No. of files:  ", length(files), "\n",
             "- Total size:  ", format(size_obj, units = "auto"), "\n"
         )
-        message(files)
-        message("\n")
+        message(paste(files, "\n"))
     }
 
     return(invisible(NULL))
@@ -241,7 +240,7 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
         return(invisible(NULL))
     } else {
         cli::cli_alert("Local BulkSignalR {.val {dir}} {word2} up to date.\n")
-        message("\n")
+        message("")
     }
 
     return(invisible(NULL))

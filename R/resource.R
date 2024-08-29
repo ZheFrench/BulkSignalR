@@ -52,7 +52,7 @@ createResources <- function(onRequest = TRUE, verbose = FALSE) {
 #' reactome <- getResource(resourceName = "Reactome")
 getResource <- function(resourceName = NULL, cache = FALSE) {
     if (!resourceName %in% c("GO-BP", "Reactome", "Network")) {
-        message(cli::cli_alert_danger(".val {GO-BP, Reactome & Network} are the only keywords alllowed.", "\n"))
+        cli::cli_alert_danger(".val {GO-BP, Reactome & Network} are the only keywords alllowed.", "\n")
         stop()
     }
 
@@ -62,7 +62,7 @@ getResource <- function(resourceName = NULL, cache = FALSE) {
 
         # safeguard
         if (!dir.exists(resourcesCacheDir)) {
-            message(cli::cli_alert_danger("Resources repository doesn't exist.", "\n"))
+            cli::cli_alert_danger("Resources repository doesn't exist.", "\n")
             stop()
         }
 
@@ -149,9 +149,8 @@ resetNetwork <- function(network) {
         stop("Column names of network should be defined as a.gn, type & b.gn.")
     }
 
-    message("\n")
-    message(cli::cli_alert_info("New resource defined for {.val Network}.", "\n"))
-    # message(utils::head(network))
+    message("")
+    cli::cli_alert_info("New resource defined for {.val Network}.", "\n")
 
     assign("Network", network, envir = as.environment(get("nameEnv")))
 
@@ -221,8 +220,8 @@ resetPathwaysFromFile <- function(file,
         stop("File format accepted are `json` , `gmt` or `txt` only.")
     }
 
-    message("\n")
-    message(cli::cli_alert_info("New resource defined for {.val {resourceName}}.", "\n"))
+    message("")
+    cli::cli_alert_info("New resource defined for {.val {resourceName}}.", "\n")
     message(utils::head(db))
 
 

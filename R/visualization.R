@@ -101,17 +101,17 @@ bubblePlotPathwaysLR <- function(
 
     limit.P <- 8
     if (length(pathways) >= limit.P) {
-        message("We recommend less than ", limit.P, " pathways.", "\n")
+        message("We recommend less than ", limit.P, " pathways.")
         stop("Too many pathways were given in input.")
     }
     limit.LR <- 50
     if (length(unique(filtered.brinf$LR)) >= limit.LR) {
-        message("Too many LR interactions detected (", length(unique(filtered.brinf$LR)), ").", "\n")
-        message("We recommend less than ", limit.LR, " LR interactions to visualize.", "\n")
+        message("Too many LR interactions detected (", length(unique(filtered.brinf$LR)), ").")
+        message("We recommend less than ", limit.LR, " LR interactions to visualize.")
         stop("Try to reduce (Qval-Threshold, number of pathways...).\n")
     }
 
-    message(length(unique(filtered.brinf$LR)), " LR interactions detected.\n")
+    message(length(unique(filtered.brinf$LR)), " LR interactions detected.")
 
     # Adjust image
     width.fit <- (length(unique(filtered.brinf$LR)) * 0.5) / 2.54

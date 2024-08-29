@@ -363,7 +363,7 @@ setMethod("learnParameters", "BSRDataModel", function(obj, plot.folder = NULL,
     # LR correlation null ----------------
 
     if (verbose) {
-        message("Learning ligand-receptor correlation null distribution...\n")
+        message("Learning ligand-receptor correlation null distribution...")
     }
     obj@param$min.corr.LR <- -1.0
     ds.LR.null <- .getEmpiricalNullCorrLR(obj@ncounts,
@@ -397,23 +397,23 @@ setMethod("learnParameters", "BSRDataModel", function(obj, plot.folder = NULL,
         }
         kp <- .getKernelEmpiricalParam(rc, "LR correlation (null)")
         if (verbose) {
-            message("Automatic null model choice:\n")
+            message("Automatic null model choice:")
             if (is.null(np)) {
-                message("  Censored normal estimation did not converge\n")
+                message("  Censored normal estimation did not converge")
             } else {
                 message("  Censored normal D=", np$D,
-                    ", Chi2=", np$Chi2, "\n"
+                    ", Chi2=", np$Chi2
                 )
             }
             if (is.null(mp)) {
-                message("  Censored Mixture of normals estimation did not converge\n")
+                message("  Censored Mixture of normals estimation did not converge")
             } else {
                 message("  Censored mixture D=", mp$D,
-                    ", Chi2=", mp$Chi2, "\n"
+                    ", Chi2=", mp$Chi2
                 )
             }
             message("  Gaussian kernel empirical D=", kp$D,
-                ", Chi2=", kp$Chi2, "\n"
+                ", Chi2=", kp$Chi2
             )
         }
         npchi <- ifelse(is.null(np), 100, sqrt(np$Chi2))
@@ -422,17 +422,17 @@ setMethod("learnParameters", "BSRDataModel", function(obj, plot.folder = NULL,
         if ((npchi < 1.25 * mpchi) && (npchi < 2 * kpchi)) {
             trainModel <- .getGaussianParam
             if (verbose) {
-                message("  ==> select censored normal\n")
+                message("  ==> select censored normal")
             }
         } else if (mpchi < 2 * kpchi) {
             trainModel <- .getMixedGaussianParam
             if (verbose) {
-                message("  ==> select censored mixture of 2 normals\n")
+                message("  ==> select censored mixture of 2 normals")
             }
         } else {
             trainModel <- .getKernelEmpiricalParam
             if (verbose) {
-                message("  ==> select Gaussian kernel-based empirical\n")
+                message("  ==> select Gaussian kernel-based empirical")
             }
         }
     }
@@ -449,14 +449,14 @@ setMethod("learnParameters", "BSRDataModel", function(obj, plot.folder = NULL,
         # RT correlations are assumed to be equal to LR correlations
         if (verbose) {
             message("Quick learning, receptor-target correlation null ", "
-                   distribution assumed to be equal to ligand-receptor...\n")
+                   distribution assumed to be equal to ligand-receptor...")
         }
         obj@param$RT.0$n <- obj@param$LR.0$n
         obj@param$RT.0$model <- obj@param$LR.0$model
     } else {
         # RT correlations are actually learnt
         if (verbose) {
-            message("Learning receptor-target correlation null distribution...\n")
+            message("Learning receptor-target correlation null distribution...")
         }
         ds.RT.null <- .getEmpiricalNull(obj@ncounts,
             n.rand = obj@param$n.rand.RT,
@@ -495,7 +495,7 @@ setMethod("learnParameters", "BSRDataModel", function(obj, plot.folder = NULL,
     }
 
     if (verbose) {
-        message("Learning of statistical model parameters completed\n")
+        message("Learning of statistical model parameters completed")
     }
     obj
 }) # learnParameters

@@ -95,8 +95,8 @@
     mu <- mean(d)
     sigma <- stats::sd(d)
     if (verbose) {
-        message("Initial estimate of the mean: ", mu, "\n")
-        message("Initial estimate of the standard deviation: ", sigma, "\n")
+        message("Initial estimate of the mean: ", mu)
+        message("Initial estimate of the standard deviation: ", sigma)
     }
 
     # ML fit of a censored Gaussian on [-1;1]
@@ -118,8 +118,8 @@
     mu <- res$par[1]
     sigma <- res$par[2]
     if (verbose) {
-        message("Censored normal mean: ", mu, "\n")
-        message("Censored normal standard deviation: ", sigma, "\n")
+        message("Censored normal mean: ", mu)
+        message("Censored normal standard deviation: ", sigma)
     }
     q <- stats::pnorm(1, mu, sigma) - stats::pnorm(-1, mu, sigma)
     start <- stats::pnorm(-1, mu, sigma)
@@ -233,8 +233,8 @@
     }
     if (verbose) {
         message("Censored mixed normal parameters (alpha, mean1, sd1, mean2, sd2): ",
-           paste(res$par, collapse = ", ") , "\n"
-        )
+           paste(res$par, collapse = ", ")) 
+        
     }
     alpha <- res$par[1]
     mu1 <- res$par[2]
@@ -493,7 +493,7 @@
     if (verbose) {
         message(
             "Starting stable distribution parameter estimation. ",
-            "This can take a few dozens of minutes...\n"
+            "This can take a few dozens of minutes..."
         )
     }
     res <- stats::optim(par.0, stableLL,
@@ -507,8 +507,7 @@
     }
     if (verbose) {
         message("Censored stable parameters (alpha, beta, gamma, delta): ",
-            paste(res$par, collapse = ", "), "\n"
-        )
+            paste(res$par, collapse = ", "))
     }
     alpha <- res$par[1]
     beta <- res$par[2]

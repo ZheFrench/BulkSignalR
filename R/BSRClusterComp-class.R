@@ -39,7 +39,8 @@ setClass("BSRClusterComp",
     prototype = list(
         colA = as.integer(c(1,2)),
         colB = as.integer(c(3,4)),
-        stats = data.frame(pval = c(0.01, 0.01), logFC = c(1, -1), expr = c(1, 2))
+        stats = data.frame(pval = c(0.01, 0.01), 
+            logFC = c(1, -1), expr = c(1, 2))
     )
 )
 
@@ -75,12 +76,14 @@ setMethod(
         if (length(object@colA) > 5) {
             cat("Cluster A columns:", object@colA[seq_len(5)], "...\n")
         } else {
-            cat("Cluster A columns:", object@colA[seq_len(length(object@colA))], "\n")
+            cat("Cluster A columns:", 
+                object@colA[seq_len(length(object@colA))], "\n")
         }
         if (length(object@colB) > 5) {
             cat("Cluster B columns:", object@colB[seq_len(5)], "...\n")
         } else {
-            cat("Cluster B columns:", object@colB[seq_len(length(object@colB))], "\n")
+            cat("Cluster B columns:", 
+                object@colB[seq_len(length(object@colB))], "\n")
         }
         print(utils::head(object@stats))
     }

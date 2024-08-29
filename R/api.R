@@ -35,8 +35,8 @@ getComplexes <- function(idRelease = NULL) {
     }
 
     if (nrow(release) == 0) {
-        message(cli::cli_abort(
-            "ID Release {idRelease} doesn't exist.", "\n"))
+        cli::cli_abort(
+            "ID Release {idRelease} doesn't exist.")
     }
 
     complexes <- DBI::dbGetQuery(BulkSignalRCon, 'SELECT
@@ -53,7 +53,8 @@ getComplexes <- function(idRelease = NULL) {
       where Comp."id.release_fk" = ?;', release$id)
 
     if (nrow(complexes) == 0) {
-        message(cli::cli_alert("No complexes found for ID Release {release$id}.", "\n"))
+        cli::cli_alert(
+            "No complexes found for ID Release {release$id}.")
     }
 
 
@@ -109,13 +110,15 @@ getInteractions <- function(idRelease = NULL) {
             "SELECT id FROM Release ORDER BY id DESC LIMIT 1"
         )
     } else {
-        release <- DBI::dbGetQuery(BulkSignalRCon, "SELECT id FROM Release WHERE id = ?",
+        release <- DBI::dbGetQuery(BulkSignalRCon, 
+            "SELECT id FROM Release WHERE id = ?",
             params = list(idRelease)
         )
     }
 
     if (nrow(release) == 0) {
-        message(cli::cli_abort("ID Release {idRelease} doesn't exist.", "\n"))
+        cli::cli_abort(
+            "ID Release {idRelease} doesn't exist.")
     }
 
     pairsReference <- DBI::dbGetQuery(BulkSignalRCon,

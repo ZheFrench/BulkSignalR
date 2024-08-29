@@ -101,7 +101,7 @@ cacheClear <- function(dir = c("both", "resources", "database")) {
 
     # safeguard
     if (!dir.exists(cacheDir)) {
-        cli::cli_alert("BulkSignalR cache for {.val {dir}} doesn't exist.", "\n")
+        cli::cli_alert("BulkSignalR cache for {.val {dir}} doesn't exist.\n")
         return(invisible(NULL))
     }
 
@@ -174,7 +174,8 @@ cacheInfo <- function(dir = c("both", "resources", "database")) {
             "- No. of files:  ", length(files), "\n",
             "- Total size:  ", format(size_obj, units = "auto"), "\n"
         )
-        message(paste(files, "\n"))
+        listing <- paste0(files, "\n")
+        message(listing)
     }
 
     return(invisible(NULL))
@@ -236,7 +237,7 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 
     if (any(BiocFileCache::bfcneedsupdate(bfc))) {
         cli::cli_alert("Remote BulkSignalR {.val {dir}} {word} been updated.\n")
-        cli::cli_alert_info("To update locally, clear your cache with cacheClear({.var {dir}})", "\n")
+        cli::cli_alert_info("To update locally, clear your cache with cacheClear({.var {dir}})\n")
         return(invisible(NULL))
     } else {
         cli::cli_alert("Local BulkSignalR {.val {dir}} {word2} up to date.\n")
@@ -265,10 +266,10 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 .readRDSFromCache <- function(bfc, resourceName) {
     cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName, field = "rname")
     if (nrow(cacheHits) == 0) {
-        cli::cli_alert_danger("No cache result found.", "\n")
+        cli::cli_alert_danger("No cache result found.\n")
         stop()
     } else if (nrow(cacheHits) > 1) {
-        cli::cli_alert_danger("Multiple cache results found.", "\n")
+        cli::cli_alert_danger("Multiple cache results found.\n")
         stop("Please, clear your cache! See cacheClear() function.")
     } else {
         test <- tryCatch(is.list(infoRDS(cacheHits$rpath[1])),
@@ -302,10 +303,10 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 .checkRDSFromCache <- function(bfc, resourceName) {
     cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName, field = "rname")
     if (nrow(cacheHits) == 0) {
-        cli::cli_alert_danger("No cache result found.", "\n")
+        cli::cli_alert_danger("No cache result found.\n")
         stop()
     } else if (nrow(cacheHits) > 1) {
-        cli::cli_alert_danger("Multiple cache results found.", "\n")
+        cli::cli_alert_danger("Multiple cache results found.\n")
         stop("Please, clear your cache! See cacheClear() function.")
     } else {
         test <- tryCatch(is.list(infoRDS(cacheHits$rpath[1])),

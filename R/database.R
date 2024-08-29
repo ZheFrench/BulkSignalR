@@ -61,7 +61,7 @@ createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
 #' @importFrom cli col_cyan
 #' @keywords internal
 .downloadDatabase <- function(url, databaseFilePath) {
-    cli::col_cyan("Download Ligand-Receptor database...", "\n")
+    cli::col_cyan("Download Ligand-Receptor database...\n")
 
     isValid <- TRUE
     httr::set_config(config(ssl_verifypeer = 0L, ssl_verifyhost = 0L))

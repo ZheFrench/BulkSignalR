@@ -35,7 +35,8 @@ setClass("BSRDataModel",
     prototype = list(
         initial.organism = "hsapiens",
         initial.orthologs = list("A", "B", "C"),
-        ncounts = matrix(1.0, nrow = 2, ncol = 1, dimnames = list(c("A", "B"), "C")),
+        ncounts = matrix(1.0, nrow = 2, ncol = 1,
+         dimnames = list(c("A", "B"), "C")),
         log.transformed = FALSE,
         normalization = "UQ",
         param = list(spatial.smooth = FALSE)
@@ -309,13 +310,15 @@ if (!isGeneric("learnParameters")) {
 #' bsrdm <- learnParameters(bsrdm, plot.folder = "./")
 #' bsrdm
 #' @importFrom methods new
-setMethod("learnParameters", "BSRDataModel", function(obj, plot.folder = NULL,
-                                                      verbose = FALSE, n.rand.LR = 5L, n.rand.RT = 2L, with.complex = TRUE,
-                                                      max.pw.size = 400, min.pw.size = 5, min.positive = 4, quick = FALSE,
-                                                      null.model = c(
-                                                          "automatic", "mixedNormal", "normal", "kernelEmpirical",
-                                                          "empirical", "stable"
-                                                      ), filename = "distribution") {
+setMethod("learnParameters", "BSRDataModel", 
+    function(obj, plot.folder = NULL,
+        verbose = FALSE, n.rand.LR = 5L, n.rand.RT = 2L, with.complex = TRUE,
+            max.pw.size = 400, min.pw.size = 5, min.positive = 4, quick = FALSE,
+                null.model = c(
+                "automatic", "mixedNormal", "normal", "kernelEmpirical",
+                 "empirical", "stable"
+                ), filename = "distribution") {
+
     obj@param$n.rand.LR <- as.integer(n.rand.LR)
     if (obj@param$n.rand.LR < 1) {
         stop("Parameter n.rand.LR must be an integer > 0")
@@ -336,7 +339,8 @@ setMethod("learnParameters", "BSRDataModel", function(obj, plot.folder = NULL,
     }
     obj@param$min.pw.size <- trunc(min.pw.size)
     if (obj@param$min.pw.size < 1 || obj@param$min.pw.size > obj@param$max.pw.size) {
-        stop("Parameter min.pw.size must be an integer > 0 and <= than max.pw.size")
+        stop("Parameter min.pw.size must be", 
+            "an integer > 0 and <= than max.pw.size")
     }
     obj@param$min.positive <- trunc(min.positive)
     if (obj@param$min.positive < 1) {

@@ -32,13 +32,13 @@ resetLRdb <- function(db, switch = FALSE) {
             assign("LRdb", unique(db), envir = as.environment(get("nameEnv")))
         }
     } else {
-        stop("db should be a data frame with ",
-            "2 columns named 'ligand' and 'receptor'."
-        )
+        stop("db should be a data frame with",
+            "2 columns named 'ligand' and 'receptor'.")
     }
 
     message("")
-    cli::cli_alert_info("New database defined for {.val LRdb}.", "\n")
+    cli::cli_alert_info(
+        "New database defined for {.val LRdb}.")
 
     return(invisible(NULL))
 } # resetLRdb

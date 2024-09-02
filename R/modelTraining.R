@@ -131,7 +131,14 @@
     # KS test D statistics
     x <- seq(-1, 1, by = 0.005)
     y <- stats::dnorm(x, mu, sigma) / q
-    params$D <- as.numeric(suppressWarnings(stats::ks.test(d, y)$statistic))
+    params$D <- try(stats::ks.test(d, y)$statistic,silent = TRUE)
+    if (inherits(params$D, "try-error")) {
+        params$D <- NULL
+    }
+    if (is.null(params$D)){
+        stop("Call to `stats::ks.test` failed")
+    }
+    params$D <- as.numeric(params$D)
 
     # Chi2
     x <- seq(-1, 1, by = 0.05)
@@ -260,7 +267,15 @@
     x <- seq(-1, 1, by = 0.005)
     y <- alpha * stats::dnorm(x, mu1, sigma1) +
         (1 - alpha) * stats::dnorm(x, mu2, sigma2) / q
-    params$D <- as.numeric(suppressWarnings(stats::ks.test(d, y)$statistic))
+
+    params$D <- try(stats::ks.test(d, y)$statistic,silent = TRUE)
+    if (inherits(params$D, "try-error")) {
+        params$D <- NULL
+    }
+    if (is.null(params$D)){
+        stop("Call to `stats::ks.test` failed")
+    }
+    params$D <- as.numeric(params$D)
 
     # Chi2
     x <- seq(-1, 1, by = 0.05)
@@ -406,8 +421,15 @@
     )
 
     # KS test D statistics
-    params$D <- as.numeric(suppressWarnings(stats::ks.test(d, df$y)$statistic))
-
+    params$D <- try(stats::ks.test(d,df$y)$statistic,silent = TRUE)
+    if (inherits(params$D, "try-error")) {
+        params$D <- NULL
+    }
+    if (is.null(params$D)){
+        stop("Call to `stats::ks.test` failed")
+    }
+    params$D <- as.numeric(params$D)
+    
     # Chi2
     x <- seq(-1, 1, by = 0.05)
     h <- graphics::hist(d, breaks = x, plot = FALSE)

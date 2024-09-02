@@ -209,11 +209,17 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
 
         # keep shortest paths from the receptor to the targets only
         if ((r %in% d.int$a.gn || r %in% d.int$b.gn) && length(targets) > 0) {
-            paths <- suppressWarnings(igraph::shortest_paths(g,
+            paths <- try(igraph::shortest_paths(g,
                 from = igraph::V(g)[igraph::V(g)$name == r],
                 to = igraph::V(g)[igraph::V(g)$name %in% targets],
                 output = "vpath"
-            ))
+            ), silent = TRUE)
+            if (inherits(paths, "try-error")) {
+                paths <- NULL
+            }
+            if (is.null(paths)){
+                stop("No directed graph found by igraph")
+            }
             if (length(paths$vpath) > 0) {
                 for (j in seq_len(length(paths$vpath))) {
                     vertices <- paths$vpath[[j]]

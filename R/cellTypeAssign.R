@@ -105,7 +105,14 @@ assignCellTypesToInteractions <- function(bsrdm, bsrinf, ct.scores,
     # assignment of CTs
     a <- foreach::foreach(i = seq_len(nrow(inter)), .combine = rbind) %do% {
         y <- lr.scores[i, ]
-        c <- suppressWarnings(stats::cor(y, x, method = "spearman"))
+        c <- try(stats::cor(y, x, method = "spearman"),silent = TRUE)
+        if (inherits(c, "try-error")) {
+            c <- NULL
+        }
+        if (is.null(c)){
+            stop("Call to `stats::cor` failed")
+        }
+
         c2 <- c**2
         good <- c2 >= min.r2 & c > 0
         if (sum(good) > 0) {
@@ -126,7 +133,16 @@ assignCellTypesToInteractions <- function(bsrdm, bsrinf, ct.scores,
                     MAE <- as.vector(glmnet::assess.glmnet(lasso.fit.l,
                      newx = xL, newy = y)$mae)
                     p <- stats::predict(lasso.fit.l, newx = xL)
-                    gc2 <- suppressWarnings(stats::cor(y, p))**2
+
+                    gc2 <- try(stats::cor(y, p),silent = TRUE)
+                    if (inherits(gc2, "try-error")) {
+                        gc2 <- NULL
+                    }
+                    if (is.null(gc2)){
+                        stop("Call to `stats::cor` failed")
+                    }
+                    gc2 <- gc2**2
+
                     lcoef <- stats::coef(lasso.fit.l)[-1, 1]
                     if (gc2 > min.r2.after && sum(lcoef > 0) > 0) {
                         data.frame(
@@ -144,7 +160,16 @@ assignCellTypesToInteractions <- function(bsrdm, bsrinf, ct.scores,
                     dat <- data.frame(y = y, x = x[, good])
                     lmfit <- stats::lm(y ~ x, data = dat)
                     p <- stats::predict(lmfit)
-                    gc2 <- suppressWarnings(stats::cor(y, p))**2
+                    
+                    gc2 <- try(stats::cor(y, p),silent = TRUE)
+                    if (inherits(gc2, "try-error")) {
+                        gc2 <- NULL
+                    }
+                    if (is.null(gc2)){
+                        stop("Call to `stats::cor` failed")
+                    }
+                    gc2 <- gc2**2
+
                     lcoef <- stats::coef(lmfit)[-1]
                     if (gc2 > min.r2.after && lcoef > 0) {
                         data.frame(

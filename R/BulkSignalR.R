@@ -1,4 +1,5 @@
-#' BulkSignalR: A package to infer ligand-receptor interactions from bulk transcriptomics or proteomics
+#' BulkSignalR: A package to infer ligand-receptor
+#' interactions from bulk transcriptomics or proteomics
 #'
 #' Inference of ligand-receptor (LR) interactions from bulk
 #' (transcriptomic or proteomic) data. BulkSignalR bases its inferences

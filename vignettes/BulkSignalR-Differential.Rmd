@@ -1,13 +1,16 @@
 ---
-title: "`BulkSignalR` : </br> Inference of ligand-receptor interactions from bulk data or spatial transcriptomics"
+title: "`BulkSignalR` : </br> Inference of ligand-receptor interactions
+ from bulk data or spatial transcriptomics"
 author:
   - name: Jean-Philippe Villemin
     affiliation:
-    - Institut de Recherche en Cancérologie de Montpellier, Inserm, Montpellier, France 
+    - Institut de Recherche en Cancérologie de Montpellier,
+     Inserm, Montpellier, France 
     email: jean-philippe.villemin@inserm.fr
   - name: Jacques Colinge
     affiliation:
-    - Institut de Recherche en Cancérologie de Montpellier, Inserm, Montpellier, France 
+    - Institut de Recherche en Cancérologie de Montpellier,
+     Inserm, Montpellier, France 
     email: jacques.colinge@inserm.fr
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
 output: 
@@ -87,7 +90,8 @@ bsrinf.comp <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 ##  Technical notes
 
-Three previously described S4 objects (BSR-DataModel, BSR-Inference, BSR-Signature) 
+Three previously described S4 objects
+ (BSR-DataModel, BSR-Inference, BSR-Signature) 
 have been extented :  
 
 \
@@ -115,8 +119,10 @@ contains the count matrix into a **BSR-DataModelComp** object able to contain
 a list of such cluster pairs comparisons. This function performs this
 promotion, adding an empty list of comparisons.  
 
-`defineClusterComp` is used to define the comparison between two clusters of samples
-by using defined column indexes of the expression matrix that belong to each cluster,
+`defineClusterComp` is used to define the comparison
+ between two clusters of samples
+by using defined column indexes of the expression matrix
+ that belong to each cluster,
 and storing the result of the cluster difference statistical analysis
 obtained by an external tool such as edgeR, DESeq2, etc.
 

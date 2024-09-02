@@ -84,14 +84,15 @@ bubblePlotPathwaysLR <- function(
     filtered.brinf <- filtered.brinf[filtered.brinf$qval < qval.thres, ]
 
     if (!is.null(filter.R) | !is.null(filter.L)) {
-        filtered.brinf <- filtered.brinf[filtered.brinf$L %in% filter.L | filtered.brinf$R %in% filter.R, ]
+        filtered.brinf <- filtered.brinf[filtered.brinf$L %in% filter.L | 
+        filtered.brinf$R %in% filter.R, ]
     }
 
     filtered.brinf$LR <- paste(filtered.brinf$L, filtered.brinf$R, sep = " / ")
 
     filtered.brinf <- filtered.brinf[, c("LR", "pw.name", "LR.corr", "qval")]
     filtered.brinf$log10.qval <- -log10(filtered.brinf$qval)
-    filtered.brinf$log10.LR.corr <- -log10(abs(filtered.brinf$LR.corr)) # diff colors for neg corr?
+    filtered.brinf$log10.LR.corr <- -log10(abs(filtered.brinf$LR.corr)) 
 
     filtered.brinf <- filtered.brinf[filtered.brinf$pw.name %in% pathways, ]
 
@@ -106,8 +107,10 @@ bubblePlotPathwaysLR <- function(
     }
     limit.LR <- 50
     if (length(unique(filtered.brinf$LR)) >= limit.LR) {
-        message("Too many LR interactions detected (", length(unique(filtered.brinf$LR)), ").")
-        message("We recommend less than ", limit.LR, " LR interactions to visualize.")
+        message("Too many LR interactions detected (",
+         length(unique(filtered.brinf$LR)), ").")
+        message("We recommend less than ", limit.LR,
+         " LR interactions to visualize.")
         stop("Try to reduce (Qval-Threshold, number of pathways...).\n")
     }
 
@@ -133,7 +136,9 @@ bubblePlotPathwaysLR <- function(
         if (format == "png") {
             grDevices::png(
                 file = paste0(path, filename, ".png"),
-                width = width / 2.54, height = height / 2.54, units = "in", res = 600
+                width = width / 2.54,
+                 height = height / 2.54, units = "in",
+                  res = 600
             )
         }
 
@@ -360,7 +365,8 @@ signatureHeatmaps <- function(pathway,
         stop("Pathway is not defined in signature.")
     }
 
-    scoresPathway <- scoreLRGeneSignatures(bsrdm, bsrsig, name.by.pathway = TRUE, rownames.LRP = FALSE)
+    scoresPathway <- scoreLRGeneSignatures(bsrdm, 
+        bsrsig, name.by.pathway = TRUE, rownames.LRP = FALSE)
 
     counts <- as.data.frame(bsrdm@ncounts)
 
@@ -368,7 +374,8 @@ signatureHeatmaps <- function(pathway,
 
     counts.L <- counts[filter.L, ]
     palette.L <- "RdPu"
-    cols.L <- circlize::colorRamp2(breaks = c(-1, 0, 1), hcl_palette = palette.L, reverse = TRUE)
+    cols.L <- circlize::colorRamp2(breaks = c(-1, 0, 1),
+     hcl_palette = palette.L, reverse = TRUE)
 
     filter.R <- receptors(bsrsig)[[idx.path.sig]]
     filter.T <- tGenes(bsrsig)[[idx.path.sig]]
@@ -378,13 +385,16 @@ signatureHeatmaps <- function(pathway,
 
     counts.R <- counts[filter.R, ]
     palette.R <- "YlGn"
-    cols.R <- circlize::colorRamp2(breaks = c(-1, 0, 1), hcl_palette = palette.R, reverse = TRUE)
+    cols.R <- circlize::colorRamp2(breaks = c(-1, 0, 1),
+     hcl_palette = palette.R, reverse = TRUE)
 
     counts.T <- counts[filter.T, ]
     palette.T <- "Blues 3"
-    cols.T <- circlize::colorRamp2(breaks = c(-1, 0, 1), hcl_palette = palette.T, reverse = TRUE)
+    cols.T <- circlize::colorRamp2(breaks = c(-1, 0, 1),
+     hcl_palette = palette.T, reverse = TRUE)
 
-    cols.scoring <- circlize::colorRamp2(breaks = c(-1, 0, 1), colors = c("blue", "white", "red"))
+    cols.scoring <- circlize::colorRamp2(breaks = c(-1, 0, 1),
+     colors = c("blue", "white", "red"))
 
     abundance.samples <- dim(counts.T)[2]
     abundance.genes <- c(dim(counts.T)[1], dim(counts.R)[1], dim(counts.L)[1])
@@ -449,7 +459,8 @@ signatureHeatmaps <- function(pathway,
     }
 
     grid::grid.newpage()
-    grid::pushViewport(grid::viewport(layout = grid::grid.layout(nr = 3, nc = 2)))
+    grid::pushViewport(grid::viewport(
+        layout = grid::grid.layout(nr = 3, nc = 2)))
 
     grid::pushViewport(grid::viewport(layout.pos.row = 1, layout.pos.col = 1))
     ComplexHeatmap::draw(p.L, newpage = FALSE)
@@ -497,7 +508,8 @@ signatureHeatmaps <- function(pathway,
         title_gp = grid::gpar(fontsize = fontsize, fontface = "bold")
     )
 
-    grid::pushViewport(grid::viewport(layout.pos.row = 1, layout.pos.col = 2))
+    grid::pushViewport(grid::viewport(layout.pos.row = 1,
+     layout.pos.col = 2))
     ComplexHeatmap::draw(lgd_score, y = grid::unit(h.height, "cm"))
     ComplexHeatmap::draw(lgd_heatmap.L, y = grid::unit((h.height - 2), "cm"))
     ComplexHeatmap::draw(lgd_heatmap.R, y = grid::unit((h.height - 4), "cm"))
@@ -587,14 +599,15 @@ signatureHeatmaps <- function(pathway,
 #' )
 #' @import ComplexHeatmap
 #' @importFrom circlize colorRamp2
-simpleHeatmap <- function(mat.c, width, height,
-                          path = "./", filename = NULL,
-                          dend.row = NULL,
-                          dend.spl = NULL, cols = NULL, pointsize = 4,
-                          bottom.annotation = NULL, n.col.clust = 0, n.row.clust = 0,
-                          gap.size = 0.5, cut.p = 0.01, row.names = TRUE,
-                          column.names = TRUE, hcl.palette = NULL,
-                          reverse = FALSE, format = c("pdf", "svg", "png")) {
+simpleHeatmap <- function(mat.c, width, height, 
+    path = "./", filename = NULL, 
+    dend.row = NULL,
+    dend.spl = NULL, cols = NULL, pointsize = 4,
+    bottom.annotation = NULL, n.col.clust = 0,
+    n.row.clust = 0, cut.p = 0.01, row.names = TRUE,
+    column.names = TRUE, hcl.palette = NULL,
+    reverse = FALSE, format = c("pdf", "svg", "png")) {
+
     if (!requireNamespace("ComplexHeatmap", quietly = TRUE)) {
         stop(
             "Package \"ComplexHeatmap\" needed for this function ",
@@ -670,19 +683,24 @@ simpleHeatmap <- function(mat.c, width, height,
         if (n.col.clust > 0) {
             plot(ComplexHeatmap::Heatmap(mat.c,
                 cluster_rows = dend.row,
-                cluster_columns = dend.spl, col = cols, show_row_names = row.names,
-                show_column_names = column.names, use_raster = TRUE, raster_device = "png",
+                cluster_columns = dend.spl, col = cols,
+                show_row_names = row.names,
+                show_column_names = column.names, 
+                use_raster = TRUE, raster_device = "png",
                 raster_quality = 8, raster_by_magick = FALSE,
                 row_names_gp = grid::gpar(fontsize = pointsize),
                 show_row_dend = TRUE, bottom_annotation = bottom.annotation,
                 split = n.row.clust, gap = grid::unit(gap.size, "mm"),
-                column_split = n.col.clust, column_gap = grid::unit(gap.size, "mm")
+                column_split = n.col.clust,
+                column_gap = grid::unit(gap.size, "mm")
             ))
         } else {
             plot(ComplexHeatmap::Heatmap(mat.c,
                 cluster_rows = dend.row,
-                cluster_columns = dend.spl, col = cols, show_row_names = row.names,
-                show_column_names = column.names, use_raster = TRUE, raster_device = "png",
+                cluster_columns = dend.spl, col = cols,
+                show_row_names = row.names,
+                show_column_names = column.names, 
+                use_raster = TRUE, raster_device = "png",
                 raster_quality = 8, raster_by_magick = FALSE,
                 row_names_gp = grid::gpar(fontsize = pointsize),
                 show_row_dend = TRUE, bottom_annotation = bottom.annotation,
@@ -693,7 +711,8 @@ simpleHeatmap <- function(mat.c, width, height,
         plot(ComplexHeatmap::Heatmap(mat.c,
             cluster_rows = dend.row,
             cluster_columns = dend.spl, col = cols, show_row_names = row.names,
-            show_column_names = column.names, use_raster = TRUE, raster_device = "png",
+            show_column_names = column.names, 
+            use_raster = TRUE, raster_device = "png",
             raster_quality = 8, raster_by_magick = FALSE,
             row_names_gp = grid::gpar(fontsize = pointsize),
             show_row_dend = TRUE, bottom_annotation = bottom.annotation,
@@ -703,7 +722,8 @@ simpleHeatmap <- function(mat.c, width, height,
         plot(ComplexHeatmap::Heatmap(mat.c,
             cluster_rows = dend.row,
             cluster_columns = dend.spl, col = cols, show_row_names = row.names,
-            show_column_names = column.names, use_raster = TRUE, raster_device = "png",
+            show_column_names = column.names, 
+            use_raster = TRUE, raster_device = "png",
             raster_quality = 8, raster_by_magick = FALSE,
             row_names_gp = grid::gpar(fontsize = pointsize),
             show_row_dend = TRUE, bottom_annotation = bottom.annotation
@@ -767,7 +787,8 @@ scoreSignatures <- function(ds, ref.signatures, robust = FALSE) {
         ncounts <- ncounts(ds)
     }
     if (robust) {
-        z <- (ncounts - apply(ncounts, 1, stats::median)) / apply(ncounts, 1, stats::mad)
+        z <- (ncounts - apply(ncounts, 1, stats::median)) 
+        z <- z / apply(ncounts, 1, stats::mad)
     } else {
         z <- (ncounts - rowMeans(ncounts)) / apply(ncounts, 1, stats::sd)
     }
@@ -870,23 +891,31 @@ alluvialPlot <- function(bsrinf, keywords, type = c("L", "R", "pw.id"),
     }
 
     if (dim(subset.interactions)[1] == 0) {
-        message(paste(keywords, collapse = " "), " for ", type, " not found.", "\n")
+        message(paste(keywords, collapse = " "),
+         " for ", type, " not found.", "\n")
         stop("Try another value for filtering.")
     }
-    subset.interactions <- subset.interactions[subset.interactions$qval <= qval.thres, ]
+    subset.interactions <- subset.interactions[
+    subset.interactions$qval <= qval.thres, ]
     subset.interactions$count <- 1
-    subset.interactions <- subset.interactions[, c("L", "R", "pw.name", "count")]
+    subset.interactions <- subset.interactions[, 
+    c("L", "R", "pw.name", "count")]
 
     stratum <- ggalluvial::StatStratum
 
     pl <- ggplot2::ggplot(
         subset.interactions,
-        ggplot2::aes_string(y = "count", axis1 = "L", axis2 = "R", axis3 = "pw.name")
+        ggplot2::aes_string(y = "count", axis1 = "L", 
+            axis2 = "R", axis3 = "pw.name")
     ) +
-        ggalluvial::geom_alluvium(ggplot2::aes_string(fill = "R"), width = 1 / 12) +
-        ggalluvial::geom_stratum(width = 1 / 12, fill = "black", color = "grey") +
-        ggplot2::geom_label(stat = stratum, aes(label = ggplot2::after_stat(stratum))) +
-        ggplot2::scale_x_discrete(limits = c("L", "R", "pw.name"), expand = c(0.5, 0.5)) +
+        ggalluvial::geom_alluvium(ggplot2::aes_string(fill = "R"),
+         width = 1 / 12) +
+        ggalluvial::geom_stratum(width = 1 / 12, 
+            fill = "black", color = "grey") +
+        ggplot2::geom_label(stat = stratum, 
+            aes(label = ggplot2::after_stat(stratum))) +
+        ggplot2::scale_x_discrete(limits = c("L", "R", "pw.name"),
+         expand = c(0.5, 0.5)) +
         ggplot2::scale_fill_brewer(type = "qual", palette = "Set1") +
         ggplot2::ggtitle("Ligand-Receptor Interactions & Underlying Pathways")
 
@@ -906,14 +935,16 @@ alluvialPlot <- function(bsrinf, keywords, type = c("L", "R", "pw.id"),
         if (format == "svg") {
             grDevices::svg(
                 file = paste0(path, filename, ".svg"),
-                width = width / 2.54, height = height / 2.54
+                width = width / 2.54, 
+                height = height / 2.54
             )
         }
 
         if (format == "png") {
             grDevices::png(
                 file = paste0(path, filename, ".png"),
-                width = width / 2.54, height = height / 2.54, units = "in", res = 600
+                width = width / 2.54, 
+                height = height / 2.54, units = "in", res = 600
             )
         }
 
@@ -1019,7 +1050,8 @@ chordDiagramLR <- function(
         sep = "-"
     )
 
-    if (!is.null(pair.to.highlight) && !(pair.to.highlight %in% dataframe.bsrinf$pair)) {
+    if (!is.null(pair.to.highlight) && 
+        !(pair.to.highlight %in% dataframe.bsrinf$pair)) {
         stop(
             "Highlighted LR pair ", pair.to.highlight, " was not found for ",
             pw.id.filter, ".\n"
@@ -1028,10 +1060,12 @@ chordDiagramLR <- function(
 
     # Filters
     if (!is.null(pw.id.filter)) {
-        dataframe.bsrinf <- dataframe.bsrinf[dataframe.bsrinf$pw.id %in% pw.id.filter, ]
+        dataframe.bsrinf <- dataframe.bsrinf[
+        dataframe.bsrinf$pw.id %in% pw.id.filter, ]
     }
 
-    dataframe.bsrinf <- dataframe.bsrinf[dataframe.bsrinf$qval < qval.thres, ]
+    dataframe.bsrinf <- dataframe.bsrinf[
+    dataframe.bsrinf$qval < qval.thres, ]
 
 
     if (dim(dataframe.bsrinf)[1] == 0) {
@@ -1045,7 +1079,8 @@ chordDiagramLR <- function(
 
     dataframe.bsrinf <- dataframe.bsrinf[order(dataframe.bsrinf$qval), ]
     dataframe.bsrinf <- dataframe.bsrinf[seq_len(limit), ]
-    dataframe.bsrinf <- unique(dataframe.bsrinf[, c("ligands", "receptors", "corr", "pair")])
+    dataframe.bsrinf <- unique(dataframe.bsrinf[,
+     c("ligands", "receptors", "corr", "pair")])
 
 
     cr <- circlize::colorRamp2(c(
@@ -1053,10 +1088,12 @@ chordDiagramLR <- function(
         max(dataframe.bsrinf$corr)
     ), c("white", "#febd17"))
 
-    myList.ligands <- rep("gray25", times = length(dataframe.bsrinf$ligands))
+    myList.ligands <- rep("gray25", 
+        times = length(dataframe.bsrinf$ligands))
     names(myList.ligands) <- as.list(dataframe.bsrinf$ligands)
 
-    myList.receptors <- rep("#7fbb00", times = length(dataframe.bsrinf$receptors))
+    myList.receptors <- rep("#7fbb00", 
+        times = length(dataframe.bsrinf$receptors))
     names(myList.receptors) <- as.list(dataframe.bsrinf$receptors)
 
     myList <- c(myList.receptors, myList.ligands)

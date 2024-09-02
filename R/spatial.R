@@ -42,13 +42,16 @@
 #' @examples
 #' print("smoothSpatialCounts")
 #' if (FALSE) {
-#'     sm.bsrdm <- smoothSpatialCounts(bsrdm, areas, radius = 1.2, nnn.radius = 4)
+#'     sm.bsrdm <- smoothSpatialCounts(bsrdm, areas,
+#' radius = 1.2, nnn.radius = 4)
 #' }
 smoothSpatialCounts <- function(bsrdm, areas, nnn = 4,
                                 radius = NULL, weight.ratio = 0.5,
                                 x.col = "array_col", y.col = "array_row") {
-    if (!is.null(param(bsrdm)$spatial.smooth) && (param(bsrdm)$spatial.smooth)) {
-        warning("Spatial smoothing or ligand max has been already applied to these data")
+    if (!is.null(param(bsrdm)$spatial.smooth) && 
+        (param(bsrdm)$spatial.smooth)) {
+        warning("Spatial smoothing or ligand max ",
+            "has been already applied to these data")
     }
     if (!all(c(x.col, y.col) %in% names(areas))) {
         stop("One of x.col or y.col is not in names(areas)")
@@ -64,7 +67,8 @@ smoothSpatialCounts <- function(bsrdm, areas, nnn = 4,
         neighb <- RANN::nn2(spots, k = nnn + 1)
     } else {
         # RANN radius search
-        neighb <- RANN::nn2(spots, k = nnn + 1, radius = radius, searchtype = "radius")
+        neighb <- RANN::nn2(spots, k = nnn + 1, 
+            radius = radius, searchtype = "radius")
     }
 
     # determine weights
@@ -142,12 +146,15 @@ smoothSpatialCounts <- function(bsrdm, areas, nnn = 4,
 #' @examples
 #' print("maxLigandSpatialCounts")
 #' if (FALSE) {
-#'     max.bsrdm <- maxLigandSpatialCounts(bsrdm, areas, radius = 1.2, nnn.radius = 4)
+#'     max.bsrdm <- maxLigandSpatialCounts(bsrdm, areas,
+#'     radius = 1.2, nnn.radius = 4)
 #' }
 maxLigandSpatialCounts <- function(bsrdm, areas, nnn = 4, radius = NULL,
                                    x.col = "array_col", y.col = "array_row") {
-    if (!is.null(param(bsrdm)$spatial.smooth) && (param(bsrdm)$spatial.smooth)) {
-        warning("Spatial smoothing or ligand max has been already applied to these data")
+    if (!is.null(param(bsrdm)$spatial.smooth) && 
+        (param(bsrdm)$spatial.smooth)) {
+        warning("Spatial smoothing or ligand max has",
+        " been already applied to these data")
     }
     if (!all(c(x.col, y.col) %in% names(areas))) {
         stop("One of x.col or y.col is not in names(areas)")
@@ -160,7 +167,8 @@ maxLigandSpatialCounts <- function(bsrdm, areas, nnn = 4, radius = NULL,
         neighb <- RANN::nn2(spots, k = nnn + 1)
     } else {
         # RANN radius search
-        neighb <- RANN::nn2(spots, k = nnn + 1, radius = radius, searchtype = "radius")
+        neighb <- RANN::nn2(spots, k = nnn + 1, 
+            radius = radius, searchtype = "radius")
     }
 
     # maximize ligands in the transcriptomes
@@ -170,7 +178,8 @@ maxLigandSpatialCounts <- function(bsrdm, areas, nnn = 4, radius = NULL,
     for (i in seq_len(ncol(orig))) {
         used <- neighb$nn.idx[i, ] > 0
         if (sum(used) > 1) {
-            maxi[ligands, i] <- apply(orig[ligands, neighb$nn.idx[i, used]], 1, max)
+            maxi[ligands, i] <- apply(orig[ligands, neighb$nn.idx[i, used]],
+             1, max)
         } else {
             maxi[ligands, i] <- orig[ligands, i]
         }
@@ -374,19 +383,26 @@ spatialPlot <- function(v, areas, inter.name, rev.y = TRUE, ref.plot = FALSE,
         if (is.null(image.raster)) {
             ref <- ggplot2::ggplot(data = tissue, ggplot2::aes(x = x, y = y)) +
                 ggplot2::ggtitle("Reference tissue") +
-                ggplot2::geom_point(ggplot2::aes(color = label), size = dot.size) +
-                ggplot2::theme_set(ggplot2::theme_bw(base_size = 10)) +
-                ggplot2::theme(axis.text = ggplot2::element_text(size = axis.fs)) +
-                ggplot2::theme(axis.title = ggplot2::element_text(size = label.fs)) +
-                ggplot2::theme(legend.title = ggplot2::element_text(size = label.fs)) +
-                ggplot2::theme(legend.text = ggplot2::element_text(size = legend.fs)) +
-                ggplot2::theme(plot.title = ggplot2::element_text(size = title.fs)) +
-                ggplot2::guides(colour = ggplot2::guide_legend(
+                ggplot2::geom_point(ggplot2::aes(color = label),
+                 size = dot.size) +
+                ggplot2::theme_set(ggplot2::theme_bw(base_size = 10))+
+                ggplot2::theme(axis.text=ggplot2::element_text(
+                    size = axis.fs))+
+                ggplot2::theme(axis.title=ggplot2::element_text(
+                    size = label.fs))+
+                ggplot2::theme(legend.title=ggplot2::element_text(
+                    size = label.fs))+
+                ggplot2::theme(legend.text=ggplot2::element_text(
+                    size = legend.fs))+
+                ggplot2::theme(plot.title=ggplot2::element_text(
+                    size = title.fs))+
+                ggplot2::guides(colour=ggplot2::guide_legend(
                     override.aes = list(size = dot.size * legend.dot.factor)
                 ))
             if (!is.null(ref.colors)) {
                 if (length(unique(tissue$label)) != length(ref.colors)) {
-                    stop("The number of reference colors do not match the number of labels")
+                    stop("The number of reference colors",
+                    " do not match the number of labels")
                 }
                 ref <- ref + ggplot2::scale_color_manual(values = ref.colors)
             }
@@ -408,29 +424,43 @@ spatialPlot <- function(v, areas, inter.name, rev.y = TRUE, ref.plot = FALSE,
             # single gradient
             lr <- ggplot2::ggplot(data = tissue, ggplot2::aes(x = x, y = y)) +
                 ggplot2::ggtitle(inter.name) +
-                ggplot2::geom_point(ggplot2::aes(color = score), size = dot.size) +
-                ggplot2::scale_color_gradient(low = low.color, high = high.color) +
+                ggplot2::geom_point(ggplot2::aes(color = score),
+                 size = dot.size) +
+                ggplot2::scale_color_gradient(low = low.color, 
+                    high = high.color) +
                 ggplot2::theme_set(ggplot2::theme_bw(base_size = 10)) +
-                ggplot2::theme(axis.text = ggplot2::element_text(size = axis.fs)) +
-                ggplot2::theme(axis.title = ggplot2::element_text(size = label.fs)) +
-                ggplot2::theme(legend.title = ggplot2::element_text(size = label.fs)) +
-                ggplot2::theme(legend.text = ggplot2::element_text(size = legend.fs)) +
-                ggplot2::theme(plot.title = ggplot2::element_text(size = title.fs))
+                ggplot2::theme(axis.text = ggplot2::element_text(
+                    size = axis.fs)) +
+                ggplot2::theme(axis.title = ggplot2::element_text(
+                    size = label.fs)) +
+                ggplot2::theme(legend.title = ggplot2::element_text(
+                    size = label.fs)) +
+                ggplot2::theme(legend.text = ggplot2::element_text(
+                    size = legend.fs)) +
+                ggplot2::theme(plot.title = ggplot2::element_text(
+                    size = title.fs))
         } else {
             # dual gradient
             lr <- ggplot2::ggplot(data = tissue, ggplot2::aes(x = x, y = y)) +
                 ggplot2::ggtitle(inter.name) +
-                ggplot2::geom_point(ggplot2::aes(color = score), size = dot.size) +
+                ggplot2::geom_point(ggplot2::aes(color = score),
+                 size = dot.size) +
                 ggplot2::scale_color_gradientn(
                     colors = c(low.color, mid.color, high.color),
-                    values = scales::rescale(c(min(w) - 1e-6, 0, max(w) + 1e-6), c(0, 1))
+                    values = scales::rescale(c(min(w) - 1e-6, 0, 
+                        max(w) + 1e-6), c(0, 1))
                 ) +
                 ggplot2::theme_set(ggplot2::theme_bw(base_size = 10)) +
-                ggplot2::theme(axis.text = ggplot2::element_text(size = axis.fs)) +
-                ggplot2::theme(axis.title = ggplot2::element_text(size = label.fs)) +
-                ggplot2::theme(legend.title = ggplot2::element_text(size = label.fs)) +
-                ggplot2::theme(legend.text = ggplot2::element_text(size = legend.fs)) +
-                ggplot2::theme(plot.title = ggplot2::element_text(size = title.fs))
+                ggplot2::theme(axis.text = ggplot2::element_text(
+                    size = axis.fs)) +
+                ggplot2::theme(axis.title = ggplot2::element_text(
+                    size = label.fs)) +
+                ggplot2::theme(legend.title = ggplot2::element_text(
+                    size = label.fs)) +
+                ggplot2::theme(legend.text = ggplot2::element_text(
+                    size = legend.fs)) +
+                ggplot2::theme(plot.title = ggplot2::element_text(
+                    size = title.fs))
         }
     }
 
@@ -492,19 +522,21 @@ spatialPlot <- function(v, areas, inter.name, rev.y = TRUE, ref.plot = FALSE,
 #' if (FALSE) {
 #'     generateSpatialPlots(scores, areas, plot.folder)
 #' }
-generateSpatialPlots <- function(scores, areas, plot.folder, width = 5, height = 3,
-                                 pointsize = 8, rev.y = TRUE, ref.plot = TRUE, image.raster = NULL,
-                                 x.col = "array_col", y.col = "array_row",
-                                 label.col = "label", idSpatial.col = "idSpatial",
-                                 cut.p = 0.01, low.color = "royalblue3",
-                                 mid.color = "white", high.color = "orange",
-                                 title.fs = 12, legend.fs = 10, axis.fs = 10,
-                                 label.fs = 12, dot.size = 0.5, ref.colors = NULL) {
+generateSpatialPlots <- function(scores, areas, plot.folder, 
+    width = 5, height = 3,
+    pointsize = 8, rev.y = TRUE, ref.plot = TRUE, image.raster = NULL, 
+    x.col = "array_col", y.col = "array_row",
+    label.col = "label", idSpatial.col = "idSpatial",
+    cut.p = 0.01, low.color = "royalblue3",
+    mid.color = "white", high.color = "orange",
+    title.fs = 12, legend.fs = 10, axis.fs = 10,
+    label.fs = 12, dot.size = 0.5, ref.colors = NULL) {
     for (i in seq_len(nrow(scores))) {
         inter <- gsub("\\}", "", gsub("\\{", "", rownames(scores)[i]))
         fn <- gsub(" +/ +", "-", inter, perl = TRUE)
 
-        grDevices::pdf(paste0(plot.folder, "/interaction-plot-", fn),
+        grDevices::pdf(
+            paste0(plot.folder, "/interaction-plot-", fn),
             width = width,
             height = height, useDingbats = FALSE, pointsize = pointsize
         )
@@ -628,7 +660,8 @@ spatialIndexPlot <- function(scores, areas, out.file, ref.plot = TRUE,
     if (l * n < m) {
         l <- l + 1
     }
-    grDevices::pdf(out.file, width = n * base.h, height = l * base.v, useDingbats = FALSE, pointsize = 6)
+    grDevices::pdf(out.file, width = n * base.h, 
+        height = l * base.v, useDingbats = FALSE, pointsize = 6)
     gridExtra::grid.arrange(grobs = plots, ncol = n, nrow = l)
     grDevices::dev.off()
 } # spatialIndexPlot
@@ -649,7 +682,7 @@ spatialIndexPlot <- function(scores, areas, out.file, ref.plot = TRUE,
 #' @param R  The name of the receptor.
 #' @param ncounts  The (normalized) expression matrix with column names equal
 #' to the IDs of each location.
-#' @param areas  A data.frame containing at least the x and y
+#' @param areas  A data.frame containing at leastcluster_columns the x and y
 #' coordinates of the locations as well as the unique IDs of spatial locations.
 #' In case \code{ref.plot} is set to TRUE,
 #' a label column is required additionally.
@@ -697,15 +730,16 @@ spatialIndexPlot <- function(scores, areas, out.file, ref.plot = TRUE,
 #' }
 #' @import grid
 #' @importFrom gridExtra grid.arrange
-separatedLRPlot <- function(v, L, R, ncounts, areas, inter.name = NULL, rev.y = TRUE,
-                            ref.plot = TRUE, image.raster = NULL,
-                            x.col = "array_col", y.col = "array_row",
-                            label.col = "label", idSpatial.col = "idSpatial",
-                            cut.p = 0.01, low.color = "royalblue3",
-                            mid.color = "white", high.color = "orange",
-                            title.fs = 12, legend.fs = 10, axis.fs = 10,
-                            label.fs = 12, dot.size = 0.5, legend.dot.factor = 10,
-                            ref.colors = NULL) {
+separatedLRPlot <- function(v, L, R, ncounts, areas, 
+    inter.name = NULL, rev.y = TRUE,
+    ref.plot = TRUE, image.raster = NULL,
+    x.col = "array_col", y.col = "array_row",
+    label.col = "label", idSpatial.col = "idSpatial",
+    cut.p = 0.01, low.color = "royalblue3",
+    mid.color = "white", high.color = "orange",
+    title.fs = 12, legend.fs = 10, axis.fs = 10,
+    label.fs = 12, dot.size = 0.5, legend.dot.factor = 10,
+    ref.colors = NULL) {
     if (is.matrix(v)) {
         v <- v[paste0("{", L, "} / {", R, "}"), ]
     }
@@ -806,8 +840,8 @@ separatedLRPlot <- function(v, L, R, ncounts, areas, inter.name = NULL, rev.y = 
 #' accordingly.
 #'
 #' In case a statistics is preferred, Spearman correlation or explained variance
-#' (r2 or coefficient of determination, through linear models) are are available.
-#' They mesure the relationship
+#' (r2 or coefficient of determination, through linear models) 
+#' are available. They mesure the relationship
 #' between each individual area and \code{scores}. For the explained variance,
 #' a global value (R2) is also computed from a multi-linear model (the same as
 #' what is used for the ANOVA).
@@ -819,13 +853,14 @@ separatedLRPlot <- function(v, L, R, ncounts, areas, inter.name = NULL, rev.y = 
 #' }
 #' @import multtest
 #' @importFrom foreach %do%
-spatialAssociation <- function(scores, areas, test = c("Kruskal-Wallis", "ANOVA", "Spearman", "r2"),
-                               label.col = "label", idSpatial.col = "idSpatial",
-                               fdr.proc = c(
-                                   "BH", "Bonferroni",
-                                   "Holm", "Hochberg", "SidakSS", "SidakSD", "BY",
-                                   "ABH", "TSBH"
-                               )) {
+spatialAssociation <- function(scores, areas, 
+    test = c("Kruskal-Wallis", "ANOVA", "Spearman", "r2"),
+    label.col = "label", idSpatial.col = "idSpatial",
+    fdr.proc = c(
+   "BH", "Bonferroni",
+   "Holm", "Hochberg", "SidakSS", "SidakSD", 
+   "BY", "ABH", "TSBH")) {
+
     test <- match.arg(test)
     fdr.proc <- match.arg(fdr.proc)
     if (!(label.col %in% names(areas))) {
@@ -897,7 +932,8 @@ spatialAssociation <- function(scores, areas, test = c("Kruskal-Wallis", "ANOVA"
             }
             names(corrs) <- ul
 
-            cbind(data.frame(interaction = inter, stringsAsFactors = FALSE), corrs)
+            cbind(data.frame(interaction = inter, 
+                stringsAsFactors = FALSE), corrs)
         } else {
             # r2 from linear regressions
 
@@ -919,7 +955,8 @@ spatialAssociation <- function(scores, areas, test = c("Kruskal-Wallis", "ANOVA"
             names(r2s) <- ul
 
             cbind(
-                data.frame(interaction = inter, global.R2 = R2, stringsAsFactors = FALSE),
+                data.frame(interaction = inter, 
+                    global.R2 = R2, stringsAsFactors = FALSE),
                 r2s
             )
         }
@@ -931,7 +968,8 @@ spatialAssociation <- function(scores, areas, test = c("Kruskal-Wallis", "ANOVA"
         adj <- multtest::mt.rawp2adjp(rawp, fdr.proc)
         res$qval <- adj$adjp[order(adj$index), fdr.proc]
         label.index.stop <- ncol(res) - 1
-        res <- res[, c(seq_len(3), ncol(res), 4:label.index.stop)] # put Q-values in column 4
+        res <- res[, c(seq_len(3), 
+        ncol(res), 4:label.index.stop)] # put Q-values in column 4
     }
 
     rownames(res) <- res$interaction
@@ -941,7 +979,8 @@ spatialAssociation <- function(scores, areas, test = c("Kruskal-Wallis", "ANOVA"
 
 #' Heatmap plot of association of scores with area labels
 #'
-#' Plot a heatmap featuring Q-values or values of statistical association between
+#' Plot a heatmap featuring Q-values 
+#' or values of statistical association between
 #' L-R interaction score spatial distributions and tissue area labels.
 #'
 #' @param associations  A statistical association data.frame generated
@@ -963,8 +1002,8 @@ spatialAssociation <- function(scores, areas, test = c("Kruskal-Wallis", "ANOVA"
 #' }
 #' @import ComplexHeatmap
 #' @importFrom circlize colorRamp2
-spatialAssociationPlot <- function(associations, qval.thres = 0.01, absval.thres = 0,
-                                   colors = NULL) {
+spatialAssociationPlot <- function(associations, qval.thres = 0.01, 
+    absval.thres = 0,colors = NULL) {
     # transform and filter data
     if (sum(c("pval", "qval") %in% names(associations)) == 2) {
         # log-scale on Q-values
@@ -1074,11 +1113,13 @@ spatialAssociationPlot <- function(associations, qval.thres = 0.01, absval.thres
 #' @import ggplot2
 spatialDiversityPlot <- function(scores, associations, proj = c("PCA", "tSNE"),
                                  score.based = FALSE,
-                                 qval.thres = 0.01, val.thres = 0, with.names = FALSE,
-                                 text.fs = 2.5, legend.fs = 10, axis.fs = 10,
+                                 qval.thres = 0.01, val.thres = 0, 
+                                 with.names = FALSE, text.fs = 2.5,
+                                 legend.fs = 10, axis.fs = 10,
                                  label.fs = 12, dot.size = 1,
                                  perplexity = 10) {
-    i <- PC1 <- PC2 <- name <- label <- tSNE1 <- tSNE2 <- log.scale <- remove.col <- NULL
+    i <- PC1 <- PC2 <- name <- label <- NULL
+    tSNE1 <- tSNE2 <- log.scale <- remove.col <- NULL
 
     proj <- match.arg(proj)
 
@@ -1129,33 +1170,44 @@ spatialDiversityPlot <- function(scores, associations, proj = c("PCA", "tSNE"),
         if (score.based) {
             pca <- stats::prcomp(scores, scale. = TRUE)
         } else if (log.scale) {
-            pca <- stats::prcomp(-log10(data.matrix(associations[, -remove.col])),
+            pca <- stats::prcomp(-log10(
+                data.matrix(associations[, -remove.col])),
                 scale. = TRUE
             )
         } else {
-            pca <- stats::prcomp(data.matrix(associations[, -remove.col]), scale. = TRUE)
+            pca <- stats::prcomp(
+                data.matrix(associations[, -remove.col]), scale. = TRUE)
         }
-        dat <- data.frame(PC1 = pca$x[, 1], PC2 = pca$x[, 2], label = best.label, name = rownames(scores))
+        dat <- data.frame(PC1 = pca$x[, 1],
+         PC2 = pca$x[, 2], label = best.label, name = rownames(scores))
         if (with.names) {
-            p <- ggplot2::ggplot(data = dat, ggplot2::aes(x = PC1, y = PC2, label = name)) +
+            p <- ggplot2::ggplot(data = dat, 
+                ggplot2::aes(x = PC1, y = PC2, label = name)) +
                 ggrepel::geom_text_repel(size = text.fs, max.overlaps = Inf) +
-                ggplot2::geom_point(ggplot2::aes(color = label), size = dot.size)
+                ggplot2::geom_point(ggplot2::aes(color = label),
+                 size = dot.size)
         } else {
             p <- ggplot2::ggplot(data = dat, ggplot2::aes(x = PC1, y = PC2)) +
-                ggplot2::geom_point(ggplot2::aes(color = label), size = dot.size)
+                ggplot2::geom_point(ggplot2::aes(color = label),
+                 size = dot.size)
         }
 
         p <- p + ggplot2::theme_set(ggplot2::theme_bw(base_size = 10)) +
-            ggplot2::theme(axis.text = ggplot2::element_text(size = axis.fs)) +
-            ggplot2::theme(axis.title = ggplot2::element_text(size = label.fs)) +
-            ggplot2::theme(legend.title = ggplot2::element_text(size = label.fs)) +
-            ggplot2::theme(legend.text = ggplot2::element_text(size = legend.fs))
+            ggplot2::theme(axis.text = ggplot2::element_text(
+                size = axis.fs)) +
+            ggplot2::theme(axis.title = ggplot2::element_text(
+                size = label.fs)) +
+            ggplot2::theme(legend.title = ggplot2::element_text(
+                size = label.fs)) +
+            ggplot2::theme(legend.text = ggplot2::element_text(
+                size = legend.fs))
         p
     } else {
         if (score.based) {
             tsne <- Rtsne::Rtsne(scores, perplexity = perplexity)
         } else if (log.scale) {
-            tsne <- Rtsne::Rtsne(-log10(data.matrix(associations[, -remove.col])),
+            tsne <- Rtsne::Rtsne(-log10(
+                data.matrix(associations[, -remove.col])),
                 perplexity = perplexity, check_duplicates = FALSE
             )
         } else {
@@ -1163,21 +1215,30 @@ spatialDiversityPlot <- function(scores, associations, proj = c("PCA", "tSNE"),
                 perplexity = perplexity, check_duplicates = FALSE
             )
         }
-        dat <- data.frame(tSNE1 = tsne$Y[, 1], tSNE2 = tsne$Y[, 2], label = best.label, name = rownames(scores))
+        dat <- data.frame(tSNE1 = tsne$Y[, 1], 
+            tSNE2 = tsne$Y[, 2], label = best.label, name = rownames(scores))
         if (with.names) {
-            p <- ggplot2::ggplot(data = dat, ggplot2::aes(x = tSNE1, y = tSNE2, label = name)) +
+            p <- ggplot2::ggplot(data = dat,
+             ggplot2::aes(x = tSNE1, y = tSNE2, label = name)) +
                 ggrepel::geom_text_repel(size = text.fs) +
-                ggplot2::geom_point(ggplot2::aes(color = label), size = dot.size)
+                ggplot2::geom_point(ggplot2::aes(color = label),
+                 size = dot.size)
         } else {
-            p <- ggplot2::ggplot(data = dat, ggplot2::aes(x = tSNE1, y = tSNE2)) +
-                ggplot2::geom_point(ggplot2::aes(color = label), size = dot.size)
+            p <- ggplot2::ggplot(data = dat, 
+                ggplot2::aes(x = tSNE1, y = tSNE2)) +
+                ggplot2::geom_point(ggplot2::aes(color = label),
+                 size = dot.size)
         }
 
         p <- p + ggplot2::theme_set(ggplot2::theme_bw(base_size = 10)) +
-            ggplot2::theme(axis.text = ggplot2::element_text(size = axis.fs)) +
-            ggplot2::theme(axis.title = ggplot2::element_text(size = label.fs)) +
-            ggplot2::theme(legend.title = ggplot2::element_text(size = label.fs)) +
-            ggplot2::theme(legend.text = ggplot2::element_text(size = legend.fs))
+            ggplot2::theme(axis.text = ggplot2::element_text(
+                size = axis.fs)) +
+            ggplot2::theme(axis.title = ggplot2::element_text(
+                size = label.fs)) +
+            ggplot2::theme(legend.title = ggplot2::element_text(
+                size = label.fs)) +
+            ggplot2::theme(legend.text = ggplot2::element_text(
+                size = legend.fs))
         p
     }
 } # spatialDiversityPlot

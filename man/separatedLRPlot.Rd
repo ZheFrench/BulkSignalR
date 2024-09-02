@@ -45,7 +45,7 @@ row named "{\code{L}} / {\code{R}}" will be used.}
 \item{ncounts}{The (normalized) expression matrix with column names equal
 to the IDs of each location.}
 
-\item{areas}{A data.frame containing at least the x and y
+\item{areas}{A data.frame containing at leastcluster_columns the x and y
 coordinates of the locations as well as the unique IDs of spatial locations.
 In case \code{ref.plot} is set to TRUE,
 a label column is required additionally.}

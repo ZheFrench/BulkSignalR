@@ -41,7 +41,8 @@ setClass("BSRDataModelComp",
     prototype = list(
         initial.organism = "hsapiens",
         initial.orthologs = list("A", "B", "C"),
-        ncounts = matrix(1.0, nrow = 2, ncol = 1, dimnames = list(c("A", "B"), "C")),
+        ncounts = matrix(1.0, nrow = 2, ncol = 1,
+         dimnames = list(c("A", "B"), "C")),
         log.transformed = FALSE,
         normalization = "UQ",
         param = list(spatial.smooth = FALSE),
@@ -277,7 +278,8 @@ setMethod("defineClusterComp", "BSRDataModelComp", function(obj, colA,
         stop("stats must be a data.frame")
     }
     if (!all(c("pval", "logFC", "expr") %in% names(stats))) {
-        stop("stats data.frame must contain columns named 'pval', 'logFC', and 'expr'")
+        stop("stats data.frame must contain",
+            " columns named 'pval', 'logFC', and 'expr'")
     }
     if (nrow(stats) != nrow(ncounts(obj))) {
         stop("stats and ncounts(obj) number of rows differ")
@@ -542,8 +544,9 @@ if (!isGeneric("initialInference")) {
 #' use.full.network is set to FALSE.
 #'
 #' In addition to statistical significance estimated according to BulkSignalR
-#' statistical model, we compute SingleCellSignalR original LR-score, based on L and R
-#' cluster average expression. In the paracrine case, L average expression
+#' statistical model, we compute SingleCellSignalR original LR-score,
+#' based on L and R cluster average expression. 
+#' In the paracrine case, L average expression
 #' is taken from the source cluster.
 #'
 #' @return A BSRInferenceComp object with initial inferences set.
@@ -572,7 +575,8 @@ if (!isGeneric("initialInference")) {
 #' # infer ligand-receptor interactions from the comparison
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #' @importFrom methods new
-setMethod("initialInference", "BSRDataModelComp", function(obj, cmp.name, src.cmp.name = NULL, rank.p = 0.55,
+setMethod("initialInference", "BSRDataModelComp", function(obj, cmp.name, 
+    src.cmp.name = NULL, rank.p = 0.55,
     max.pval = 0.01, min.logFC = 1, neg.receptors = FALSE,
     pos.targets = FALSE, neg.targets = FALSE,
     min.t.logFC = 0.5, restrict.genes = NULL,
@@ -586,10 +590,12 @@ setMethod("initialInference", "BSRDataModelComp", function(obj, cmp.name, src.cm
         )) {
     
     if (!(cmp.name %in% names(comp(obj)))) {
-        stop("cmp.name must exist in the names of comparisons contained in obj")
+        stop("cmp.name must exist in the names ",
+            "of comparisons contained in obj")
     }
     if (!is.null(src.cmp.name) && !(src.cmp.name %in% names(comp(obj)))) {
-        stop("src.cmp.name must exist in the names of comparisons contained in obj")
+        stop("src.cmp.name must exist in the names",
+        " of comparisons contained in obj")
     }
     reference <- match.arg(reference)
     fdr.proc <- match.arg(fdr.proc)
@@ -659,7 +665,8 @@ setMethod("initialInference", "BSRDataModelComp", function(obj, cmp.name, src.cm
     inf.param$rank.p <- rank.p
 
     # compute P-values
-    inter <- .pValuesRegulatedLR(pairs, param(obj), rank.p = rank.p, fdr.proc = fdr.proc)
+    inter <- .pValuesRegulatedLR(pairs, 
+        param(obj), rank.p = rank.p, fdr.proc = fdr.proc)
 
     # compute LR-score for compatibility with SingleCellSignalR version 1
     if (is.null(scc)) {
@@ -712,8 +719,10 @@ setMethod("initialInference", "BSRDataModelComp", function(obj, cmp.name, src.cm
             "rank", "len", "rank.pval", "rank.corr",
             "LR.score", "L.expr", "R.expr"
         )],
-        ligands = ligands, receptors = receptors, t.genes = tg, tg.corr = tgcorr,
-        tg.pval = tgpval, tg.logFC = tglogFC, tg.expr = tgexpr, inf.param = inf.param,
+        ligands = ligands, receptors = receptors, t.genes = tg, 
+        tg.corr = tgcorr,
+        tg.pval = tgpval, tg.logFC = tglogFC, tg.expr = tgexpr, 
+        inf.param = inf.param,
         cmp.name = cmp.name, src.cmp.name = src.cmp.name.char
     )
 }) # initialInference
@@ -786,8 +795,10 @@ if (!isGeneric("scoreLRGeneSignatures")) {
 #' @importFrom foreach %do% %dopar%
 #' @importFrom methods is
 setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
-                                                                sig, LR.weight = 0.5, robust = FALSE,
-                                                                name.by.pathway = FALSE, abs.z.score = FALSE, rownames.LRP = FALSE) {
+    sig, LR.weight = 0.5, robust = FALSE,
+    name.by.pathway = FALSE, abs.z.score = FALSE,
+    rownames.LRP = FALSE) {
+    
     if (!is(sig, "BSRSignatureComp")) {
         stop("sig must be a BSRSignature object")
     }
@@ -841,7 +852,8 @@ setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
         ncounts <- 2**ncounts
     }
     if (robust) {
-        z <- (ncounts - apply(ncounts, 1, stats::median)) / apply(ncounts, 1, stats::mad)
+        z <- (ncounts - apply(ncounts, 1, stats::median)) 
+        z <- z / apply(ncounts, 1, stats::mad)
     } else {
         z <- (ncounts - rowMeans(ncounts)) / apply(ncounts, 1, stats::sd)
     }
@@ -873,7 +885,8 @@ setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
         }
     }
 
-    res <- matrix(0, nrow = length(pathways), ncol = ncol(ncounts), dimnames = list(pwn, colnames(ncounts)))
+    res <- matrix(0, nrow = length(pathways),
+     ncol = ncol(ncounts), dimnames = list(pwn, colnames(ncounts)))
     for (i in seq_len(length(pathways))) {
         # average ligand z-score
         zz <- z[ligands[[i]], ]

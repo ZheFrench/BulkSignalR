@@ -45,8 +45,9 @@ Perform receptor downstream analysis with
 ligand-receptor pairs selected from the same randomized data.
 }
 \details{
-A large number of correlations (ligand-receptor and receptor-downstream
-  target genes) is reported in each randomized matrix. Therefore,
+A large number of correlations 
+  (ligand-receptor and receptor-downstream target genes) 
+  is reported in each randomized matrix. Therefore,
   \code{n.rand} should be
   given a modest value to avoid unnecessarily long computations.
 

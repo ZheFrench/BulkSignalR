@@ -14,7 +14,9 @@
 
     assign("BulkSignalR_CACHEDIR", cacheDir, envir = as.environment(nameEnv))
 
-    urlDatabase <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/database/SignalR.db"
+    url <- "https://partage-dev.montp.inserm.fr:9192"
+    urlDatabase <- paste0(url,
+        "/CBSB/SignalR/database/SignalR.db")
     assign("BulkSignalR_DB_URL", urlDatabase, envir = as.environment(nameEnv))
 
     createDatabase(onRequest = FALSE)
@@ -26,16 +28,19 @@
     ################################
     ##   Resource Cache Files   ###
     ################################
+    urlGo <- paste0(url,
+        "/CBSB/SignalR/resources/gobp.rds")
+    urlReactome <- paste0(url,
+        "/CBSB/SignalR/resources/reactome.rds")
+    urlNetwork <- paste0(url,
+        "/CBSB/SignalR/resources/Network.rds")
 
-    urlGo <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/resources/gobp.rds"
-    urlReactome <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/resources/reactome.rds"
-    # urlNetwork <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/resources/PwC_ReactomeKEGG.rds"
-    urlNetwork <- "https://partage-dev.montp.inserm.fr:9192/CBSB/SignalR/resources/Network.rds"
-
-    assign("BulkSignalR_GO_URL", urlGo, envir = as.environment(nameEnv))
-    assign("BulkSignalR_Reactome_URL", urlReactome, envir = as.environment(nameEnv))
-    assign("BulkSignalR_Network_URL", urlNetwork, envir = as.environment(nameEnv))
-
+    assign("BulkSignalR_GO_URL", urlGo, 
+        envir = as.environment(nameEnv))
+    assign("BulkSignalR_Reactome_URL", urlReactome, 
+        envir = as.environment(nameEnv))
+    assign("BulkSignalR_Network_URL", urlNetwork, 
+        envir = as.environment(nameEnv))
 
     createResources(onRequest = FALSE)
 

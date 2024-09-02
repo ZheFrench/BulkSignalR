@@ -64,6 +64,7 @@ the central location is augmented according to
 \examples{
 print("smoothSpatialCounts")
 if (FALSE) {
-    sm.bsrdm <- smoothSpatialCounts(bsrdm, areas, radius = 1.2, nnn.radius = 4)
+    sm.bsrdm <- smoothSpatialCounts(bsrdm, areas,
+radius = 1.2, nnn.radius = 4)
 }
 }

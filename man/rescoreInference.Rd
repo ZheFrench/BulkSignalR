@@ -101,6 +101,7 @@ bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
 bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 # rescore
-bsrinf.less <- rescoreInference(bsrinf, param = param(bsrdm.comp), rank.p = 0.75)
+bsrinf.less <- rescoreInference(bsrinf, 
+param = param(bsrdm.comp), rank.p = 0.75)
 
 }

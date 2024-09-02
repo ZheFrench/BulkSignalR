@@ -1,13 +1,16 @@
 ---
-title: "`BulkSignalR` : </br> Inference of ligand-receptor interactions from bulk data or spatial transcriptomics"
+title: "`BulkSignalR` : </br> Inference of ligand-receptor interactions 
+from bulk data or spatial transcriptomics"
 author:
   - name: Jean-Philippe Villemin
     affiliation:
-    - Institut de Recherche en Cancérologie de Montpellier, Inserm, Montpellier, France 
+    - Institut de Recherche en Cancérologie de Montpellier,
+     Inserm, Montpellier, France 
     email: jean-philippe.villemin@inserm.fr
   - name: Jacques Colinge
     affiliation:
-    - Institut de Recherche en Cancérologie de Montpellier, Inserm, Montpellier, France 
+    - Institut de Recherche en Cancérologie de Montpellier,
+     Inserm, Montpellier, France 
     email: jacques.colinge@inserm.fr
 date: "`r format(Sys.Date(), '%m/%d/%Y')`"
 abstract: > 
@@ -212,7 +215,7 @@ str(bsrdm)
 ## Formal class 'BSRDataModel' [package "BulkSignalR"] with 6 slots
 ##   ..@ initial.organism : chr "hsapiens"
 ##   ..@ initial.orthologs: list()
-##   ..@ ncounts          : num [1:16822, 1:26] 1286 3.38 1295.01 2044.52 493.66 ...
+##   ..@ ncounts : num [1:16822, 1:26] 1286 3.38 ...
 ##   .. ..- attr(*, "dimnames")=List of 2
 ##   .. .. ..$ : chr [1:16822] "TSPAN6" "TNMD" "DPM1" "SCYL3" ...
 ##   .. .. ..$ : chr [1:26] "SDC16" "SDC15" "SDC14" "SDC13" ...
@@ -241,7 +244,7 @@ str(bsrdm)
 ## Formal class 'BSRDataModel' [package "BulkSignalR"] with 6 slots
 ##   ..@ initial.organism : chr "hsapiens"
 ##   ..@ initial.orthologs: list()
-##   ..@ ncounts          : num [1:16822, 1:26] 1286 3.38 1295.01 2044.52 493.66 ...
+##   ..@ ncounts          : num [1:16822, 1:26] 1286 493.66 ...
 ##   .. ..- attr(*, "dimnames")=List of 2
 ##   .. .. ..$ : chr [1:16822] "TSPAN6" "TNMD" "DPM1" "SCYL3" ...
 ##   .. .. ..$ : chr [1:26] "SDC16" "SDC15" "SDC14" "SDC13" ...
@@ -308,14 +311,14 @@ head(LRinter.dataframe[
 ])
 ```
 
-| **L**  | **R** | **LR.corr** | **pw.id**     | **pw.name**                                          |  **pval** |  **qval** |
-|--------|-------|------------:|---------------|------------------------------------------------------|----------:|----------:|
-| A2M    | LRP1  |   0.5391453 | R-HSA-196854  | Metabolism of vitamins and cofactors                 | 0.0200711 | 0.0260773 |
-| A2M    | LRP1  |   0.5391453 | R-HSA-2173782 | Binding and Uptake of Ligands by Scavenger Receptors | 0.0181048 | 0.0239389 |
-| A2M    | LRP1  |   0.5391453 | R-HSA-2187338 | Visual phototransduction                             | 0.0174728 | 0.0232013 |
-| A2M    | LRP1  |   0.5391453 | R-HSA-6806667 | Metabolism of fat-soluble vitamins                   | 0.0112186 | 0.0161057 |
-| A2M    | LRP1  |   0.5391453 | R-HSA-975634  | Retinoid metabolism and transport                    | 0.0112186 | 0.0161057 |
-| ADAM10 | AXL   |   0.4441026 | R-HSA-194138  | Signaling by VEGF                                    | 0.0029121 | 0.0056264 |
+| **L**  | **R** | **LR.corr** | **pw.id** | **pw.name** | **qval** |
+|--------|-------|------------:|---------------|---|----------:|
+| A2M    | LRP1  |   0.53 | R-HSA-196854  | ... | 0.026 |
+| A2M    | LRP1  |   0.53 | R-HSA-2173782 | ... | 0.023 |
+| A2M    | LRP1  |   0.53 | R-HSA-2187338 | ... | 0.023 |
+| A2M    | LRP1  |   0.53 | R-HSA-6806667 | ... | 0.016 |
+| A2M    | LRP1  |   0.53 | R-HSA-975634  | ... | 0.016 |
+| ADAM10 | AXL   |   0.44 | R-HSA-194138  | ... | 0.005|
 
 \
 
@@ -739,7 +742,8 @@ L-R interaction gene signature scores at their spatial coordinates with a
 potential reference plot (raw tissue image or user-defined areas) on the side.
 
 In the 
-[BulkSignalR github companion](https://github.com/jcolinge/BulkSignalR_companion),
+[BulkSignalR github companion](
+https://github.com/jcolinge/BulkSignalR_companion),
 we provide scripts to retrieve ST raw data that are the starting point 
 to execute our workflow in this specific case.  
 
@@ -875,7 +879,8 @@ latter in the form of a heatmap.
 ```{r spatialAssociation , eval=FALSE}
 # statistical association with tissue areas based on correlations
 # For display purpose, we only use a subset here
-assoc.bsr.corr <- spatialAssociation(scores.red[c(1:25), ], areas, test = "Spearman")
+assoc.bsr.corr <- spatialAssociation(scores.red[c(1:25), ],
+ areas, test = "Spearman")
 
 png("../man/figures/spatialAssociation_clean.png", width = 400, height = 400)
 spatialAssociationPlot(assoc.bsr.corr)
@@ -892,7 +897,8 @@ assess diversity among L-R interaction spatial distributions over
 an entire dataset. Other function as `generateSpatialPlots` can generate on disk
 multiple individual spatial plots.
 Note that we also describe more diverse use cases in the 
-[BulkSignalR github companion](https://github.com/jcolinge/BulkSignalR_companion). 
+[BulkSignalR github companion](
+https://github.com/jcolinge/BulkSignalR_companion). 
 
 See the reference manual for all the details.  
   
@@ -914,7 +920,9 @@ immune.signatures <- immune.signatures[immune.signatures$signature %in% c(
     "NK cells", "T cells", "T regulatory cells"
 ), ]
 data("tme.signatures", package = "BulkSignalR")
-signatures <- rbind(immune.signatures, tme.signatures[tme.signatures$signature %in% c("Endothelial cells", "Fibroblasts"), ])
+signatures <- rbind(immune.signatures,
+ tme.signatures[tme.signatures$signature %in%
+  c("Endothelial cells", "Fibroblasts"), ])
 tme.scores <- scoreSignatures(bsrdm, signatures)
 
 # assign cell types to interactions
@@ -999,7 +1007,8 @@ pts <- data.frame(x = as.numeric(cf$s[colnames(r.m.s)]), cty = colnames(r.m.s))
 stripchart(x ~ cty, data = pts, add = TRUE, pch = 19, col = "red")
 par(op)
 for (cty in rownames(tme.scores)) {
-    cat(cty, ": P=", sum(r.m.s[, cty] >= cf$s[cty]) / nrow(r.m.s), "\n", sep = "")
+    cat(cty, ": P=", sum(r.m.s[, cty] >= cf$s[cty]) / nrow(r.m.s),
+     "\n", sep = "")
 }
 ```
 ![celltypeFreqRobust](../man/figures/cellTypeFrequencyAndRobustness.png)

@@ -339,7 +339,7 @@ setMethod(
 )
 
 
-# Rescoring & updating ================================================================
+# Rescoring & updating ===========
 
 if (!isGeneric("rescoreInference")) {
     if (is.function("rescoreInference")) {
@@ -394,9 +394,11 @@ if (!isGeneric("rescoreInference")) {
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #'
 #' # rescore
-#' bsrinf.less <- rescoreInference(bsrinf, param = param(bsrdm.comp), rank.p = 0.75)
+#' bsrinf.less <- rescoreInference(bsrinf, 
+#' param = param(bsrdm.comp), rank.p = 0.75)
 #'
-setMethod("rescoreInference", "BSRInferenceComp", function(obj, param, rank.p = 0.55,
+setMethod("rescoreInference", "BSRInferenceComp", function(obj, param, 
+    rank.p = 0.55,
     fdr.proc = c("BH", "Bonferroni", "Holm",
     "Hochberg", "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
     )) {
@@ -430,7 +432,8 @@ setMethod("rescoreInference", "BSRInferenceComp", function(obj, param, rank.p = 
         # P-values > rank.pval is given by a binomial with success rate
         # equal to the probability to get a P-value > rank.pval, i.e.,
         # 1-rank.pval. If rank.pval is low (i.e., highly significant),
-        # it becomes difficult to get as little as r-1 P-values > rank.pval by chance!
+        # it becomes difficult to get as little 
+        # as r-1 P-values > rank.pval by chance!
         p.rt <- stats::pbinom(r - 1, len, 1 - rank.pval) # cdf is punif here!
         pairs$pval[i] <- p.lr * p.rt
         pairs$rank.pval[i] <- rank.pval
@@ -615,10 +618,14 @@ setMethod("updateInference", "BSRInferenceComp", function(obj, bsrcc,
     inter$L.expr <- L.stats[inter$L, "expr"]
     inter$R.expr <- R.stats[inter$R, "expr"]
 
-    # if (is.null(src.bsrcc))
-    #   corlr <- stats::cor(t(ncounts[, c(colA(bsrcc),colB(bsrcc))]), method = "spearman")
-    # else
-    #   corlr <- stats::cor(t(ncounts[, c(colA(bsrcc),colA(src.bsrcc))]), method = "spearman")
+    # if (is.null(src.bsrcc)){
+    #   corlr <- stats::cor(t(ncounts[, c(colA(bsrcc),colB(bsrcc))]),
+    # method = "spearman")
+    # }
+    # else {
+    #   corlr <- stats::cor(t(ncounts[, c(colA(bsrcc),colA(src.bsrcc))]),
+    # method = "spearman")
+    #}
     # for (i in seq_len(nrow(inter)))
     #   inter$LR.corr[i] <- corlr[inter$L[i], inter$R[i]]
     inter$LR.corr <- 1
@@ -652,7 +659,8 @@ setMethod("updateInference", "BSRInferenceComp", function(obj, bsrcc,
     p <- p[good]
     e <- e[good]
 
-    # assign correct logFC, P-values, correlations, and expression to the targets
+    # assign correct logFC, P-values, 
+    # correlations, and expression to the targets
     # and select the targets
     keep <- NULL
     for (i in seq_len(nrow(inter))) {
@@ -693,7 +701,8 @@ setMethod("updateInference", "BSRInferenceComp", function(obj, bsrcc,
             inter[i, "len"] <- len
             rank <- min(max(1, trunc(rank.p * len)), len)
             inter[i, "rank"] <- rank
-            # rank.corr and rank.pval are updated by calling rescoreInference() below
+            # rank.corr and rank.pval are updated by
+            #  calling rescoreInference() below
             keep <- c(keep, TRUE)
         }
     }
@@ -1012,7 +1021,9 @@ setMethod("reduceToLigand", "BSRInferenceComp", function(obj) {
     for (L in unique(pairs$L)) {
         rec <- pairs[pairs$L == L, ]
         k <- which.min(rec$pval)
-        j <- which(pairs$L == L & pairs$R == rec$R[k] & pairs$pw.id == rec$pw.id[k])
+        j <- which(pairs$L == L & 
+            pairs$R == rec$R[k] & 
+            pairs$pw.id == rec$pw.id[k])
         ligands <- c(ligands, list(L))
         receptors <- c(receptors, list(unique(rec$R)))
         t.genes <- c(t.genes, obj@t.genes[j])

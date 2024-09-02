@@ -26,9 +26,15 @@ createResources <- function(onRequest = TRUE, verbose = FALSE) {
 
     # Do it once, onLoad
     if (!dir.exists(resourcesCacheDir) | onRequest) {
-        .cacheAdd(fpath = BulkSignalR_GO_URL, cacheDir = resourcesCacheDir, resourceName = "GO-BP", verbose = verbose)
-        .cacheAdd(fpath = BulkSignalR_Reactome_URL, cacheDir = resourcesCacheDir, resourceName = "Reactome", verbose = verbose)
-        .cacheAdd(fpath = BulkSignalR_Network_URL, cacheDir = resourcesCacheDir, resourceName = "Network", verbose = verbose)
+        .cacheAdd(fpath = BulkSignalR_GO_URL,
+         cacheDir = resourcesCacheDir, 
+         resourceName = "GO-BP", verbose = verbose)
+        .cacheAdd(fpath = BulkSignalR_Reactome_URL,
+         cacheDir = resourcesCacheDir, 
+         resourceName = "Reactome", verbose = verbose)
+        .cacheAdd(fpath = BulkSignalR_Network_URL,
+         cacheDir = resourcesCacheDir, 
+         resourceName = "Network", verbose = verbose)
     }
 
     return(invisible(NULL))
@@ -70,28 +76,35 @@ getResource <- function(resourceName = NULL, cache = FALSE) {
 
         bfc <- BiocFileCache::BiocFileCache(resourcesCacheDir, ask = FALSE)
 
-        dataframe <- .readRDSFromCache(bfc = bfc, resourceName = resourceName)
+        dataframe <- .readRDSFromCache(bfc = bfc,
+         resourceName = resourceName)
 
         # Due to the fact React and Go are organized differently
         if (resourceName == "Reactome") {
-            if (!all(c("Reactome ID", "Gene name", "Reactome name") %in% colnames(dataframe))) {
-                cli::cli_alert_danger("Colnames of raw data are not well defined.\n")
+            if (!all(
+                c("Reactome ID", "Gene name", "Reactome name") %in% 
+                colnames(dataframe))) {
+                cli::cli_alert_danger("Colnames are not well defined.\n")
                 stop()
             }
-            dataframe <- dataframe[, c("Reactome name", "Gene name", "Reactome ID")]
+            dataframe <- dataframe[, 
+            c("Reactome name", "Gene name", "Reactome ID")]
         }
 
         if (resourceName == "GO-BP") {
-            if (!all(c("GO ID", "Gene name", "GO name") %in% colnames(dataframe))) {
-                cli::cli_alert_danger("Colnames of raw data are not well defined.\n")
+            if (!all(
+                c("GO ID", "Gene name", "GO name") %in% 
+                colnames(dataframe))) {
+                cli::cli_alert_danger("Colnames are not well defined.\n")
                 stop()
             }
             dataframe <- dataframe[, c("GO ID", "Gene name", "GO name")]
         }
 
         if (resourceName == "Network") {
-            if (!all(c("a.gn", "type", "b.gn") %in% colnames(dataframe))) {
-                cli::cli_alert_danger("Colnames of raw data are not well defined.\n")
+            if (!all(
+                c("a.gn", "type", "b.gn") %in% colnames(dataframe))) {
+                cli::cli_alert_danger("Colnames are not well defined.\n")
                 stop()
             }
             dataframe <- dataframe[, c("a.gn", "type", "b.gn")]
@@ -254,14 +267,20 @@ resetPathwaysFromFile <- function(file,
     )
 
     if (resourceName == "Reactome") {
-        if (!all(c("Reactome ID", "Gene name", "Reactome name") %in% names(db))) {
-            cli::cli_alert_danger("Colnames should be defined with specific names.\n")
-            stop("Three columns must defined as 'Reactome ID','Gene name','Reactome name'.")
+        if (!all(
+            c("Reactome ID", "Gene name", "Reactome name") %in% 
+            names(db))) {
+            mess <- "Colnames should be defined with specific names."
+            cli::cli_alert_danger(mess)
+            stop("Three columns must defined as",
+                " 'Reactome ID','Gene name','Reactome name'.")
         }
     } else if (resourceName == "GO-BP") {
         if (!all(c("GO ID", "Gene name", "GO name") %in% names(db))) {
-            cli::cli_alert_danger("Colnames should be defined with specific names.\n")
-            stop("Three columns must defined as 'GO ID','Gene name','GO name'.")
+            mess <- "Colnames should be defined with specific names."
+            cli::cli_alert_danger(mess)
+            stop("Three columns must defined as",
+            " 'GO ID','Gene name','GO name'.")
         }
     } else {
         cli::cli_alert_danger("Resource name is not well defined.\n")
@@ -290,7 +309,8 @@ resetPathwaysFromFile <- function(file,
 
     if (!all(c("exactSource", "geneSymbols") %in% names(data[[1]]))) {
         cli::cli_alert_danger("Json format is invalid.\n")
-        stop("Json must follow the standard from The Molecular Signatures Database (MSigDB).")
+        stop("Json must follow the standard",
+        " from The Molecular Signatures Database (MSigDB).")
     }
 
     db <- foreach::foreach(
@@ -298,9 +318,12 @@ resetPathwaysFromFile <- function(file,
         .combine = "rbind"
     ) %dopar% {
         data.frame(
-            pathwayID = rep(data[[indexPathway]]$exactSource, length(data[[indexPathway]]$exactSource)),
-            geneName = unlist(data[[indexPathway]]$geneSymbols)[seq_len(length(unlist(data[[indexPathway]]$geneSymbols)))],
-            pathwayName = rep(names(data)[[indexPathway]], length(names(data)[[indexPathway]]))
+            pathwayID = rep(data[[indexPathway]]$exactSource,
+             length(data[[indexPathway]]$exactSource)),
+            geneName = unlist(data[[indexPathway]]$geneSymbols)[
+            seq_len(length(unlist(data[[indexPathway]]$geneSymbols)))],
+            pathwayName = rep(names(data)[[indexPathway]], 
+                length(names(data)[[indexPathway]]))
         )
     }
 
@@ -367,7 +390,8 @@ resetPathwaysFromFile <- function(file,
     # Compute indice of pathway
     ii <- 1
     for (i in seq_len(nn)) {
-        while ((read2[ii] != geneset.descriptions[i]) | (read2[ii + 1] != geneset.ids[i])) {
+        while ((read2[ii] != geneset.descriptions[i]) |
+         (read2[ii + 1] != geneset.ids[i])) {
             ii <- ii + 1
         }
         ox[i] <- ii
@@ -407,8 +431,10 @@ resetPathwaysFromFile <- function(file,
 
     # Due to the fact React and Go are organized differently
     if (resourceName == "Reactome") {
-        names(dataframeFromGmt) <- c("Reactome name", "Gene name", "Reactome ID")
-        dataframeFromGmt <- dataframeFromGmt[c("Reactome ID", "Gene name", "Reactome name")]
+        names(dataframeFromGmt) <- 
+        c("Reactome name", "Gene name", "Reactome ID")
+        dataframeFromGmt <- dataframeFromGmt[
+        c("Reactome ID", "Gene name", "Reactome name")]
     }
 
     if (resourceName == "GO-BP") {

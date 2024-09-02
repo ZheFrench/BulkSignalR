@@ -123,14 +123,17 @@ assignCellTypesToInteractions <- function(bsrdm, bsrinf, ct.scores,
                         x = xL, y = y, lambda = cvfit$lambda.min,
                         lower.limits = lb, upper.limits = ub
                     )
-                    MAE <- as.vector(glmnet::assess.glmnet(lasso.fit.l, newx = xL, newy = y)$mae)
+                    MAE <- as.vector(glmnet::assess.glmnet(lasso.fit.l,
+                     newx = xL, newy = y)$mae)
                     p <- stats::predict(lasso.fit.l, newx = xL)
                     gc2 <- suppressWarnings(stats::cor(y, p))**2
                     lcoef <- stats::coef(lasso.fit.l)[-1, 1]
                     if (gc2 > min.r2.after && sum(lcoef > 0) > 0) {
                         data.frame(
-                            L = inter$L[i], R = inter$R[i], cell.type = names(lcoef)[lcoef > 0],
-                            weight = lcoef[lcoef > 0], MAE = MAE, r2 = gc2[1, 1],
+                            L = inter$L[i], R = inter$R[i], 
+                            cell.type = names(lcoef)[lcoef > 0],
+                            weight = lcoef[lcoef > 0], MAE = MAE, 
+                            r2 = gc2[1, 1],
                             alg = "LASSO", stringsAsFactors = FALSE
                         )
                     } else {
@@ -145,8 +148,10 @@ assignCellTypesToInteractions <- function(bsrdm, bsrinf, ct.scores,
                     lcoef <- stats::coef(lmfit)[-1]
                     if (gc2 > min.r2.after && lcoef > 0) {
                         data.frame(
-                            L = inter$L[i], R = inter$R[i], cell.type = colnames(x)[good],
-                            weight = lcoef, MAE = mean(abs(p - y)), r2 = gc2, alg = "lm",
+                            L = inter$L[i], R = inter$R[i], 
+                            cell.type = colnames(x)[good],
+                            weight = lcoef, MAE = mean(abs(p - y)), 
+                            r2 = gc2, alg = "lm",
                             stringsAsFactors = FALSE
                         )
                     } else {
@@ -156,7 +161,8 @@ assignCellTypesToInteractions <- function(bsrdm, bsrinf, ct.scores,
             } else {
                 # Spearman correlation only
                 data.frame(
-                    L = inter$L[i], R = inter$R[i], cell.type = colnames(good)[good], r2 = c2[good],
+                    L = inter$L[i], R = inter$R[i], 
+                    cell.type = colnames(good)[good], r2 = c2[good],
                     alg = "Spearman.cor", stringsAsFactors = FALSE
                 )
             }
@@ -176,7 +182,8 @@ assignCellTypesToInteractions <- function(bsrdm, bsrinf, ct.scores,
 #' Generate a data.frame including all the links between cell types
 #' mediated by L-R interactions with their respective weights.
 #'
-#' @param lr  The data.frame output by \code{"\link{assignCellTypesToInteractions}"}.
+#' @param lr  The data.frame output by
+#' \code{"\link{assignCellTypesToInteractions}"}.
 #' @param autocrine  A logical indicating whether autocrine interactions should
 #' be included.
 #'
@@ -225,23 +232,27 @@ cellularNetworkTable <- function(lr, autocrine = FALSE) {
     keys <- paste(lr$L, lr$R, sep = "-")
     t <- table(keys)
     if (sum(t > 1) > 1) {
-        nt <- foreach::foreach(key = names(t)[t > 1], .combine = rbind) %do% {
+        nt <- foreach::foreach(key = names(t)[t > 1], 
+            .combine = rbind) %do% {
             rows <- which(keys == key)
             L <- lr$L[rows[1]]
             R <- lr$R[rows[1]]
             r2 <- lr$r2[rows[1]]
-            foreach::foreach(i = seq_len(length(rows) - 1), .combine = rbind) %do% {
+            foreach::foreach(i = seq_len(length(rows) - 1), 
+                .combine = rbind) %do% {
                 row.1 <- rows[i]
                 CT1 <- lr$cell.type[row.1]
                 w.1 <- lr$weight[row.1]
-                foreach::foreach(j = i + seq_len(length(rows) - i), .combine = rbind) %do% {
+                foreach::foreach(j = i + seq_len(length(rows) - i), 
+                    .combine = rbind) %do% {
                     row.2 <- rows[j]
                     CT2 <- lr$cell.type[row.2]
                     w.2 <- lr$weight[row.2]
                     data.frame(
-                        L = L, R = R, inter = key, CT1 = CT1, CT2 = CT2, r2 = r2, weight.1 = w.1,
-                        weight.2 = w.2, score = sqrt(w.1 * w.2), type = "paracrine",
-                        stringsAsFactors = FALSE
+                        L = L, R = R, inter = key, CT1 = CT1, 
+                        CT2 = CT2, r2 = r2, weight.1 = w.1,
+                        weight.2 = w.2, score = sqrt(w.1 * w.2), 
+                        type = "paracrine", stringsAsFactors = FALSE
                     )
                 }
             }
@@ -253,7 +264,8 @@ cellularNetworkTable <- function(lr, autocrine = FALSE) {
     # paracrine
     if (autocrine) {
         if (sum(t == 1) > 1) {
-            nt <- rbind(nt, foreach::foreach(key = names(t)[t == 1], .combine = rbind) %do% {
+            nt <- rbind(nt, foreach::foreach(key = names(t)[t == 1], 
+                .combine = rbind) %do% {
                 i <- which(keys == key)
                 L <- lr$L[i]
                 R <- lr$R[i]
@@ -261,9 +273,10 @@ cellularNetworkTable <- function(lr, autocrine = FALSE) {
                 CT1 <- lr$cell.type[i]
                 w.1 <- lr$weight[i]
                 data.frame(
-                    L = L, R = R, inter = key, CT1 = CT1, CT2 = CT1, r2 = r2, weight.1 = w.1,
-                    weight.2 = w.1, score = w.1, type = "autocrine",
-                    stringsAsFactors = FALSE
+                    L = L, R = R, inter = key, CT1 = CT1, 
+                    CT2 = CT1, r2 = r2, weight.1 = w.1,
+                    weight.2 = w.1, score = w.1, 
+                    type = "autocrine", stringsAsFactors = FALSE
                 )
             })
         }
@@ -371,8 +384,10 @@ summarizedCellularNetwork <- function(tab) {
     sscore <- sum(tab$score)
     ct <- unique(tab[, c("CT1", "CT2")])
     sum.tab <- foreach::foreach(i = seq_len(nrow(ct)), .combine = rbind) %do% {
-        parsum <- sum(tab[tab$CT1 == ct[i, "CT1"] & tab$CT2 == ct[i, "CT2"], "score"])
-        data.frame(CT1 = ct[i, "CT1"], CT2 = ct[i, "CT2"], score = parsum / sscore)
+        parsum <- sum(tab[tab$CT1 == ct[i, "CT1"] & 
+            tab$CT2 == ct[i, "CT2"], "score"])
+        data.frame(CT1 = ct[i, "CT1"], CT2 = ct[i, "CT2"],
+         score = parsum / sscore)
     }
     igraph::graph_from_data_frame(sum.tab, directed = FALSE)
 } # summarizedCellularNetwork
@@ -434,7 +449,8 @@ relateToGeneSet <- function(bsrinf, gs, min.cor = 0.25, qval.thres = 0.001) {
                 L = inter$L[i], R = inter$R[i], pw.name = inter$pw.name[i],
                 qval = inter$qval[i], n.genes = sum(k),
                 genes = paste(tg[[i]][k], collapse = ";"),
-                cor = paste(tcor[[i]][k], collapse = ";"), stringsAsFactors = FALSE
+                cor = paste(tcor[[i]][k], collapse = ";"),
+                 stringsAsFactors = FALSE
             )
         } else {
             NULL

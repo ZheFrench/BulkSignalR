@@ -2,7 +2,8 @@
 % Please edit documentation in R/BulkSignalR.R
 \name{BulkSignalR}
 \alias{BulkSignalR}
-\title{BulkSignalR: A package to infer ligand-receptor interactions from bulk transcriptomics or proteomics}
+\title{BulkSignalR: A package to infer ligand-receptor
+interactions from bulk transcriptomics or proteomics}
 \description{
 Inference of ligand-receptor (LR) interactions from bulk
 (transcriptomic or proteomic) data. BulkSignalR bases its inferences

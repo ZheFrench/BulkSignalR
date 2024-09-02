@@ -65,8 +65,9 @@ are not instantiated directly, but through this function.
 \details{
 The \code{counts} matrix or table should be provided with expression
   levels of protein coding genes in each samples (column) and
-  \code{rownames(counts)} set to HUGO official gene symbols. For commodity, it
-  is also possible to provide \code{counts} with the
+  \code{rownames(counts)} set to HUGO official gene symbols.
+  For commodity, it is also possible 
+  to provide \code{counts} with the
   gene symbols stored in one of its columns. This column must be specified
   with \code{symbol.col}. In such a case, \code{prepareDataset} will extract
   this column and use it to set the row names. Because row names must be

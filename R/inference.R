@@ -123,7 +123,8 @@
         "controls-phosphorylation-of"
     )
 
-    control.int.upgrade <- c("positively-controls-expression-of", "negatively-controls-expression-of")
+    control.int.upgrade <- c("positively-controls-expression-of",
+     "negatively-controls-expression-of")
     directed.int.upgrade <- c(
         "catalysis-precedes",
         "controls-state-change-of",
@@ -171,7 +172,8 @@
 
                 # extract the target genes of receptor r
                 if (r %in% int$a.gn || r %in% int$b.gn) {
-                    # double the undirected interactions and generate a directed graph
+                    # double the undirected interactions 
+                    # and generate a directed graph
                     directed <- int$type %in% directed.int
                     ret <- int[!directed, c("a.gn", "b.gn")]
                     from <- ret$a.gn
@@ -183,8 +185,10 @@
                     # putative targets in the pathway
                     target.genes <- setdiff(
                         c(
-                            int[int$type %in% correlated.int & int$a.gn == r, "b.gn"],
-                            int[int$type %in% correlated.int & int$b.gn == r, "a.gn"],
+                            int[int$type %in% correlated.int &
+                             int$a.gn == r, "b.gn"],
+                            int[int$type %in% correlated.int &
+                             int$b.gn == r, "a.gn"],
                             int[int$type %in% directed.int, "b.gn"]
                         ),
                         r
@@ -248,7 +252,8 @@
     conf.pairs$target.genes <- reg.proc[conf.pairs$R, "target.genes"]
     pw.name <- unique(pw[, c(id.col, pw.col)])
     pw2name <- stats::setNames(pw.name[[2]], pw.name[[1]])
-    conf.pairs$pwname <- foreach::foreach(pl = conf.pairs$pwid, .combine = c) %do% {
+    conf.pairs$pwname <- foreach::foreach(pl = conf.pairs$pwid,
+     .combine = c) %do% {
         paste(
             foreach::foreach(
                 id = unlist(strsplit(pl, "\\|")),

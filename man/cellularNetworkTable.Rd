@@ -7,7 +7,8 @@
 cellularNetworkTable(lr, autocrine = FALSE)
 }
 \arguments{
-\item{lr}{The data.frame output by \code{"\link{assignCellTypesToInteractions}"}.}
+\item{lr}{The data.frame output by
+\code{"\link{assignCellTypesToInteractions}"}.}
 
 \item{autocrine}{A logical indicating whether autocrine interactions should
 be included.}

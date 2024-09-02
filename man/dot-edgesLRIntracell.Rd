@@ -44,14 +44,16 @@ generate the network.}
 
 \item{neg.targets}{A logical imposing that all the network targets must
 display negative correlation or logFC a BSRInferenceComp object is used to
-generate the network. Correlations must be <= -min.cor or logFC <= - min.logFC
+generate the network. Correlations must be
+<= -min.cor or logFC <= - min.logFC
 with this option activated.}
 
 \item{tg.pval}{Target gene P-value list such as returned by
 \code{ tgPval(BSRInferenceComp)}.}
 
 \item{max.pval}{Maximum (regulation) P-value for target genes in case
-a BSRInferenceComp object is used to generate the network.}
+a BSRInferenceComp object is used 
+to generate the network.}
 
 \item{min.logFC}{Minimum logFC required for the target genes in case
 a BSRInferenceComp object is used to generate the network.}

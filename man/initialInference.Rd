@@ -190,8 +190,9 @@ have been raised from 5 & 200 to 5 & 400 respectively. By default,
 use.full.network is set to FALSE.
 
 In addition to statistical significance estimated according to BulkSignalR
-statistical model, we compute SingleCellSignalR original LR-score, based on L and R
-cluster average expression. In the paracrine case, L average expression
+statistical model, we compute SingleCellSignalR original LR-score,
+based on L and R cluster average expression. 
+In the paracrine case, L average expression
 is taken from the source cluster.
 }
 \examples{

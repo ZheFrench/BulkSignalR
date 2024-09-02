@@ -40,7 +40,8 @@ createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
     # message(rid)
     # if(file.exists(bfc[[rid]])) {
 
-    #    connexionObject <- DBI::dbCanConnect(RSQLite::SQLite(), databaseFilePath)
+    #    connexionObject <- DBI::dbCanConnect(RSQLite::SQLite(),
+    # databaseFilePath)
 
     #    .checkDatabaseValidity(connexionObject=connexionObject)
 

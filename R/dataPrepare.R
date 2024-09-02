@@ -83,8 +83,9 @@ resetLRdb <- function(db, switch = FALSE) {
 #'
 #' @details The \code{counts} matrix or table should be provided with expression
 #'   levels of protein coding genes in each samples (column) and
-#'   \code{rownames(counts)} set to HUGO official gene symbols. For commodity, it
-#'   is also possible to provide \code{counts} with the
+#'   \code{rownames(counts)} set to HUGO official gene symbols.
+#'   For commodity, it is also possible 
+#'   to provide \code{counts} with the
 #'   gene symbols stored in one of its columns. This column must be specified
 #'   with \code{symbol.col}. In such a case, \code{prepareDataset} will extract
 #'   this column and use it to set the row names. Because row names must be
@@ -118,11 +119,13 @@ resetLRdb <- function(db, switch = FALSE) {
 #'
 prepareDataset <- function(
     counts, normalize = TRUE, symbol.col = NULL, min.count = 10,
-    prop = 0.1, method = c("UQ", "TC"), log.transformed = FALSE, min.LR.found = 80,
+    prop = 0.1, method = c("UQ", "TC"), 
+    log.transformed = FALSE, min.LR.found = 80,
     species = "hsapiens", conversion.dict = NULL,
     UQ.pc = 0.75) {
     if ((species != "hsapiens") && is.null(conversion.dict)) {
-        stop("Non-human species but no conversion.dict provided")
+        stop("Non-human species ",
+         "but no conversion.dict provided")
     }
 
     if (normalize) {
@@ -145,7 +148,8 @@ prepareDataset <- function(
 
     if (!is.null(symbol.col)) {
         if (!is.numeric(symbol.col)) {
-            stop("symbol.col must be the index of the column containing the gene symbols")
+            stop("symbol.col must be the index of",
+                "the column containing the gene symbols")
         }
 
         # simple but desperately slow counts <-
@@ -172,7 +176,8 @@ prepareDataset <- function(
     }
 
     if (is.null(rownames(counts)) || typeof(rownames(counts)) != "character") {
-        stop("The read count matrix must be provided with gene symbols as row names")
+        stop("The read count matrix ",
+         "must be provided with gene symbols as row names")
     }
 
     # as of now we ensure that counts is a matrix
@@ -324,8 +329,9 @@ findOrthoGenes <- function(from_organism, from_values,
 #' In order to work with other organisms, gene names need to be first converted
 #' to human by orthology.
 #' @param counts  A table or matrix of read counts.
-#' @param dictionary   A data frame where the first column is made of gene symbols
-#' for the actual organism and row names are the ortholog human gene symbols.
+#' @param dictionary   A data frame where the first column 
+#' is made of gene symbols for the actual organism 
+#' and row names are the ortholog human gene symbols.
 #'
 #' @return Return a counts matrix transposed for Human.
 #'
@@ -354,10 +360,12 @@ convertToHuman <- function(counts, dictionary) {
     }
     # counts should have row names
     if (all(row.names(counts) == seq(1, nrow(counts)))) {
-        stop("Rownames should be set as human gene names for counts.", call. = FALSE)
+        stop("Rownames should be set as human ",
+            "gene names for counts.", call. = FALSE)
     }
     if (all(row.names(dictionary) == seq(1, nrow(dictionary)))) {
-        stop("Rownames should be set as human gene names dictionary.", call. = FALSE)
+        stop("Rownames should be set as human ",
+        "gene names dictionary.", call. = FALSE)
     }
     if (dim(dictionary)[2] != 1) {
         stop("Unique column must be set for dictionary.", call. = FALSE)
@@ -372,13 +380,15 @@ convertToHuman <- function(counts, dictionary) {
 
     counts$id <- seq_len(nrow(counts))
 
-    counts.transposed <- merge(counts, dictionary, by.x = "Gene.name", all = FALSE, sort = FALSE)
+    counts.transposed <- merge(counts, dictionary,
+     by.x = "Gene.name", all = FALSE, sort = FALSE)
     counts.transposed <- counts.transposed[order(counts.transposed$id), ]
     counts.transposed$id <- NULL
 
     # aesthetics only
-    counts.transposed <- counts.transposed[, c(which(colnames(counts.transposed) == "human.gene.name"), which(colnames(counts.transposed) != "human.gene.name"))]
-    # counts.transposed <-counts.transposed[c("human.gene.name", setdiff(names(counts.transposed), "human.gene.name"))]
+    counts.transposed <- counts.transposed[,
+    c(which(colnames(counts.transposed) == "human.gene.name"),
+        which(colnames(counts.transposed) != "human.gene.name"))]
 
     counts.transposed$Gene.name <- NULL
 

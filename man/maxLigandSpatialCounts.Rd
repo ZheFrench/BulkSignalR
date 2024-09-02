@@ -63,6 +63,7 @@ instance would retrieve the four closest neighbors in every case.
 \examples{
 print("maxLigandSpatialCounts")
 if (FALSE) {
-    max.bsrdm <- maxLigandSpatialCounts(bsrdm, areas, radius = 1.2, nnn.radius = 4)
+    max.bsrdm <- maxLigandSpatialCounts(bsrdm, areas,
+    radius = 1.2, nnn.radius = 4)
 }
 }

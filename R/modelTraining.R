@@ -190,7 +190,8 @@
 #'   a data histogram and the fitted Gaussian. \code{title} is used to give this
 #'   plot a main title.
 #' @keywords internal
-.getMixedGaussianParam <- function(d, title, verbose = FALSE, file.name = NULL) {
+.getMixedGaussianParam <- function(d, title, verbose = FALSE,
+ file.name = NULL) {
     if (!is.null(file.name)) {
         grDevices::pdf(
             file = file.name, width = 4, height = 4,
@@ -233,7 +234,8 @@
     }
     if (verbose) {
         message(
-            "Censored mixed normal parameters (alpha, mean1, sd1, mean2, sd2): ",
+            "Censored mixed normal parameters",
+            " (alpha, mean1, sd1, mean2, sd2): ",
             paste(res$par, collapse = ", ")
         )
     }
@@ -591,8 +593,9 @@
 #'   \code{.checkReceptorSignaling}. Each table is computed from a randomized
 #'   expression matrix (randomized \code{ncounts}).
 #'
-#' @details A large number of correlations (ligand-receptor and receptor-downstream
-#'   target genes) is reported in each randomized matrix. Therefore,
+#' @details A large number of correlations 
+#'   (ligand-receptor and receptor-downstream target genes) 
+#'   is reported in each randomized matrix. Therefore,
 #'   \code{n.rand} should be
 #'   given a modest value to avoid unnecessarily long computations.
 #'

@@ -17,7 +17,8 @@
 #' @import BiocFileCache
 #' @import httr
 #' @keywords internal
-.cacheAdd <- function(fpath, cacheDir, resourceName, verbose = FALSE, download = TRUE) {
+.cacheAdd <- function(fpath, cacheDir, resourceName,
+ verbose = FALSE, download = TRUE) {
     if (!dir.exists(cacheDir)) {
         dir.create(cacheDir, recursive = TRUE)
     }
@@ -27,7 +28,8 @@
     bfc <- BiocFileCache::BiocFileCache(cacheDir, ask = FALSE)
 
     # safeguard
-    cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName, field = "rname")
+    cacheHits <- BiocFileCache::bfcquery(bfc, 
+        query = resourceName, field = "rname")
     if (nrow(cacheHits) >= 1) {
         cli::cli_alert_danger("Multiple cache results found for {.var {dir}}.")
         stop("Please clear your cache with `cacheClear()`!", "\n")
@@ -36,7 +38,8 @@
     config <- httr::set_config(config(ssl_verifypeer = 0L, ssl_verifyhost = 0L))
 
     # if fname="exact" remove the unique identifier
-    BiocFileCache::bfcadd(bfc, rname = resourceName, config = config, fpath = fpath, download = download)
+    BiocFileCache::bfcadd(bfc, rname = resourceName,
+     config = config, fpath = fpath, download = download)
 
     cli::cli_alert_info("{.val {resourceName}} added to cache with success.")
 
@@ -64,7 +67,8 @@
 #' the requested keyword already  exists in the file cache,
 #'  otherwise returns FALSE.
 .cacheCheckIn <- function(bfc, resourceName) {
-    cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName, field = "rname")
+    cacheHits <- BiocFileCache::bfcquery(bfc, 
+        query = resourceName, field = "rname")
     as.logical(nrow(cacheHits))
 }
 
@@ -101,7 +105,7 @@ cacheClear <- function(dir = c("both", "resources", "database")) {
 
     # safeguard
     if (!dir.exists(cacheDir)) {
-        cli::cli_alert("BulkSignalR cache for {.val {dir}} doesn't exist.\n")
+        cli::cli_alert("BulkSignalR cache for {.val {dir}} doesn't exist.")
         return(invisible(NULL))
     }
 
@@ -237,7 +241,9 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 
     if (any(BiocFileCache::bfcneedsupdate(bfc))) {
         cli::cli_alert("Remote BulkSignalR {.val {dir}} {word} been updated.\n")
-        cli::cli_alert_info("To update locally, clear your cache with cacheClear({.var {dir}})\n")
+        mess_info <- paste0("To update locally,",
+            " clear your cache with cacheClear({.var {dir}})\n")
+        cli::cli_alert_info(mess_info)
         return(invisible(NULL))
     } else {
         cli::cli_alert("Local BulkSignalR {.val {dir}} {word2} up to date.\n")
@@ -264,7 +270,8 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 #' @import BiocFileCache
 #' @keywords internal
 .readRDSFromCache <- function(bfc, resourceName) {
-    cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName, field = "rname")
+    cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName,
+     field = "rname")
     if (nrow(cacheHits) == 0) {
         cli::cli_alert_danger("No cache result found.\n")
         stop()
@@ -301,7 +308,8 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 #' @importFrom BiocFileCache bfcremove bfcquery
 #' @keywords internal
 .checkRDSFromCache <- function(bfc, resourceName) {
-    cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName, field = "rname")
+    cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName,
+     field = "rname")
     if (nrow(cacheHits) == 0) {
         cli::cli_alert_danger("No cache result found.\n")
         stop()

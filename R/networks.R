@@ -73,7 +73,8 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     g <- igraph::set_vertex_attr(g, name = "label", value = g.names)
     g.types <- stats::setNames(rep("ligand", length(g.names)), g.names)
     g.types[g.names %in% pairs$R] <- "receptor"
-    g <- igraph::set_vertex_attr(g, name = "node.type", value = g.types[g.names])
+    g <- igraph::set_vertex_attr(g, name = "node.type",
+     value = g.types[g.names])
     g.colors <- rep("green", length(g.names))
     g.colors[g.names %in% pairs$R] <- "red"
     g <- igraph::set_vertex_attr(g, name = "color", value = g.colors)
@@ -105,13 +106,14 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
 #' \code{tGenes(BSRInference)}.
 #' @param tg.corr    Target gene correlation list (with the receptor) such as
 #' output by \code{tgCorr(BSRInference)}.
-#' @param id.col          Column index or name in \code{pw} for the pathway IDs.
-#' @param gene.col        Column index or name in \code{pw} for the gene symbols.
-#' @param min.cor       Minimum correlation required for the target genes.
-#' @param tg.pval       Target gene P-value list such as returned by
+#' @param id.col Column index or name in \code{pw} for the pathway IDs.
+#' @param gene.col Column index or name in \code{pw} for the gene symbols.
+#' @param min.cor Minimum correlation required for the target genes.
+#' @param tg.pval Target gene P-value list such as returned by
 #' \code{ tgPval(BSRInferenceComp)}.
 #' @param max.pval     Maximum (regulation) P-value for target genes in case
-#' a BSRInferenceComp object is used to generate the network.
+#' a BSRInferenceComp object is used 
+#' to generate the network.
 #' @param min.logFC     Minimum logFC required for the target genes in case
 #' a BSRInferenceComp object is used to generate the network.
 #' @param pos.targets   A logical imposing that all the network targets must
@@ -119,7 +121,8 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
 #' generate the network.
 #' @param neg.targets   A logical imposing that all the network targets must
 #' display negative correlation or logFC a BSRInferenceComp object is used to
-#' generate the network. Correlations must be <= -min.cor or logFC <= - min.logFC
+#' generate the network. Correlations must be
+#' <= -min.cor or logFC <= - min.logFC
 #' with this option activated.
 #'
 #' @return An \code{igraph} object featuring the ligand-receptor-downstream
@@ -425,7 +428,8 @@ getLRIntracellNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     # get rid of them
     ref <- paste(all.edges[[1]], all.edges[[2]], sep = "||")
     dup <- ref[duplicated(ref)]
-    all.edges <- all.edges[!(ref %in% dup) | (ref %in% dup & all.edges$edge.type == "LR"), ]
+    all.edges <- all.edges[!(ref %in% dup) | 
+    (ref %in% dup & all.edges$edge.type == "LR"), ]
     ref <- paste(all.edges[[1]], all.edges[[2]], sep = "||")
     duppl <- duplicated(ref)
     if (sum(duppl) > 0) {
@@ -470,7 +474,8 @@ getLRIntracellNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     g.types <- stats::setNames(rep("downstream.gene", length(g.names)), g.names)
     g.types[g.names %in% pairs$R] <- "receptor"
     g.types[g.names %in% pairs$L] <- "ligand"
-    g <- igraph::set_vertex_attr(g, name = "node.type", value = g.types[g.names])
+    g <- igraph::set_vertex_attr(g, name = "node.type",
+     value = g.types[g.names])
     g.colors <- rep("gray80", length(g.names))
     g.colors[g.names %in% pairs$R] <- "red"
     g.colors[g.names %in% pairs$L] <- "green"

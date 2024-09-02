@@ -340,7 +340,8 @@ setMethod(
             stop("Parameter max.pw.size must be an integer > 0")
         }
         obj@param$min.pw.size <- trunc(min.pw.size)
-        if (obj@param$min.pw.size < 1 || obj@param$min.pw.size > obj@param$max.pw.size) {
+        if (obj@param$min.pw.size < 1 || 
+            obj@param$min.pw.size > obj@param$max.pw.size) {
             stop(
                 "Parameter min.pw.size must be",
                 "an integer > 0 and <= than max.pw.size"
@@ -393,7 +394,8 @@ setMethod(
 
         if (is.null(trainModel)) {
             # automatic selection of the model
-            np <- try(.getGaussianParam(rc, "LR correlation (null)"), silent = TRUE)
+            np <- try(.getGaussianParam(rc, 
+                "LR correlation (null)"), silent = TRUE)
             if (inherits(np, "try-error")) {
                 np <- NULL
             }
@@ -405,7 +407,8 @@ setMethod(
             }
             kp <- .getKernelEmpiricalParam(rc, "LR correlation (null)")
             if (verbose) {
-                message("Automatic null model choice:")
+                message("Automatic null ",
+                    "model choice:")
                 if (is.null(np)) {
                     message("  Censored normal estimation did not converge")
                 } else {
@@ -415,7 +418,8 @@ setMethod(
                     )
                 }
                 if (is.null(mp)) {
-                    message("  Censored Mixture of normals estimation did not converge")
+                    message("  Censored Mixture of normals",
+                        " estimation did not converge")
                 } else {
                     message(
                         "  Censored mixture D=", mp$D,
@@ -459,15 +463,16 @@ setMethod(
         if (obj@param$quick) {
             # RT correlations are assumed to be equal to LR correlations
             if (verbose) {
-                message("Quick learning, receptor-target correlation null ", "
-                distribution assumed to be equal to ligand-receptor...")
+                message("Quick learning, receptor-target correlation null ",
+                    "distribution assumed to be equal to ligand-receptor...")
             }
             obj@param$RT.0$n <- obj@param$LR.0$n
             obj@param$RT.0$model <- obj@param$LR.0$model
         } else {
             # RT correlations are actually learnt
             if (verbose) {
-                message("Learning receptor-target correlation null distribution...")
+                message("Learning receptor-target ",
+                "correlation null distribution...")
             }
             ds.RT.null <- .getEmpiricalNull(obj@ncounts,
                 n.rand = obj@param$n.rand.RT,
@@ -632,7 +637,8 @@ setMethod("initialInference", "BSRDataModel", function(obj, rank.p = 0.55,
     inf.param <- list()
     inf.param$min.corr <- min.cor
     inf.param$restrict.genes <- restrict.genes
-    lr <- .getCorrelatedLR(obj, min.cor = min.cor, restrict.genes = restrict.genes)
+    lr <- .getCorrelatedLR(obj, min.cor = min.cor,
+     restrict.genes = restrict.genes)
 
     inf.param$reference <- reference
     inf.param$min.pw.size <- min.pw.size
@@ -732,8 +738,10 @@ if (!isGeneric("scoreLRGeneSignatures")) {
 #' @importFrom foreach %do% %dopar%
 #' @importFrom methods is
 setMethod("scoreLRGeneSignatures", "BSRDataModel", function(obj,
-                                                            sig, LR.weight = 0.5, robust = FALSE,
-                                                            name.by.pathway = FALSE, abs.z.score = FALSE, rownames.LRP = FALSE) {
+    sig, LR.weight = 0.5, robust = FALSE,
+    name.by.pathway = FALSE, abs.z.score = FALSE,
+    rownames.LRP = FALSE) {
+
     if (!is(sig, "BSRSignature")) {
         stop("sig must be a BSRSignature object")
     }
@@ -779,7 +787,8 @@ setMethod("scoreLRGeneSignatures", "BSRDataModel", function(obj,
         ncounts <- 2**ncounts
     }
     if (robust) {
-        z <- (ncounts - apply(ncounts, 1, stats::median)) / apply(ncounts, 1, stats::mad)
+        z <- (ncounts - apply(ncounts, 1, stats::median)) 
+        z <- z / apply(ncounts, 1, stats::mad)
     } else {
         z <- (ncounts - rowMeans(ncounts)) / apply(ncounts, 1, stats::sd)
     }
@@ -811,7 +820,8 @@ setMethod("scoreLRGeneSignatures", "BSRDataModel", function(obj,
         }
     }
 
-    res <- matrix(0, nrow = length(pathways), ncol = ncol(ncounts), dimnames = list(pwn, colnames(ncounts)))
+    res <- matrix(0, nrow = length(pathways), ncol = ncol(ncounts),
+     dimnames = list(pwn, colnames(ncounts)))
     for (i in seq_len(length(pathways))) {
         # average ligand z-score
         zz <- z[ligands[[i]], ]

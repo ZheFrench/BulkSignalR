@@ -17,7 +17,6 @@ simpleHeatmap(
   bottom.annotation = NULL,
   n.col.clust = 0,
   n.row.clust = 0,
-  gap.size = 0.5,
   cut.p = 0.01,
   row.names = TRUE,
   column.names = TRUE,
@@ -52,8 +51,6 @@ simpleHeatmap(
 
 \item{n.row.clust}{Number of row clusters.}
 
-\item{gap.size}{Gap size between clusters.}
-
 \item{cut.p}{Proportion of top and bottom values for thresholding.}
 
 \item{row.names}{A logical to turn on/off the display of row names.}
@@ -69,6 +66,8 @@ of row (gene) names.}
 \item{reverse}{A logicial to reverse or not colors in hcl.palette.}
 
 \item{format}{File format.}
+
+\item{gap.size}{Gap size between clusters.}
 }
 \value{
 A heatmap. Since heatmap plotting tend to be slow on the screen,

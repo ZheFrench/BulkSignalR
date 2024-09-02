@@ -9,8 +9,9 @@ convertToHuman(counts, dictionary)
 \arguments{
 \item{counts}{A table or matrix of read counts.}
 
-\item{dictionary}{A data frame where the first column is made of gene symbols
-for the actual organism and row names are the ortholog human gene symbols.}
+\item{dictionary}{A data frame where the first column 
+is made of gene symbols for the actual organism 
+and row names are the ortholog human gene symbols.}
 }
 \value{
 Return a counts matrix transposed for Human.

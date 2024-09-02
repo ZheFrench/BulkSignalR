@@ -74,7 +74,7 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     g.types <- stats::setNames(rep("ligand", length(g.names)), g.names)
     g.types[g.names %in% pairs$R] <- "receptor"
     g <- igraph::set_vertex_attr(g, name = "node.type",
-     value = g.types[g.names])
+        value = g.types[g.names])
     g.colors <- rep("green", length(g.names))
     g.colors[g.names %in% pairs$R] <- "red"
     g <- igraph::set_vertex_attr(g, name = "color", value = g.colors)
@@ -481,7 +481,7 @@ getLRIntracellNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     g.types[g.names %in% pairs$R] <- "receptor"
     g.types[g.names %in% pairs$L] <- "ligand"
     g <- igraph::set_vertex_attr(g, name = "node.type",
-     value = g.types[g.names])
+        value = g.types[g.names])
     g.colors <- rep("gray80", length(g.names))
     g.colors[g.names %in% pairs$R] <- "red"
     g.colors[g.names %in% pairs$L] <- "green"

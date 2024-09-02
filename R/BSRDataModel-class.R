@@ -637,8 +637,8 @@ setMethod("initialInference", "BSRDataModel", function(obj, rank.p = 0.55,
     inf.param <- list()
     inf.param$min.corr <- min.cor
     inf.param$restrict.genes <- restrict.genes
-    lr <- .getCorrelatedLR(obj, min.cor = min.cor,
-     restrict.genes = restrict.genes)
+    lr <- .getCorrelatedLR(obj, min.cor = min.cor, 
+        restrict.genes = restrict.genes)
 
     inf.param$reference <- reference
     inf.param$min.pw.size <- min.pw.size
@@ -820,8 +820,8 @@ setMethod("scoreLRGeneSignatures", "BSRDataModel", function(obj,
         }
     }
 
-    res <- matrix(0, nrow = length(pathways), ncol = ncol(ncounts),
-     dimnames = list(pwn, colnames(ncounts)))
+    res <- matrix(0, nrow = length(pathways), ncol = ncol(ncounts), 
+        dimnames = list(pwn, colnames(ncounts)))
     for (i in seq_len(length(pathways))) {
         # average ligand z-score
         zz <- z[ligands[[i]], ]

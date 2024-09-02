@@ -42,7 +42,7 @@ setClass("BSRDataModelComp",
         initial.organism = "hsapiens",
         initial.orthologs = list("A", "B", "C"),
         ncounts = matrix(1.0, nrow = 2, ncol = 1,
-         dimnames = list(c("A", "B"), "C")),
+        dimnames = list(c("A", "B"), "C")),
         log.transformed = FALSE,
         normalization = "UQ",
         param = list(spatial.smooth = FALSE),
@@ -886,7 +886,7 @@ setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
     }
 
     res <- matrix(0, nrow = length(pathways),
-     ncol = ncol(ncounts), dimnames = list(pwn, colnames(ncounts)))
+        ncol = ncol(ncounts), dimnames = list(pwn, colnames(ncounts)))
     for (i in seq_len(length(pathways))) {
         # average ligand z-score
         zz <- z[ligands[[i]], ]

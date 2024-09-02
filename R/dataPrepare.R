@@ -125,7 +125,7 @@ prepareDataset <- function(
     UQ.pc = 0.75) {
     if ((species != "hsapiens") && is.null(conversion.dict)) {
         stop("Non-human species ",
-         "but no conversion.dict provided")
+            "but no conversion.dict provided")
     }
 
     if (normalize) {
@@ -177,7 +177,7 @@ prepareDataset <- function(
 
     if (is.null(rownames(counts)) || typeof(rownames(counts)) != "character") {
         stop("The read count matrix ",
-         "must be provided with gene symbols as row names")
+            "must be provided with gene symbols as row names")
     }
 
     # as of now we ensure that counts is a matrix
@@ -381,7 +381,7 @@ convertToHuman <- function(counts, dictionary) {
     counts$id <- seq_len(nrow(counts))
 
     counts.transposed <- merge(counts, dictionary,
-     by.x = "Gene.name", all = FALSE, sort = FALSE)
+        by.x = "Gene.name", all = FALSE, sort = FALSE)
     counts.transposed <- counts.transposed[order(counts.transposed$id), ]
     counts.transposed$id <- NULL
 

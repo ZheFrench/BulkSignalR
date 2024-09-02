@@ -198,7 +198,7 @@
 #'   plot a main title.
 #' @keywords internal
 .getMixedGaussianParam <- function(d, title, verbose = FALSE,
- file.name = NULL) {
+    file.name = NULL) {
     if (!is.null(file.name)) {
         grDevices::pdf(
             file = file.name, width = 4, height = 4,

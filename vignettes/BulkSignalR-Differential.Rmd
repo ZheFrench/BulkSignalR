@@ -42,8 +42,8 @@ BulkSignalR package version: `r packageVersion("BulkSignalR")`
 ## Differential mode 
 
 `BulkSignalR` now allows the user to request different pairwise
-comparisons from a large cohort of samples.
-  
+comparisons from a large cohort of samples.  
+
 In this mode, ligand-receptor interactions are inferred based on gene or protein
 regulation-associated P-values when comparing two clusters of samples. 
 
@@ -90,12 +90,12 @@ bsrinf.comp <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 ##  Technical notes
 
-Three previously described S4 objects
- (BSR-DataModel, BSR-Inference, BSR-Signature) 
+Three previously described S4 objects 
+(BSR-DataModel, BSR-Inference, BSR-Signature) 
 have been extented :  
 
 \
-  
+    
 
 * **BSR-DataModelComp**, denoted `bsrdm.comp` is an extension from 
 **BSR-DataModel**, previously denoted `bsrdm`  
@@ -120,9 +120,9 @@ a list of such cluster pairs comparisons. This function performs this
 promotion, adding an empty list of comparisons.  
 
 `defineClusterComp` is used to define the comparison
- between two clusters of samples
+between two clusters of samples
 by using defined column indexes of the expression matrix
- that belong to each cluster,
+that belong to each cluster,
 and storing the result of the cluster difference statistical analysis
 obtained by an external tool such as edgeR, DESeq2, etc.
 
@@ -132,7 +132,7 @@ to a **BSR-DataModelComp** object.
 Several comparison can be defined and added sequentially.  
 
 \
- 
+    
 Thank you for reading this guide and for using `BulkSignalR`.  
 
 ## Session Information

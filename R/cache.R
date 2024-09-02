@@ -18,7 +18,7 @@
 #' @import httr
 #' @keywords internal
 .cacheAdd <- function(fpath, cacheDir, resourceName,
- verbose = FALSE, download = TRUE) {
+    verbose = FALSE, download = TRUE) {
     if (!dir.exists(cacheDir)) {
         dir.create(cacheDir, recursive = TRUE)
     }
@@ -39,7 +39,7 @@
 
     # if fname="exact" remove the unique identifier
     BiocFileCache::bfcadd(bfc, rname = resourceName,
-     config = config, fpath = fpath, download = download)
+        config = config, fpath = fpath, download = download)
 
     cli::cli_alert_info("{.val {resourceName}} added to cache with success.")
 
@@ -271,7 +271,7 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 #' @keywords internal
 .readRDSFromCache <- function(bfc, resourceName) {
     cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName,
-     field = "rname")
+        field = "rname")
     if (nrow(cacheHits) == 0) {
         cli::cli_alert_danger("No cache result found.\n")
         stop()
@@ -309,7 +309,7 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 #' @keywords internal
 .checkRDSFromCache <- function(bfc, resourceName) {
     cacheHits <- BiocFileCache::bfcquery(bfc, query = resourceName,
-     field = "rname")
+        field = "rname")
     if (nrow(cacheHits) == 0) {
         cli::cli_alert_danger("No cache result found.\n")
         stop()

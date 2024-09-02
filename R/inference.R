@@ -124,7 +124,7 @@
     )
 
     control.int.upgrade <- c("positively-controls-expression-of",
-     "negatively-controls-expression-of")
+        "negatively-controls-expression-of")
     directed.int.upgrade <- c(
         "catalysis-precedes",
         "controls-state-change-of",
@@ -185,10 +185,10 @@
                     # putative targets in the pathway
                     target.genes <- setdiff(
                         c(
-                            int[int$type %in% correlated.int &
-                             int$a.gn == r, "b.gn"],
-                            int[int$type %in% correlated.int &
-                             int$b.gn == r, "a.gn"],
+                            int[int$type %in% correlated.int & 
+                            int$a.gn == r, "b.gn"],
+                            int[int$type %in% correlated.int & 
+                            int$b.gn == r, "a.gn"],
                             int[int$type %in% directed.int, "b.gn"]
                         ),
                         r
@@ -253,7 +253,7 @@
     pw.name <- unique(pw[, c(id.col, pw.col)])
     pw2name <- stats::setNames(pw.name[[2]], pw.name[[1]])
     conf.pairs$pwname <- foreach::foreach(pl = conf.pairs$pwid,
-     .combine = c) %do% {
+        .combine = c) %do% {
         paste(
             foreach::foreach(
                 id = unlist(strsplit(pl, "\\|")),

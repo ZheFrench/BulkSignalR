@@ -131,7 +131,7 @@ assignCellTypesToInteractions <- function(bsrdm, bsrinf, ct.scores,
                         lower.limits = lb, upper.limits = ub
                     )
                     MAE <- as.vector(glmnet::assess.glmnet(lasso.fit.l,
-                     newx = xL, newy = y)$mae)
+                        newx = xL, newy = y)$mae)
                     p <- stats::predict(lasso.fit.l, newx = xL)
 
                     gc2 <- try(stats::cor(y, p),silent = TRUE)
@@ -412,7 +412,7 @@ summarizedCellularNetwork <- function(tab) {
         parsum <- sum(tab[tab$CT1 == ct[i, "CT1"] & 
             tab$CT2 == ct[i, "CT2"], "score"])
         data.frame(CT1 = ct[i, "CT1"], CT2 = ct[i, "CT2"],
-         score = parsum / sscore)
+            score = parsum / sscore)
     }
     igraph::graph_from_data_frame(sum.tab, directed = FALSE)
 } # summarizedCellularNetwork
@@ -475,7 +475,7 @@ relateToGeneSet <- function(bsrinf, gs, min.cor = 0.25, qval.thres = 0.001) {
                 qval = inter$qval[i], n.genes = sum(k),
                 genes = paste(tg[[i]][k], collapse = ";"),
                 cor = paste(tcor[[i]][k], collapse = ";"),
-                 stringsAsFactors = FALSE
+                stringsAsFactors = FALSE
             )
         } else {
             NULL

@@ -108,9 +108,9 @@ bubblePlotPathwaysLR <- function(
     limit.LR <- 50
     if (length(unique(filtered.brinf$LR)) >= limit.LR) {
         message("Too many LR interactions detected (",
-         length(unique(filtered.brinf$LR)), ").")
+            length(unique(filtered.brinf$LR)), ").")
         message("We recommend less than ", limit.LR,
-         " LR interactions to visualize.")
+            " LR interactions to visualize.")
         stop("Try to reduce (Qval-Threshold, number of pathways...).\n")
     }
 
@@ -137,8 +137,8 @@ bubblePlotPathwaysLR <- function(
             grDevices::png(
                 file = paste0(path, filename, ".png"),
                 width = width / 2.54,
-                 height = height / 2.54, units = "in",
-                  res = 600
+                height = height / 2.54, units = "in",
+                res = 600
             )
         }
 
@@ -350,15 +350,15 @@ bubblePlotPathwaysLR <- function(
 #' @importFrom circlize colorRamp2
 #' @import grid
 signatureHeatmaps <- function(pathway,
-                              bsrdm,
-                              bsrsig,
-                              path = "./",
-                              filename = NULL,
-                              h.width = 6,
-                              h.height = 9,
-                              fontsize = 6,
-                              format = c("pdf", "svg", "png"),
-                              show_column_names = FALSE) {
+                            bsrdm,
+                            bsrsig,
+                            path = "./",
+                            filename = NULL,
+                            h.width = 6,
+                            h.height = 9,
+                            fontsize = 6,
+                            format = c("pdf", "svg", "png"),
+                            show_column_names = FALSE) {
     idx.path.sig <- which(pathways(bsrsig) == pathway)
 
     if (rlang::is_empty(idx.path.sig)) {
@@ -375,7 +375,7 @@ signatureHeatmaps <- function(pathway,
     counts.L <- counts[filter.L, ]
     palette.L <- "RdPu"
     cols.L <- circlize::colorRamp2(breaks = c(-1, 0, 1),
-     hcl_palette = palette.L, reverse = TRUE)
+        hcl_palette = palette.L, reverse = TRUE)
 
     filter.R <- receptors(bsrsig)[[idx.path.sig]]
     filter.T <- tGenes(bsrsig)[[idx.path.sig]]
@@ -386,15 +386,15 @@ signatureHeatmaps <- function(pathway,
     counts.R <- counts[filter.R, ]
     palette.R <- "YlGn"
     cols.R <- circlize::colorRamp2(breaks = c(-1, 0, 1),
-     hcl_palette = palette.R, reverse = TRUE)
+        hcl_palette = palette.R, reverse = TRUE)
 
     counts.T <- counts[filter.T, ]
     palette.T <- "Blues 3"
     cols.T <- circlize::colorRamp2(breaks = c(-1, 0, 1),
-     hcl_palette = palette.T, reverse = TRUE)
+        hcl_palette = palette.T, reverse = TRUE)
 
     cols.scoring <- circlize::colorRamp2(breaks = c(-1, 0, 1),
-     colors = c("blue", "white", "red"))
+        colors = c("blue", "white", "red"))
 
     abundance.samples <- dim(counts.T)[2]
     abundance.genes <- c(dim(counts.T)[1], dim(counts.R)[1], dim(counts.L)[1])
@@ -509,7 +509,7 @@ signatureHeatmaps <- function(pathway,
     )
 
     grid::pushViewport(grid::viewport(layout.pos.row = 1,
-     layout.pos.col = 2))
+        layout.pos.col = 2))
     ComplexHeatmap::draw(lgd_score, y = grid::unit(h.height, "cm"))
     ComplexHeatmap::draw(lgd_heatmap.L, y = grid::unit((h.height - 2), "cm"))
     ComplexHeatmap::draw(lgd_heatmap.R, y = grid::unit((h.height - 4), "cm"))
@@ -862,9 +862,9 @@ scoreSignatures <- function(ds, ref.signatures, robust = FALSE) {
 #'     height = 12
 #' )
 alluvialPlot <- function(bsrinf, keywords, type = c("L", "R", "pw.id"),
-                         qval.thres = 0.01, format = c("pdf", "svg", "png"),
-                         path = "./", filename = NULL,
-                         width = 10, height = 10) {
+                        qval.thres = 0.01, format = c("pdf", "svg", "png"),
+                        path = "./", filename = NULL,
+                        width = 10, height = 10) {
     interactions <- data.frame(
         L = unlist(ligands(bsrinf)),
         R = unlist(receptors(bsrinf)),
@@ -892,7 +892,7 @@ alluvialPlot <- function(bsrinf, keywords, type = c("L", "R", "pw.id"),
 
     if (dim(subset.interactions)[1] == 0) {
         message(paste(keywords, collapse = " "),
-         " for ", type, " not found.", "\n")
+            " for ", type, " not found.", "\n")
         stop("Try another value for filtering.")
     }
     subset.interactions <- subset.interactions[
@@ -909,13 +909,13 @@ alluvialPlot <- function(bsrinf, keywords, type = c("L", "R", "pw.id"),
             axis2 = "R", axis3 = "pw.name")
     ) +
         ggalluvial::geom_alluvium(ggplot2::aes_string(fill = "R"),
-         width = 1 / 12) +
+            width = 1 / 12) +
         ggalluvial::geom_stratum(width = 1 / 12, 
             fill = "black", color = "grey") +
         ggplot2::geom_label(stat = stratum, 
             aes(label = ggplot2::after_stat(stratum))) +
         ggplot2::scale_x_discrete(limits = c("L", "R", "pw.name"),
-         expand = c(0.5, 0.5)) +
+            expand = c(0.5, 0.5)) +
         ggplot2::scale_fill_brewer(type = "qual", palette = "Set1") +
         ggplot2::ggtitle("Ligand-Receptor Interactions & Underlying Pathways")
 
@@ -1080,7 +1080,7 @@ chordDiagramLR <- function(
     dataframe.bsrinf <- dataframe.bsrinf[order(dataframe.bsrinf$qval), ]
     dataframe.bsrinf <- dataframe.bsrinf[seq_len(limit), ]
     dataframe.bsrinf <- unique(dataframe.bsrinf[,
-     c("ligands", "receptors", "corr", "pair")])
+        c("ligands", "receptors", "corr", "pair")])
 
 
     cr <- circlize::colorRamp2(c(

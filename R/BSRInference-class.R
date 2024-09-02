@@ -780,9 +780,9 @@ setMethod("reduceToLigand", "BSRInference", function(obj) {
     for (L in unique(pairs$L)) {
         rec <- pairs[pairs$L == L, ]
         k <- which.min(rec$pval)
-        j <- which(pairs$L == L &
-         pairs$R == rec$R[k] &
-          pairs$pw.id == rec$pw.id[k])
+        j <- which(pairs$L == L & 
+            pairs$R == rec$R[k] & 
+            pairs$pw.id == rec$pw.id[k])
         ligands <- c(ligands, list(L))
         receptors <- c(receptors, list(unique(rec$R)))
         t.genes <- c(t.genes, obj@t.genes[j])

@@ -88,8 +88,8 @@
                 fcL <- L.stats[L, "logFC"]
                 fcR <- R.stats[R, "logFC"]
                 if (fcL >= min.logFC &&
-                    ((neg.receptors && abs(fcR) >= min.logFC) ||
-                     fcR >= min.logFC)) {
+                    ((neg.receptors && abs(fcR) >= min.logFC) || 
+                        fcR >= min.logFC)) {
                     pairs <- rbind(
                         pairs,
                         data.frame(
@@ -240,10 +240,10 @@
                     # putative targets in the pathway
                     target.genes <- setdiff(
                         c(
+                            int[int$type %in% correlated.int & 
+                            int$a.gn == r, "b.gn"],
                             int[int$type %in% correlated.int &
-                             int$a.gn == r, "b.gn"],
-                            int[int$type %in% correlated.int &
-                             int$b.gn == r, "a.gn"],
+                            int$b.gn == r, "a.gn"],
                             int[int$type %in% directed.int, "b.gn"]
                         ),
                         r
@@ -338,7 +338,7 @@
     pw.name <- unique(pw[, c(id.col, pw.col)])
     pw2name <- stats::setNames(pw.name[[2]], pw.name[[1]])
     conf.pairs$pwname <- foreach::foreach(pl = conf.pairs$pwid,
-     .combine = c) %do% {
+        .combine = c) %do% {
         paste(
             foreach::foreach(
                 id = unlist(strsplit(pl, "\\|")),
@@ -466,7 +466,7 @@
             c(lr$R, react[react$`Reactome ID` %in% names(pw.size), "Gene name"])
         )
         results$reactome.pairs <- .downstreamRegulatedSignaling(lr,
-         react, pw.size,
+            react, pw.size,
             ncounts(ds)[corgenes, c(colA(cc), colB(cc))], stats(cc)[corgenes, ],
             id.col = "Reactome ID", gene.col = "Gene name",
             pw.col = "Reactome name", min.positive = min.positive,
@@ -595,7 +595,7 @@
             # as r-1 P-values > rank.pval by chance!
             p.rt <- stats::pbinom(r - 1, len[k], 1 - rank.pval) 
             res <- rbind(res, data.frame(pairs[i, c("L", "R", "LR.pval",
-             "corr", "L.logFC", "R.logFC")],
+                "corr", "L.logFC", "R.logFC")],
                 pw.id = pwid[k], pw.name = pwname[k], rank = r,
                 len = len[k], rank.pval = rank.pval,
                 rank.corr = rank.corr,

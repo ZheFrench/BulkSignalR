@@ -27,14 +27,14 @@ createResources <- function(onRequest = TRUE, verbose = FALSE) {
     # Do it once, onLoad
     if (!dir.exists(resourcesCacheDir) | onRequest) {
         .cacheAdd(fpath = BulkSignalR_GO_URL,
-         cacheDir = resourcesCacheDir, 
-         resourceName = "GO-BP", verbose = verbose)
+            cacheDir = resourcesCacheDir,
+            resourceName = "GO-BP", verbose = verbose)
         .cacheAdd(fpath = BulkSignalR_Reactome_URL,
-         cacheDir = resourcesCacheDir, 
-         resourceName = "Reactome", verbose = verbose)
+            cacheDir = resourcesCacheDir, 
+            resourceName = "Reactome", verbose = verbose)
         .cacheAdd(fpath = BulkSignalR_Network_URL,
-         cacheDir = resourcesCacheDir, 
-         resourceName = "Network", verbose = verbose)
+            cacheDir = resourcesCacheDir, 
+            resourceName = "Network", verbose = verbose)
     }
 
     return(invisible(NULL))
@@ -77,7 +77,7 @@ getResource <- function(resourceName = NULL, cache = FALSE) {
         bfc <- BiocFileCache::BiocFileCache(resourcesCacheDir, ask = FALSE)
 
         dataframe <- .readRDSFromCache(bfc = bfc,
-         resourceName = resourceName)
+            resourceName = resourceName)
 
         # Due to the fact React and Go are organized differently
         if (resourceName == "Reactome") {
@@ -319,7 +319,7 @@ resetPathwaysFromFile <- function(file,
     ) %dopar% {
         data.frame(
             pathwayID = rep(data[[indexPathway]]$exactSource,
-             length(data[[indexPathway]]$exactSource)),
+                length(data[[indexPathway]]$exactSource)),
             geneName = unlist(data[[indexPathway]]$geneSymbols)[
             seq_len(length(unlist(data[[indexPathway]]$geneSymbols)))],
             pathwayName = rep(names(data)[[indexPathway]], 
@@ -390,8 +390,8 @@ resetPathwaysFromFile <- function(file,
     # Compute indice of pathway
     ii <- 1
     for (i in seq_len(nn)) {
-        while ((read2[ii] != geneset.descriptions[i]) |
-         (read2[ii + 1] != geneset.ids[i])) {
+        while ((read2[ii] != geneset.descriptions[i]) | 
+            (read2[ii + 1] != geneset.ids[i])) {
             ii <- ii + 1
         }
         ox[i] <- ii

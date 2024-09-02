@@ -93,7 +93,7 @@ setMethod("tgLogFC", "BSRSignatureComp", function(x) x@tg.logFC)
 
 if (!isGeneric("cmpName")) {
     if (is.function("cmpName")) {
-        fun <- tgcmpName
+        fun <- cmpName
     } else {
         fun <- function(x) standardGeneric("cmpName")
     }

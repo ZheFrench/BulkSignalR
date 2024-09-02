@@ -87,6 +87,9 @@ IDs of spatial locations.}
 \item{ref.colors}{A vector of colors to bypass those automatically chosen
 by ggplot2 for the tissue areas in the reference plot.}
 }
+\value{
+Create PDF file and returns `NULL`, invisibly.
+}
 \description{
 Generate a series of individual spatial score plots in a folder.
 Not limited to BulkSignalR gene signature scores.

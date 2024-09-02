@@ -5,7 +5,8 @@
 #'
 #' @param idRelease integer id version Release
 #' Default is NULL so last version is selected.
-#'
+#' @return Returns dataframe Complexex, invisibly. 
+#' 
 #' @import DBI RSQLite BiocFileCache
 #' @importFrom cli cli_alert_danger cli_alert cli_abort
 #' @importFrom dplyr left_join group_by mutate distinct
@@ -91,7 +92,8 @@ where Comp."id.release_fk" = ?;', release$id)
 #'
 #' @param idRelease integer id version Release
 #' Default is NULL so last version is selected.
-#'
+#' @return Returns dataframe LR interactions, invisibly. 
+#' 
 #' @import DBI RSQLite BiocFileCache
 #' @importFrom cli cli_alert_danger cli_alert cli_abort
 #' @importFrom dplyr left_join

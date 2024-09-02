@@ -11,6 +11,9 @@
 
 \item{value}{value to be set for BSRClusterComp}
 }
+\value{
+returns \code{NULL}
+}
 \description{
 Cluster comparison statistics setter (internal use only)
 }

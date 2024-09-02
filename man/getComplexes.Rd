@@ -10,6 +10,9 @@ getComplexes(idRelease = NULL)
 \item{idRelease}{integer id version Release
 Default is NULL so last version is selected.}
 }
+\value{
+Returns dataframe Complexex, invisibly.
+}
 \description{
 Fetch LR complexes from database and
 and return a dataframe

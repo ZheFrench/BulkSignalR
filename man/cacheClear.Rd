@@ -9,6 +9,9 @@ cacheClear(dir = c("both", "resources", "database"))
 \arguments{
 \item{dir}{Directory to remove. Can be only 'resources' or 'database'.}
 }
+\value{
+Returns `NULL`, invisibly.
+}
 \description{
 Delete the content of cache directory.
 }

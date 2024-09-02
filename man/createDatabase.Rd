@@ -13,6 +13,9 @@ pre-existing database. Default is True.}
 
 \item{verbose}{Logical TRUE/FALSE}
 }
+\value{
+Returns `NULL`, invisibly.
+}
 \description{
 Fetch LR database from remote location.
 }

@@ -12,6 +12,10 @@ getResource(resourceName = NULL, cache = FALSE)
 \item{cache}{True/False. Defautlt is False
 If True, you will use environment variables.}
 }
+\value{
+Returns a dataframe of the requested
+resource.
+}
 \description{
 Get  resources (pathways, or PathwayCommons network
 from \url{https://www.pathwaycommons.org/})

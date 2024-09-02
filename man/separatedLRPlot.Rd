@@ -94,6 +94,9 @@ IDs of spatial locations.}
 \item{ref.colors}{A vector of colors to bypass those automatically chosen
 by ggplot2 for the tissue areas in the reference plot.}
 }
+\value{
+A set of spatial plots.
+}
 \description{
 Generate a detailed view related to a chosen interaction made of series of
 small individual spatial plots: tissue organization (optional), gene

@@ -98,6 +98,26 @@ if (!isGeneric("comp")) {
 #' @name comp
 #' @aliases comp,BSRDataModelComp-method
 #' @param x object BSRDataModelComp
+#' @return comp
+#' @examples
+#' # prepare data
+#' data(sdc, package = "BulkSignalR")
+#' normal <- grep("^N", names(sdc))
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#'
+#' # define the comparison
+#' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+#' colA <- as.integer(1:5)
+#' colB <- as.integer(8:15)
+#' n <- nrow(ncounts(bsrdm.comp))
+#' stats <- data.frame(
+#'     pval = runif(n), logFC = rnorm(n, 0, 2),
+#'     expr = runif(n, 0, 10)
+#' )
+#' rownames(stats) <- rownames(ncounts(bsrdm.comp))
+#' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
+#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
+#' comp(bsrdm.comp)
 #' @export
 setMethod("comp", "BSRDataModelComp", function(x) x@comp)
 
@@ -113,6 +133,7 @@ if (!isGeneric("comp<-")) {
 #'
 #' @param x object BSRDataModelComp
 #' @param value value to be set for BSRDataModelComp
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("comp<-", "BSRDataModelComp", function(x, value) {
     x@comp <- value
@@ -134,6 +155,27 @@ if (!isGeneric("mu")) {
 #' @name mu
 #' @aliases mu,BSRDataModelComp-method
 #' @param x object BSRDataModelComp
+#' @return mu
+#' @examples
+#' # prepare data
+#' data(sdc, package = "BulkSignalR")
+#' normal <- grep("^N", names(sdc))
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#'
+#' # define the comparison
+#' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+#' colA <- as.integer(1:5)
+#' colB <- as.integer(8:15)
+#' n <- nrow(ncounts(bsrdm.comp))
+#' stats <- data.frame(
+#'     pval = runif(n), logFC = rnorm(n, 0, 2),
+#'     expr = runif(n, 0, 10)
+#' )
+#' rownames(stats) <- rownames(ncounts(bsrdm.comp))
+#' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
+#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
+#'
+#' mu(bsrdm.comp)
 #' @export
 setMethod("mu", "BSRDataModelComp", function(x) x@mu)
 
@@ -149,6 +191,7 @@ if (!isGeneric("mu<-")) {
 #'
 #' @param x object BSRDataModelComp
 #' @param value value to be set for BSRDataModelComp
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("mu<-", "BSRDataModelComp", function(x, value) {
     x@mu <- value
@@ -168,8 +211,8 @@ setMethod("mu<-", "BSRDataModelComp", function(x, value) {
 #' a list of such cluster pairs comparisons. This function performs this
 #' promotion adding an empty list of comparisons.
 #' @param bsrdm    A BSRDataModel object.
-#'
-#' @export
+#' @return Returns a BSRDataModelComp object. 
+#' 
 #' @examples
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
@@ -178,7 +221,7 @@ setMethod("mu<-", "BSRDataModelComp", function(x, value) {
 #'
 #' # define the comparison
 #' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
-#'
+#' @export
 as.BSRDataModelComp <- function(bsrdm) {
     if (!is(bsrdm, "BSRDataModel")) {
         stop("bsrdm must be of class BSRDataModel")

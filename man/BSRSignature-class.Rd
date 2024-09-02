@@ -25,5 +25,4 @@ their reduced versions.
 
 \examples{
 new("BSRSignature")
-
 }

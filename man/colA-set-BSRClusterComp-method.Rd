@@ -11,6 +11,9 @@
 
 \item{value}{value to be set for BSRClusterComp}
 }
+\value{
+returns \code{NULL}
+}
 \description{
 Cluster A columns setter (internal use only)
 }

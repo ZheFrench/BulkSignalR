@@ -10,6 +10,9 @@
 \item{connexionObject}{DBI::dbCanConnect object
 to test if it's a valid connexion.}
 }
+\value{
+Returns `NULL`, invisibly.
+}
 \description{
 Control connexion is ok.
 }

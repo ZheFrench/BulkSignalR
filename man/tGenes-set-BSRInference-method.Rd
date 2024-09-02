@@ -11,6 +11,9 @@
 
 \item{value}{value to be set BSRInference}
 }
+\value{
+returns \code{NULL}
+}
 \description{
 Target genes setter (internal use only)
 }

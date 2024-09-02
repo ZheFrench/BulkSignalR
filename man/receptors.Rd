@@ -13,8 +13,18 @@
 \arguments{
 \item{x}{BSRSignature}
 }
+\value{
+receptors
+
+receptors
+}
 \description{
 receptors accessor
 
 receptors accessor
+}
+\examples{
+if(FALSE){
+receptors(new("BSRSignature"))
+}
 }

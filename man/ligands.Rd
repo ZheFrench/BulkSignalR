@@ -13,8 +13,18 @@
 \arguments{
 \item{x}{BSRSignature}
 }
+\value{
+ligands
+
+ligands
+}
 \description{
 ligands accessor
 
 ligands accessor
+}
+\examples{
+if(FALSE){
+ligands(new("BSRSignature"))
+}
 }

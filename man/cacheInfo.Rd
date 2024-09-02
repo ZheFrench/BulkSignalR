@@ -10,6 +10,9 @@ cacheInfo(dir = c("both", "resources", "database"))
 \item{dir}{Directory to remove in order to clean the cache.
 Can be only 'resources', 'database' or 'both'.}
 }
+\value{
+Returns `NULL`, invisibly.
+}
 \description{
 Get cache content informations for specific cache dir.
 }

@@ -10,7 +10,7 @@
 #' @param switch  A logical indicating whether LRdb should be extended only
 #' (FALSE, default) or completely replaced (TRUE).
 #'
-#' @return NULL
+#' @return Returns `NULL`, invisibly. 
 #'
 #' @importFrom cli cli_alert_info
 #' @export

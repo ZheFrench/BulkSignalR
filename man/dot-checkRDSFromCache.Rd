@@ -12,6 +12,9 @@ BiocFileCache::BiocFileCache()}
 
 \item{resourceName}{keyword associated to a specific resource name.}
 }
+\value{
+logical TRUE/FALSE
+}
 \description{
 This function checks if a cache entry is a valid RDS file.
 Returns TRUE if the cache entry is valid, FALSE otherwise.

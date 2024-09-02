@@ -12,6 +12,9 @@ BiocFileCache::BiocFileCache()}
 
 \item{resourceName}{keyword associated to a specific resourceName}
 }
+\value{
+Returns BiocFileCache::bfcquery object or FALSE
+}
 \description{
 Access  resources (pathways, or PathwayCommons network
 from \url{https://www.pathwaycommons.org/})

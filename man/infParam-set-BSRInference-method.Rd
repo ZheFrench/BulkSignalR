@@ -11,6 +11,9 @@
 
 \item{value}{value to be set.}
 }
+\value{
+returns \code{NULL}
+}
 \description{
 Inference parameters setter (internal use only)
 }

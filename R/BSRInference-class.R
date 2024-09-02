@@ -20,8 +20,13 @@
 #' \code{"\link[=BSRInference-class]{reduceToPathway}"}.
 #' @export
 #' @examples
-#' new("BSRInference")
+#' data(sdc,package='BulkSignalR')
+#' normal <- grep("^N", names(sdc))
 #'
+#' bsrdm <- prepareDataset(sdc[,-normal])
+#' bsrdm <- learnParameters(bsrdm, quick=FALSE,
+#' plot.folder=".", verbose=TRUE)
+#' bsrinf <- initialInference(bsrdm)
 setClass("BSRInference",
     slots = c(
         LRinter = "data.frame",
@@ -101,6 +106,16 @@ if (!isGeneric("LRinter")) {
 #' @name LRinter
 #' @aliases LRinter,BSRInference-method
 #' @param x BSRInference object
+#' @return LRinter
+#' @examples
+#' data(sdc,package='BulkSignalR')
+#' normal <- grep("^N", names(sdc))
+#'
+#' bsrdm <- prepareDataset(sdc[,-normal])
+#' bsrdm <- learnParameters(bsrdm, quick=FALSE,
+#' plot.folder=".", verbose=TRUE)
+#' bsrinf <- initialInference(bsrdm)
+#' LRinter(bsrinf)
 #' @export
 setMethod("LRinter", "BSRInference", function(x) x@LRinter)
 
@@ -113,8 +128,10 @@ if (!isGeneric("LRinter<-")) {
     setGeneric("LRinter<-", fun)
 }
 #' LRinter setter (internal use only)
+#'
 #' @param x BSRInference object
 #' @param value value to be set to BSRInference
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("LRinter<-", "BSRInference", function(x, value) {
     x@LRinter <- value
@@ -135,6 +152,7 @@ if (!isGeneric("ligands")) {
 #' @name ligands
 #' @aliases ligands,BSRInference-method
 #' @param x BSRInference object
+#' @return ligands
 #' @export
 setMethod("ligands", "BSRInference", function(x) x@ligands)
 
@@ -149,6 +167,7 @@ if (!isGeneric("ligands<-")) {
 #' ligands setter (internal use only)
 #' @param x BRSInference object
 #' @param value Value to be set for bsrinf
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("ligands<-", "BSRInference", function(x, value) {
     x@ligands <- value
@@ -169,6 +188,7 @@ if (!isGeneric("receptors")) {
 #' @name receptors
 #' @aliases receptors,BSRInference-method
 #' @param x BRSInference object
+#' @return receptors
 #' @export
 setMethod("receptors", "BSRInference", function(x) x@receptors)
 
@@ -181,8 +201,10 @@ if (!isGeneric("receptors<-")) {
     setGeneric("receptors<-", fun)
 }
 #' receptors setter (internal use only)
+#'
 #' @param x BRSInference object
 #' @param value value to be set for BRSInference
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("receptors<-", "BSRInference", function(x, value) {
     x@receptors <- value
@@ -203,6 +225,7 @@ if (!isGeneric("tGenes")) {
 #' @name tGenes
 #' @aliases tGenes,BSRInference-method
 #' @param x BSRInferance object
+#' @return tGenes
 #' @export
 setMethod("tGenes", "BSRInference", function(x) x@t.genes)
 
@@ -215,8 +238,10 @@ if (!isGeneric("tGenes<-")) {
     setGeneric("tGenes<-", fun)
 }
 #' Target genes setter (internal use only)
+#' 
 #' @param x BSRInferance object
 #' @param value value to be set BSRInference
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("tGenes<-", "BSRInference", function(x, value) {
     x@t.genes <- value
@@ -251,6 +276,8 @@ if (!isGeneric("tgCorr<-")) {
 #' Target gene correlations setter (internal use only)
 #' @param x BSRInference object
 #' @param value value to be set for bsrinf
+#' @return returns \code{NULL}
+#' 
 #' @keywords internal
 setMethod("tgCorr<-", "BSRInference", function(x, value) {
     x@tg.corr <- value
@@ -270,7 +297,17 @@ if (!isGeneric("infParam")) {
 #'
 #' @name infParam
 #' @aliases infParam,BSRInference-method
-#' @param x BRSInferecence object.
+#' @param x BRSInference object.
+#' @return infParam
+#' @examples
+#' data(sdc,package='BulkSignalR')
+#' normal <- grep("^N", names(sdc))
+#'
+#' bsrdm <- prepareDataset(sdc[,-normal])
+#' bsrdm <- learnParameters(bsrdm, quick=FALSE,
+#' plot.folder=".", verbose=TRUE)
+#' bsrinf <- initialInference(bsrdm)
+#' infParam(bsrinf)
 #' @export
 setMethod("infParam", "BSRInference", function(x) x@inf.param)
 if (!isGeneric("infParam<-")) {
@@ -284,6 +321,8 @@ if (!isGeneric("infParam<-")) {
 #' Inference parameters setter (internal use only)
 #' @param x BRSInferecence object.
 #' @param value value to be set.
+#' @return returns \code{NULL}
+#' 
 #' @keywords internal
 setMethod("infParam<-", "BSRInference", function(x, value) {
     x@inf.param <- value
@@ -307,6 +346,7 @@ if (!isGeneric("LRinterShort")) {
 #' @name LRinterShort
 #' @aliases LRinterShort,BSRInference-method
 #' @param x BSRInference object
+#' @return LRinterShort
 #' @export
 setMethod(
     "LRinterShort", "BSRInference",

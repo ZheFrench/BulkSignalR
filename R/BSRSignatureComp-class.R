@@ -99,10 +99,12 @@ if (!isGeneric("cmpName")) {
     }
     setGeneric("cmpName", fun)
 }
-#' Target genes accessor
+#' Comparison name accessor
 #'
 #' @name cmpName
 #' @aliases cmpName,BSRSignatureComp-method
 #' @param x BSRSignature
+#' @return cmpName
+#' 
 #' @export
 setMethod("cmpName", "BSRSignatureComp", function(x) x@cmp.name)

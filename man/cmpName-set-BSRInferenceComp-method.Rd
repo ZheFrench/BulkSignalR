@@ -11,6 +11,9 @@
 
 \item{value}{value to be set for bsrinf}
 }
+\value{
+returns \code{NULL}
+}
 \description{
 Comparison name setter (internal use only)
 }

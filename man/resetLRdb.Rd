@@ -13,6 +13,9 @@ ligand and receptor.}
 \item{switch}{A logical indicating whether LRdb should be extended only
 (FALSE, default) or completely replaced (TRUE).}
 }
+\value{
+Returns `NULL`, invisibly.
+}
 \description{
 User can provide a data frame with 2 columns named
 ligand and receptor.

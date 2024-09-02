@@ -13,7 +13,6 @@
 #' @export
 #' @examples
 #' new("BSRSignature")
-#'
 setClass("BSRSignature",
     slots = c(
         pathways = "character",
@@ -86,6 +85,11 @@ if (!isGeneric("pathways")) {
 #' @name pathways
 #' @aliases pathways,BSRSignature-method
 #' @param x BSRSignature
+#' @return pathways
+#' @examples
+#' if(FALSE){
+#' pathways(new("BSRSignature"))
+#' }
 #' @export
 setMethod("pathways", "BSRSignature", function(x) x@pathways)
 
@@ -102,6 +106,11 @@ if (!isGeneric("ligands")) {
 #' @name ligands
 #' @aliases ligands,BSRSignature-method
 #' @param x BSRSignature
+#' @return ligands
+#' @examples
+#' if(FALSE){
+#' ligands(new("BSRSignature"))
+#' }
 #' @export
 setMethod("ligands", "BSRSignature", function(x) x@ligands)
 
@@ -118,8 +127,14 @@ if (!isGeneric("receptors")) {
 #' @name receptors
 #' @aliases receptors,BSRSignature-method
 #' @param x BSRSignature
+#' @return receptors
+#' @examples
+#' if(FALSE){
+#' receptors(new("BSRSignature"))
+#' }
 #' @export
 setMethod("receptors", "BSRSignature", function(x) x@receptors)
+
 
 if (!isGeneric("tGenes")) {
     if (is.function("tGenes")) {
@@ -134,8 +149,14 @@ if (!isGeneric("tGenes")) {
 #' @name tGenes
 #' @aliases tGenes,BSRSignature-method
 #' @param x BSRSignature
+#' @return tGenes
+#' @examples
+#' if(FALSE){
+#' tGenes(new("BSRSignature"))
+#' }
 #' @export
 setMethod("tGenes", "BSRSignature", function(x) x@t.genes)
+
 
 if (!isGeneric("tgCorr")) {
     if (is.function("tgCorr")) {
@@ -150,5 +171,10 @@ if (!isGeneric("tgCorr")) {
 #' @name tgCorr
 #' @aliases tgCorr,BSRSignature-method
 #' @param x BSRSignature
+#' @return tgCorr
+#' @examples
+#' if(FALSE){
+#' tgCorr(new("BSRSignature"))
+#' }
 #' @export
 setMethod("tgCorr", "BSRSignature", function(x) x@tg.corr)

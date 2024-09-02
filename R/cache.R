@@ -12,8 +12,9 @@
 #' @param resourceName   Ressource name.
 #' @param cacheDir  Absolute path to cache directory.
 #' @param verbose   Default FALSE
-#' @param download   Logical(TRUE/FALSE) Default FALSE for download.
-#'
+#' @param download   Logical(TRUE/FALSE) Default TRUE for download.
+#' @return Returns `NULL`, invisibly. 
+#' 
 #' @import BiocFileCache
 #' @import httr
 #' @keywords internal
@@ -81,7 +82,8 @@
 #' Delete the content of cache directory.
 #'
 #' @param dir Directory to remove. Can be only 'resources' or 'database'.
-#'
+#' @return Returns `NULL`, invisibly. 
+#' 
 #' @importFrom BiocFileCache removebfc
 #' @export
 #' @examples
@@ -128,7 +130,8 @@ cacheClear <- function(dir = c("both", "resources", "database")) {
 #'
 #' @param dir Directory to remove in order to clean the cache.
 #' Can be only 'resources', 'database' or 'both'.
-#'
+#' @return Returns `NULL`, invisibly. 
+
 #' @importFrom BiocFileCache BiocFileCache bfcinfo
 #' @importFrom cli cli_alert_danger cli_alert
 #' @export
@@ -196,8 +199,8 @@ cacheInfo <- function(dir = c("both", "resources", "database")) {
 #'
 #' @importFrom cli cli_alert_danger cli_alert cli_alert_info
 #' @import BiocFileCache httr
-#' @return NULL
-#' have been updated. See Updates.txt online.
+#' @return Returns `NULL`, invisibly. 
+#'
 #' @export
 #' @examples
 #' print("cacheVersion")
@@ -266,6 +269,8 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 #' @param bfc Object of class BiocFileCache, created by a call to
 #' BiocFileCache::BiocFileCache()
 #' @param resourceName keyword associated to a specific resourceName
+#' @return Returns BiocFileCache::bfcquery object or FALSE
+#' 
 #' @importFrom cli cli_alert_danger cli_alert cli_alert_info
 #' @import BiocFileCache
 #' @keywords internal
@@ -304,6 +309,8 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 #' @param bfc Object of class BiocFileCache, created by a call to
 #' BiocFileCache::BiocFileCache()
 #' @param resourceName keyword associated to a specific resource name.
+#' @return logical TRUE/FALSE
+#' 
 #' @importFrom cli cli_alert_danger cli_alert cli_alert_info
 #' @importFrom BiocFileCache bfcremove bfcquery
 #' @keywords internal

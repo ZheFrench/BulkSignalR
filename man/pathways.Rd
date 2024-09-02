@@ -10,6 +10,14 @@
 \arguments{
 \item{x}{BSRSignature}
 }
+\value{
+pathways
+}
 \description{
 pathways accessor
+}
+\examples{
+if(FALSE){
+pathways(new("BSRSignature"))
+}
 }

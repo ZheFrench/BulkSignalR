@@ -11,6 +11,9 @@
 
 \item{value}{value to be set for BSRDataModelComp}
 }
+\value{
+returns \code{NULL}
+}
 \description{
 Comparisons list setter (internal use only, use addComparison() otherwise)
 }

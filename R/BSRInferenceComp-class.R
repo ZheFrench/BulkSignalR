@@ -125,6 +125,30 @@ if (!isGeneric("cmpName")) {
 #' @name cmpName
 #' @aliases cmpName,BSRInferenceComp-method
 #' @param x BSRInferenceComp object
+#' @return cmpName
+#' @examples
+#'
+#' # prepare data
+#' data(sdc, package = "BulkSignalR")
+#' normal <- grep("^N", names(sdc))
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#'
+#' # define the comparison
+#' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+#' colA <- as.integer(1:5)
+#' colB <- as.integer(8:15)
+#' n <- nrow(ncounts(bsrdm.comp))
+#' stats <- data.frame(
+#'     pval = runif(n), logFC = rnorm(n, 0, 2),
+#'     expr = runif(n, 0, 10)
+#' )
+#' rownames(stats) <- rownames(ncounts(bsrdm.comp))
+#' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
+#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
+#'
+#' # infer ligand-receptor interactions from the comparison
+#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+#' cmpName(bsrinf)
 #' @export
 setMethod("cmpName", "BSRInferenceComp", function(x) x@cmp.name)
 
@@ -137,8 +161,10 @@ if (!isGeneric("cmpName<-")) {
     setGeneric("cmpName<-", fun)
 }
 #' Comparison name setter (internal use only)
+#' 
 #' @param x BSRInferenceComp object
 #' @param value value to be set for bsrinf
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("cmpName<-", "BSRInferenceComp", function(x, value) {
     x@cmp.name <- value
@@ -160,6 +186,30 @@ if (!isGeneric("srcCmpName")) {
 #' @name srcCmpName
 #' @aliases srcCmpName,BSRInferenceComp-method
 #' @param x BSRInferenceComp object
+#' @return srcCmpName
+#' @examples
+#' # prepare data
+#' data(sdc, package = "BulkSignalR")
+#' normal <- grep("^N", names(sdc))
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#'
+#' # define the comparison
+#' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+#' colA <- as.integer(1:5)
+#' colB <- as.integer(8:15)
+#' n <- nrow(ncounts(bsrdm.comp))
+#' stats <- data.frame(
+#'     pval = runif(n), logFC = rnorm(n, 0, 2),
+#'     expr = runif(n, 0, 10)
+#' )
+#' rownames(stats) <- rownames(ncounts(bsrdm.comp))
+#' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
+#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
+#'
+#' # infer ligand-receptor interactions from the comparison
+#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+#'
+#' srcCmpName(bsrinf)
 #' @export
 setMethod("srcCmpName", "BSRInferenceComp", function(x) x@src.cmp.name)
 
@@ -174,6 +224,7 @@ if (!isGeneric("srcCmpName<-")) {
 #' Source comparison name setter (internal use only)
 #' @param x BSRInferenceComp object
 #' @param value value to be set for bsrinf
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("srcCmpName<-", "BSRInferenceComp", function(x, value) {
     x@src.cmp.name <- value
@@ -195,6 +246,30 @@ if (!isGeneric("tgPval")) {
 #' @name tgPval
 #' @aliases tgPval,BSRInferenceComp-method
 #' @param x BSRInferenceComp object
+#' @return tgPval
+#' @examples
+#' # prepare data
+#' data(sdc, package = "BulkSignalR")
+#' normal <- grep("^N", names(sdc))
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#'
+#' # define the comparison
+#' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+#' colA <- as.integer(1:5)
+#' colB <- as.integer(8:15)
+#' n <- nrow(ncounts(bsrdm.comp))
+#' stats <- data.frame(
+#'     pval = runif(n), logFC = rnorm(n, 0, 2),
+#'     expr = runif(n, 0, 10)
+#' )
+#' rownames(stats) <- rownames(ncounts(bsrdm.comp))
+#' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
+#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
+#'
+#' # infer ligand-receptor interactions from the comparison
+#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+#'
+#' tgPval(bsrinf)
 #' @export
 setMethod("tgPval", "BSRInferenceComp", function(x) x@tg.pval)
 
@@ -207,8 +282,10 @@ if (!isGeneric("tgPval<-")) {
     setGeneric("tgPval<-", fun)
 }
 #' Target gene P-values setter (internal use only)
+#'
 #' @param x BSRInferenceComp object
 #' @param value value to be set for bsrinf
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("tgPval<-", "BSRInferenceComp", function(x, value) {
     x@tg.pval <- value
@@ -230,6 +307,30 @@ if (!isGeneric("tgLogFC")) {
 #' @name tgLogFC
 #' @aliases tgLogFC,BSRInferenceComp-method
 #' @param x BSRInferenceComp object
+#' @return tgLogFC
+#' @examples
+#' # prepare data
+#' data(sdc, package = "BulkSignalR")
+#' normal <- grep("^N", names(sdc))
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#'
+#' # define the comparison
+#' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+#' colA <- as.integer(1:5)
+#' colB <- as.integer(8:15)
+#' n <- nrow(ncounts(bsrdm.comp))
+#' stats <- data.frame(
+#'     pval = runif(n), logFC = rnorm(n, 0, 2),
+#'     expr = runif(n, 0, 10)
+#' )
+#' rownames(stats) <- rownames(ncounts(bsrdm.comp))
+#' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
+#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
+#'
+#' # infer ligand-receptor interactions from the comparison
+#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+#'
+#' tgLogFC(bsrinf)
 #' @export
 setMethod("tgLogFC", "BSRInferenceComp", function(x) x@tg.logFC)
 
@@ -244,6 +345,7 @@ if (!isGeneric("tgLogFC<-")) {
 #' Target gene logFC setter (internal use only)
 #' @param x BSRInferenceComp object
 #' @param value value to be set for bsrinf
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("tgLogFC<-", "BSRInferenceComp", function(x, value) {
     x@tg.logFC <- value
@@ -265,6 +367,30 @@ if (!isGeneric("tgExpr")) {
 #' @name tgExpr
 #' @aliases tgExpr,BSRInferenceComp-method
 #' @param x BSRInferenceComp object
+#' @return tgExpr
+#' @examples 
+#' # prepare data
+#' data(sdc, package = "BulkSignalR")
+#' normal <- grep("^N", names(sdc))
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#'
+#' # define the comparison
+#' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+#' colA <- as.integer(1:5)
+#' colB <- as.integer(8:15)
+#' n <- nrow(ncounts(bsrdm.comp))
+#' stats <- data.frame(
+#'     pval = runif(n), logFC = rnorm(n, 0, 2),
+#'     expr = runif(n, 0, 10)
+#' )
+#' rownames(stats) <- rownames(ncounts(bsrdm.comp))
+#' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
+#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
+#'
+#' # infer ligand-receptor interactions from the comparison
+#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+#'
+#' tgExpr(bsrinf)
 #' @export
 setMethod("tgExpr", "BSRInferenceComp", function(x) x@tg.expr)
 
@@ -277,8 +403,10 @@ if (!isGeneric("tgExpr<-")) {
     setGeneric("tgExpr<-", fun)
 }
 #' Target gene expression setter (internal use only)
+#'
 #' @param x BSRInferenceComp object
 #' @param value value to be set for bsrinf
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("tgExpr<-", "BSRInferenceComp", function(x, value) {
     x@tg.expr <- value
@@ -302,6 +430,29 @@ if (!isGeneric("LRinterShort")) {
 #' @name LRinterShort
 #' @aliases LRinterShort,BSRInferenceComp-method
 #' @param x BSRInferenceComp object
+#' @return LRinterShort
+#' @examples
+#' # prepare data
+#' data(sdc, package = "BulkSignalR")
+#' normal <- grep("^N", names(sdc))
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#'
+#' # define the comparison
+#' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+#' colA <- as.integer(1:5)
+#' colB <- as.integer(8:15)
+#' n <- nrow(ncounts(bsrdm.comp))
+#' stats <- data.frame(
+#'     pval = runif(n), logFC = rnorm(n, 0, 2),
+#'     expr = runif(n, 0, 10)
+#' )
+#' rownames(stats) <- rownames(ncounts(bsrdm.comp))
+#' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
+#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
+#'
+#' # infer ligand-receptor interactions from the comparison
+#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+#' LRinterShort(bsrinf)
 #' @export
 setMethod(
     "LRinterShort", "BSRInferenceComp",
@@ -327,6 +478,29 @@ if (!isGeneric("LRinterScore")) {
 #' @name LRinterScore
 #' @aliases LRinterScore,BSRInferenceComp-method
 #' @param x BSRInferenceComp object
+#' @return LRinterScore
+#' @examples
+#' # prepare data
+#' data(sdc, package = "BulkSignalR")
+#' normal <- grep("^N", names(sdc))
+#' bsrdm <- prepareDataset(sdc[, -normal])
+#'
+#' # define the comparison
+#' bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+#' colA <- as.integer(1:5)
+#' colB <- as.integer(8:15)
+#' n <- nrow(ncounts(bsrdm.comp))
+#' stats <- data.frame(
+#'     pval = runif(n), logFC = rnorm(n, 0, 2),
+#'     expr = runif(n, 0, 10)
+#' )
+#' rownames(stats) <- rownames(ncounts(bsrdm.comp))
+#' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
+#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
+#'
+#' # infer ligand-receptor interactions from the comparison
+#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+#' LRinterScore(bsrinf)
 #' @export
 setMethod(
     "LRinterScore", "BSRInferenceComp",

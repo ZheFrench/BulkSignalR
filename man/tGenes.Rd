@@ -13,8 +13,18 @@
 \arguments{
 \item{x}{BSRSignature}
 }
+\value{
+tGenes
+
+tGenes
+}
 \description{
 Target genes accessor
 
 Target genes accessor
+}
+\examples{
+if(FALSE){
+tGenes(new("BSRSignature"))
+}
 }

@@ -6,7 +6,8 @@
 #' download again. This will overwrite
 #' pre-existing database. Default is True.
 #' @param verbose Logical TRUE/FALSE
-#'
+#' @return Returns `NULL`, invisibly. 
+#' 
 #' @import httr
 #' @importFrom cli col_cyan
 #' @export
@@ -47,7 +48,7 @@ createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
 
     # }
 
-    return(invisible())
+    return(invisible(NULL))
 }
 
 
@@ -57,7 +58,8 @@ createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
 #'
 #' @param url File URL.
 #' @param databaseFilePath Path to database file.
-#'
+#' @return Returns logical True/False. 
+#' 
 #' @import httr
 #' @importFrom cli col_cyan
 #' @keywords internal
@@ -86,7 +88,8 @@ createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
 #'
 #' @param connexionObject DBI::dbCanConnect object
 #' to test if it's a valid connexion.
-#'
+#' @return Returns `NULL`, invisibly. 
+#' 
 #' @import DBI RSQLite
 #' @importFrom cli cli_alert_danger
 #' @keywords internal
@@ -98,4 +101,5 @@ createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
             stop("The file provided is not a valid database.")
         }
     )
+    return(invisible(NULL))
 }

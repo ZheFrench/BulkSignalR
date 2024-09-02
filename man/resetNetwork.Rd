@@ -13,6 +13,9 @@ of gene interactions. 'type'  should be set as
 'controls-expression-of' when user provide
 his own file.}
 }
+\value{
+Returns `NULL`, invisibly.
+}
 \description{
 Network is a dataframe that gives relation between
 genes. It's composed of 3 columns annoted as

@@ -57,6 +57,9 @@ associations in \code{spatialAssociation}.}
 
 \item{perplexity}{Perplexity parameter for t-SNE.}
 }
+\value{
+Display a 2D-projection of the score spatial distributions.
+}
 \description{
 Use PCA or t-SNE to obtain a 2D-projection of a set of spatial scores
 or associations.

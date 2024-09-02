@@ -13,6 +13,9 @@ pre-existing database. Default is True.}
 
 \item{verbose}{Default is FALSE}
 }
+\value{
+Returns `NULL`, invisibly.
+}
 \description{
 Create cache for all resources (pathways, or PWC network)
 downloaded from the web when library is first loaded.

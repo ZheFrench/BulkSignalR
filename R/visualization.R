@@ -604,7 +604,8 @@ simpleHeatmap <- function(mat.c, width, height,
     dend.row = NULL,
     dend.spl = NULL, cols = NULL, pointsize = 4,
     bottom.annotation = NULL, n.col.clust = 0,
-    n.row.clust = 0, cut.p = 0.01, row.names = TRUE,
+    n.row.clust = 0, gap.size = 0.5, cut.p = 0.01, 
+    row.names = TRUE,
     column.names = TRUE, hcl.palette = NULL,
     reverse = FALSE, format = c("pdf", "svg", "png")) {
 

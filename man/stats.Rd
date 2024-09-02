@@ -10,6 +10,29 @@
 \arguments{
 \item{x}{BSRClusterComp object}
 }
+\value{
+stats
+}
 \description{
 Cluster comparison statistics accessor
+}
+\examples{
+bsrdm <- new("BSRDataModel",
+    ncounts = matrix(1.5,
+        nrow = 2, ncol = 4,
+        dimnames = list(c("A", "B"), c("E", "F"))
+    ),
+    log.transformed = TRUE, normalization = "TC"
+)
+bsrdm.comp <- as.BSRDataModelComp(bsrdm)
+colA <- as.integer(1:2)
+colB <- as.integer(3:4)
+n <- nrow(ncounts(bsrdm.comp))
+edger.stats <- data.frame(
+    pval = runif(n), logFC = rnorm(n, 0, 2),
+    expr = c(1, 2, 3)
+)
+rownames(edger.stats) <- rownames(ncounts(bsrdm.comp))
+bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, edger.stats)
+stats(bsrcc)
 }

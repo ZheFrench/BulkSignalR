@@ -15,7 +15,10 @@
 
 \item{verbose}{Default FALSE}
 
-\item{download}{Logical(TRUE/FALSE) Default FALSE for download.}
+\item{download}{Logical(TRUE/FALSE) Default TRUE for download.}
+}
+\value{
+Returns `NULL`, invisibly.
 }
 \description{
 Add cache for resources (pathways, or PWC network)

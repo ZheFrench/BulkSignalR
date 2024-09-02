@@ -18,6 +18,9 @@ Other options are gmt or txt files.}
 
 \item{resourceName}{Two options "GO-BP" or "REACTOME".}
 }
+\value{
+Returns `NULL`, invisibly.
+}
 \description{
 Pathways are defined in Reactome and
 GoBP databases.

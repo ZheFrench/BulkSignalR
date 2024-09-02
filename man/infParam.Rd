@@ -8,8 +8,21 @@
 \S4method{infParam}{BSRInference}(x)
 }
 \arguments{
-\item{x}{BRSInferecence object.}
+\item{x}{BRSInference object.}
+}
+\value{
+infParam
 }
 \description{
 Inference parameters accessor
+}
+\examples{
+data(sdc,package='BulkSignalR')
+normal <- grep("^N", names(sdc))
+
+bsrdm <- prepareDataset(sdc[,-normal])
+bsrdm <- learnParameters(bsrdm, quick=FALSE,
+plot.folder=".", verbose=TRUE)
+bsrinf <- initialInference(bsrdm)
+infParam(bsrinf)
 }

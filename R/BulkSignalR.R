@@ -7,8 +7,8 @@
 #' is specific to bulk data sets. Different visualization and data
 #' summary functions are proposed to help navigating results.
 #'
-#' @name BulkSignalR
-NULL
+#' @keywords internal 
+"_PACKAGE"
 
 utils::globalVariables(c(
     "LRdb",

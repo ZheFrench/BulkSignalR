@@ -11,6 +11,9 @@
 
 \item{databaseFilePath}{Path to database file.}
 }
+\value{
+Returns logical True/False.
+}
 \description{
 Fetch LR database from remote location.
 }

@@ -14,6 +14,7 @@
 #' download again. This will overwrite
 #' pre-existing database. Default is True.
 #' @param verbose Default is FALSE
+#' @return Returns `NULL`, invisibly. 
 #'
 #' @export
 #' @examples
@@ -51,7 +52,8 @@ createResources <- function(onRequest = TRUE, verbose = FALSE) {
 #' @param resourceName   Ressource name.
 #' @param cache   True/False. Defautlt is False
 #' If True, you will use environment variables.
-#'
+#' @return Returns a dataframe of the requested
+#' resource.
 #' @importFrom cli cli_alert_danger
 #' @export
 #' @examples
@@ -149,7 +151,7 @@ getResource <- function(resourceName = NULL, cache = FALSE) {
 #' 'controls-expression-of' when user provide
 #' his own file.
 #'
-#' @return NULL
+#' @return Returns `NULL`, invisibly. 
 #'
 #' @importFrom cli cli_alert_info
 #' @export
@@ -193,7 +195,7 @@ resetNetwork <- function(network) {
 #' Other options are gmt or txt files.
 #' @param resourceName    Two options "GO-BP" or "REACTOME".
 #'
-#' @return NULL
+#' @return Returns `NULL`, invisibly. 
 #'
 #' @importFrom cli cli_alert_info
 #' @export
@@ -247,7 +249,6 @@ resetPathwaysFromFile <- function(file,
     if (resourceName == "GO-BP") {
         assign("gobp", db, envir = as.environment(get("nameEnv")))
     }
-
 
     return(invisible(NULL))
 } # resetPathwaysFromFile

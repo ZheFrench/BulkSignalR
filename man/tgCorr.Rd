@@ -13,8 +13,16 @@
 \arguments{
 \item{x}{BSRSignature}
 }
+\value{
+tgCorr
+}
 \description{
 Target gene correlations accessor
 
 Target gene correlations accessor
+}
+\examples{
+if(FALSE){
+tgCorr(new("BSRSignature"))
+}
 }

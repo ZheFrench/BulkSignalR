@@ -9,6 +9,9 @@ as.BSRDataModelComp(bsrdm)
 \arguments{
 \item{bsrdm}{A BSRDataModel object.}
 }
+\value{
+Returns a BSRDataModelComp object.
+}
 \description{
 In case ligand-receptor inferences should be obtained
 based on gene/protein regulation P-values comparing two clusters of
@@ -25,5 +28,4 @@ bsrdm <- prepareDataset(sdc[, -normal])
 
 # define the comparison
 bsrdm.comp <- as.BSRDataModelComp(bsrdm)
-
 }

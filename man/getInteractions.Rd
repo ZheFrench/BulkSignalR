@@ -10,6 +10,9 @@ getInteractions(idRelease = NULL)
 \item{idRelease}{integer id version Release
 Default is NULL so last version is selected.}
 }
+\value{
+Returns dataframe LR interactions, invisibly.
+}
 \description{
 Fetch LR interactions from database and
 and return a dataframe

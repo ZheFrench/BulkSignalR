@@ -101,6 +101,17 @@ if (!isGeneric("initialOrganism")) {
 #' @name initialOrganism
 #' @aliases initialOrganism,BSRDataModel-method
 #' @param x Object BSRDataModel
+#' @return initialOrganism
+#' @examples
+#' bsrdm <- new("BSRDataModel",
+#'     ncounts = matrix(1.5,
+#'         nrow = 2, ncol = 2,
+#'         dimnames = list(c("A", "B"), c("C", "D"))
+#'     ),
+#'     log.transformed = TRUE,
+#'     normalization = "TC"
+#' )
+#' initialOrganism(bsrdm)
 #' @export
 setMethod("initialOrganism", "BSRDataModel", function(x) x@initial.organism)
 
@@ -118,6 +129,17 @@ if (!isGeneric("initialOrthologs")) {
 #' @name initialOrthologs
 #' @aliases initialOrthologs,BSRDataModel-method
 #' @param x Object BSRDataModel
+#' @return initialOrthologs
+#' @examples
+#' bsrdm <- new("BSRDataModel",
+#'     ncounts = matrix(1.5,
+#'         nrow = 2, ncol = 2,
+#'         dimnames = list(c("A", "B"), c("C", "D"))
+#'     ),
+#'     log.transformed = TRUE,
+#'     normalization = "TC"
+#' )
+#' initialOrthologs(bsrdm)
 #' @export
 setMethod("initialOrthologs", "BSRDataModel", function(x) x@initial.orthologs)
 
@@ -135,6 +157,17 @@ if (!isGeneric("ncounts")) {
 #' @name ncounts
 #' @aliases ncounts,BSRDataModel-method
 #' @param x object BSRDataModel
+#' @return ncounts
+#' @examples
+#' bsrdm <- new("BSRDataModel",
+#'     ncounts = matrix(1.5,
+#'         nrow = 2, ncol = 2,
+#'         dimnames = list(c("A", "B"), c("C", "D"))
+#'     ),
+#'     log.transformed = TRUE,
+#'     normalization = "TC"
+#' )
+#' ncounts(bsrdm)
 #' @export
 setMethod("ncounts", "BSRDataModel", function(x) x@ncounts)
 
@@ -150,6 +183,7 @@ if (!isGeneric("ncounts<-")) {
 #'
 #' @param x object BSRDataModel
 #' @param value value to be set for BSRDataModel
+#' @return returns \code{NULL}
 #' @keywords internal
 setMethod("ncounts<-", "BSRDataModel", function(x, value) {
     x@ncounts <- value
@@ -171,6 +205,17 @@ if (!isGeneric("param")) {
 #' @name param
 #' @aliases param,BSRDataModel-method
 #' @param x BSRDataModel oject
+#' @return param
+#' @examples
+#' bsrdm <- new("BSRDataModel",
+#'     ncounts = matrix(1.5,
+#'         nrow = 2, ncol = 2,
+#'         dimnames = list(c("A", "B"), c("C", "D"))
+#'     ),
+#'     log.transformed = TRUE,
+#'     normalization = "TC"
+#' )
+#' param(bsrdm)
 #' @export
 setMethod("param", "BSRDataModel", function(x) x@param)
 
@@ -187,6 +232,17 @@ if (!isGeneric("logTransformed")) {
 #' @name logTransformed
 #' @aliases logTransformed,BSRDataModel-method
 #' @param x Object BRSDataModel
+#' @return logTransformed
+#' @examples
+#' bsrdm <- new("BSRDataModel",
+#'     ncounts = matrix(1.5,
+#'         nrow = 2, ncol = 2,
+#'         dimnames = list(c("A", "B"), c("C", "D"))
+#'     ),
+#'     log.transformed = TRUE,
+#'     normalization = "TC"
+#' )
+#' logTransformed(bsrdm)
 #' @export
 setMethod("logTransformed", "BSRDataModel", function(x) x@log.transformed)
 
@@ -202,7 +258,18 @@ if (!isGeneric("normalization")) {
 #'
 #' @name normalization
 #' @aliases normalization,BSRDataModel-method
-#' @param x oject BSRDatamModel
+#' @param x object BSRDatamModel
+#' @return normalization
+#' @examples
+#' bsrdm <- new("BSRDataModel",
+#'     ncounts = matrix(1.5,
+#'         nrow = 2, ncol = 2,
+#'         dimnames = list(c("A", "B"), c("C", "D"))
+#'     ),
+#'     log.transformed = TRUE,
+#'     normalization = "TC"
+#' )
+#' normalization(bsrdm)
 #' @export
 setMethod("normalization", "BSRDataModel", function(x) x@normalization)
 

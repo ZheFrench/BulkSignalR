@@ -11,8 +11,7 @@ cacheVersion(dir = c("both", "resources", "database"))
 Can be only 'resources', 'database' or 'both'.}
 }
 \value{
-NULL
-have been updated. See Updates.txt online.
+Returns `NULL`, invisibly.
 }
 \description{
 Check to see if some ressources has

@@ -84,6 +84,9 @@ IDs of spatial locations.}
 \item{ref.colors}{A vector of colors to bypass those automatically chosen
 by ggplot2 for the tissue areas in the reference plot.}
 }
+\value{
+A spatial plot
+}
 \description{
 Generate a plot with scores at the spatial coordinates of the corresponding
 sample locations. Not limited to BulkSignalR gene signature scores.

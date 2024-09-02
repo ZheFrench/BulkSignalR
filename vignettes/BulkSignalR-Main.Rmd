@@ -138,8 +138,8 @@ through different plots (heatmaps, alluvial plots, chord diagrams or networks).
 `BulkSignalR` package functions have many parameters that can be 
 changed by the user to fit specific needs (see Reference Manual for details). 
 
-       
-
+    
+    
 ## Parallel mode settings
 
 Users can reduce compute time

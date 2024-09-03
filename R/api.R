@@ -13,6 +13,7 @@
 #' @export
 #' @examples
 #' print("getComplexes")
+#' getComplexes(idRelease=1)
 getComplexes <- function(idRelease = NULL) {
     cacheDir <- get("BulkSignalR_CACHEDIR")
     url <- get("BulkSignalR_DB_URL")
@@ -100,7 +101,7 @@ where Comp."id.release_fk" = ?;', release$id)
 #' @export
 #' @examples
 #' print("getInteractions")
-#' getInteractions()
+#' getInteractions(idRelease=1)
 getInteractions <- function(idRelease = NULL) {
     cacheDir <- get("BulkSignalR_CACHEDIR")
     url <- get("BulkSignalR_DB_URL")

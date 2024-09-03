@@ -24,7 +24,7 @@
 #' n <- nrow(ncounts(bsrdm.comp))
 #' edger.stats <- data.frame(
 #'     pval = runif(n), logFC = rnorm(n, 0, 2),
-#'     expr = c(1, 2, 3)
+#'     expr = c(1, 2)
 #' )
 #' rownames(edger.stats) <- rownames(ncounts(bsrdm.comp))
 #' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, edger.stats)
@@ -126,7 +126,7 @@ if (!isGeneric("colA")) {
 #' n <- nrow(ncounts(bsrdm.comp))
 #' edger.stats <- data.frame(
 #'     pval = runif(n), logFC = rnorm(n, 0, 2),
-#'     expr = c(1, 2, 3)
+#'     expr = c(1, 2)
 #' )
 #' rownames(edger.stats) <- rownames(ncounts(bsrdm.comp))
 #' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, edger.stats)
@@ -183,7 +183,7 @@ if (!isGeneric("colB")) {
 #' n <- nrow(ncounts(bsrdm.comp))
 #' edger.stats <- data.frame(
 #'     pval = runif(n), logFC = rnorm(n, 0, 2),
-#'     expr = c(1, 2, 3)
+#'     expr = c(1, 2)
 #' )
 #' rownames(edger.stats) <- rownames(ncounts(bsrdm.comp))
 #' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, edger.stats)
@@ -240,7 +240,7 @@ if (!isGeneric("stats")) {
 #' n <- nrow(ncounts(bsrdm.comp))
 #' edger.stats <- data.frame(
 #'     pval = runif(n), logFC = rnorm(n, 0, 2),
-#'     expr = c(1, 2, 3)
+#'     expr = c(1, 2)
 #' )
 #' rownames(edger.stats) <- rownames(ncounts(bsrdm.comp))
 #' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, edger.stats)

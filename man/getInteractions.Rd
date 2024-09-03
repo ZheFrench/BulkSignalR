@@ -19,5 +19,5 @@ and return a dataframe
 }
 \examples{
 print("getInteractions")
-getInteractions()
+getInteractions(idRelease=1)
 }

@@ -19,4 +19,5 @@ and return a dataframe
 }
 \examples{
 print("getComplexes")
+getComplexes(idRelease=1)
 }

@@ -70,7 +70,7 @@ bsrdm <- learnParameters(bsrdm,
     verbose = TRUE
 )
 bsrinf <- initialInference(bsrdm)
-pathways <- c("PD-1 signaling", "Interferon gamma signaling")
+pathways <- LRinter(bsrinf)[1,c("pw.name")]
 bubblePlotPathwaysLR(bsrinf,
     pathways = pathways,
     qval.thres = 1,

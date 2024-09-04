@@ -174,7 +174,7 @@ maxLigandSpatialCounts <- function(bsrdm, areas, nnn = 4, radius = NULL,
     # maximize ligands in the transcriptomes
     orig <- ncounts(bsrdm)
     maxi <- orig
-    ligands <- intersect(LRdb$ligand, rownames(orig))
+    ligands <- intersect(BulkSignalR_LRdb$ligand, rownames(orig))
     for (i in seq_len(ncol(orig))) {
         used <- neighb$nn.idx[i, ] > 0
         if (sum(used) > 1) {

@@ -54,8 +54,8 @@
     }
 
     lrgenes <- intersect(c(
-        LRdb$ligand,
-        LRdb$receptor
+        BulkSignalR_LRdb$ligand,
+        BulkSignalR_LRdb$receptor
     ), rownames(stats(cc)))
     if (!is.null(restrict.genes)) {
         lrgenes <- intersect(lrgenes, restrict.genes)
@@ -78,9 +78,9 @@
         L.stats <- stats(scc)
     }
     pairs <- NULL
-    for (i in seq_len(nrow(LRdb))) {
-        L <- LRdb$ligand[i]
-        R <- LRdb$receptor[i]
+    for (i in seq_len(nrow(BulkSignalR_LRdb))) {
+        L <- BulkSignalR_LRdb$ligand[i]
+        R <- BulkSignalR_LRdb$receptor[i]
         if (L %in% lrgenes && R %in% lrgenes) {
             pL <- L.stats[L, "pval"]
             pR <- R.stats[R, "pval"]
@@ -220,9 +220,9 @@
             best.2nd <- foreach::foreach(p = pa, .combine = rbind) %do% {
                 # best.2nd <- NULL
                 # for (p in pa){
-                int <- Network[
-                    Network$a.gn %in% pw[pw[[id.col]] == p, gene.col] &
-                        Network$b.gn %in% pw[pw[[id.col]] == p, gene.col],
+                int <- BulkSignalR_Network[
+                    BulkSignalR_Network$a.gn %in% pw[pw[[id.col]] == p, gene.col] &
+                        BulkSignalR_Network$b.gn %in% pw[pw[[id.col]] == p, gene.col],
                 ]
 
                 # extract the target genes of receptor r
@@ -449,12 +449,13 @@
 
     # Reactome pathways
     if (reference %in% c("REACTOME-GOBP", "REACTOME")) {
-        pw.size <- table(reactome$`Reactome ID`)
+        pw.size <- table(BulkSignalR_Reactome$`Reactome ID`)
         pw.size <- pw.size[pw.size >= min.pw.size & pw.size <= max.pw.size]
         if (use.full.network) {
-            react <- reactome
+            react <- BulkSignalR_Reactome
         } else {
-            react <- reactome[reactome$`Gene name` %in% rownames(stats(cc)), ]
+            react <- BulkSignalR_Reactome[
+            BulkSignalR_Reactome$`Gene name` %in% rownames(stats(cc)), ]
         }
         if (!is.null(restrict.pw)) {
             react <- react[react$`Reactome ID` %in% restrict.pw, ]
@@ -478,12 +479,13 @@
 
     # GOBP
     if (reference %in% c("REACTOME-GOBP", "GOBP")) {
-        pw.size <- table(gobp$`GO ID`)
+        pw.size <- table(BulkSignalR_Gobp$`GO ID`)
         pw.size <- pw.size[pw.size >= min.pw.size & pw.size <= max.pw.size]
         if (use.full.network) {
-            go <- gobp
+            go <- BulkSignalR_Gobp
         } else {
-            go <- gobp[gobp$`Gene name` %in% rownames(stats(cc)), ]
+            go <- BulkSignalR_Gobp[
+            BulkSignalR_Gobp$`Gene name` %in% rownames(stats(cc)), ]
         }
         if (!is.null(restrict.pw)) {
             go <- go[go$`GO ID` %in% restrict.pw, ]

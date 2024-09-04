@@ -573,20 +573,21 @@ setMethod("getPathwayStats", "BSRInference", function(obj,
     pw.ids.R <- table(pairs.R$pw.id)
 
     # number of ligands for each receptor
-    R.n.comb <- table(LRdb$receptor)
+    R.n.comb <- table(BulkSignalR_LRdb$receptor)
 
     foreach::foreach(id = names(pw.ids), .combine = rbind) %do% {
         # number of receptors that are in the current pathway,
         # depending on whether it is a GOBP or Reactome pathway
         if (regexpr("^R-", id) != -1) {
             Rs <- intersect(
-                LRdb$receptor,
-                reactome[reactome$`Reactome ID` == id, "Gene name"]
+                BulkSignalR_LRdb$receptor,
+                BulkSignalR_Reactome[
+                BulkSignalR_Reactome$`Reactome ID` == id, "Gene name"]
             )
         } else {
             Rs <- intersect(
-                LRdb$receptor,
-                gobp[gobp$`GO ID` == id, "Gene name"]
+                BulkSignalR_LRdb$receptor,
+                BulkSignalR_Gobp[BulkSignalR_Gobp$`GO ID` == id, "Gene name"]
             )
         }
 

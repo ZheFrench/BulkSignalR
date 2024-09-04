@@ -113,15 +113,15 @@ getResource <- function(resourceName = NULL, cache = FALSE) {
         }
     } else if (cache == FALSE) {
         if (resourceName == "Reactome") {
-            dataframe <- get("reactome")
+            dataframe <- get("BulkSignalR_Reactome")
         }
 
         if (resourceName == "GO-BP") {
-            dataframe <- get("gobp")
+            dataframe <- get("BulkSignalR_Gobp")
         }
 
         if (resourceName == "Network") {
-            dataframe <- get("Network")
+            dataframe <- get("BulkSignalR_Network")
         }
     }
 
@@ -169,7 +169,7 @@ resetNetwork <- function(network) {
     message("")
     cli::cli_alert_info("New resource defined for {.val Network}.\n")
 
-    assign("Network", network, envir = as.environment(get("nameEnv")))
+    assign("BulkSignalR_Network", network, envir = as.environment(get("nameEnv")))
 
     return(invisible(NULL))
 } # resetNetwork
@@ -244,10 +244,12 @@ resetPathwaysFromFile <- function(file,
 
 
     if (resourceName == "Reactome") {
-        assign("reactome", db, envir = as.environment(get("nameEnv")))
+        assign("BulkSignalR_Reactome", db,
+            envir = as.environment(get("nameEnv")))
     }
     if (resourceName == "GO-BP") {
-        assign("gobp", db, envir = as.environment(get("nameEnv")))
+        assign("BulkSignalR_Gobp", db,
+            envir = as.environment(get("nameEnv")))
     }
 
     return(invisible(NULL))

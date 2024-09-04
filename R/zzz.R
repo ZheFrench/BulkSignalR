@@ -21,9 +21,10 @@
 
     createDatabase(onRequest = FALSE)
 
-    LRdb <- getInteractions()
+    BulkSignalR_LRdb <- getInteractions()
 
-    assign("LRdb", LRdb, envir = as.environment(nameEnv))
+    assign("BulkSignalR_LRdb", BulkSignalR_LRdb,
+    envir = as.environment(nameEnv))
 
     ################################
     ##   Resource Cache Files   ###
@@ -44,13 +45,19 @@
 
     createResources(onRequest = FALSE)
 
-    reactome <- getResource(resourceName = "Reactome", cache = TRUE)
-    gobp <- getResource(resourceName = "GO-BP", cache = TRUE)
-    Network <- getResource(resourceName = "Network", cache = TRUE)
+    BulkSignalR_Reactome <- getResource(resourceName = "Reactome",
+        cache = TRUE)
+    BulkSignalR_Gobp <- getResource(resourceName = "GO-BP",
+        cache = TRUE)
+    BulkSignalR_Network <- getResource(resourceName = "Network",
+        cache = TRUE)
 
-    assign("reactome", reactome, envir = as.environment(nameEnv))
-    assign("gobp", gobp, envir = as.environment(nameEnv))
-    assign("Network", Network, envir = as.environment(nameEnv))
+    assign("BulkSignalR_Reactome", BulkSignalR_Reactome, 
+        envir = as.environment(nameEnv))
+    assign("BulkSignalR_Gobp", BulkSignalR_Gobp, 
+        envir = as.environment(nameEnv))
+    assign("BulkSignalR_Network", BulkSignalR_Network, 
+        envir = as.environment(nameEnv))
 }
 
 .onAttach <- function(libname, pkgname) {

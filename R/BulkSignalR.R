@@ -11,6 +11,6 @@
 "_PACKAGE"
 
 utils::globalVariables(c(
-    "LRdb",
+    "BulkSignalR_LRdb",
     "%v%", "%>%", "%do%", "%dopar%", "ComplexHeatmap"
 ))

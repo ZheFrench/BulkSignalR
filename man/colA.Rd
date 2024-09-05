@@ -20,7 +20,7 @@ Cluster A columns accessor
 bsrdm <- new("BSRDataModel",
     ncounts = matrix(1.5,
         nrow = 2, ncol = 4,
-        dimnames = list(c("A", "B"), c("E", "F"))
+        dimnames = list(c("A", "B"), c("E", "F","G","H"))
     ),
     log.transformed = TRUE, normalization = "TC"
 )

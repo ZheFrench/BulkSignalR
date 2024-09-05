@@ -221,8 +221,10 @@
                 # best.2nd <- NULL
                 # for (p in pa){
                 int <- BulkSignalR_Network[
-                    BulkSignalR_Network$a.gn %in% pw[pw[[id.col]] == p, gene.col] &
-                        BulkSignalR_Network$b.gn %in% pw[pw[[id.col]] == p, gene.col],
+                    BulkSignalR_Network$a.gn %in% 
+                    pw[pw[[id.col]] == p, gene.col] &
+                        BulkSignalR_Network$b.gn %in% 
+                        pw[pw[[id.col]] == p, gene.col],
                 ]
 
                 # extract the target genes of receptor r

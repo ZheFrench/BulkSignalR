@@ -169,7 +169,8 @@ resetNetwork <- function(network) {
     message("")
     cli::cli_alert_info("New resource defined for {.val Network}.\n")
 
-    assign("BulkSignalR_Network", network, envir = as.environment(get("nameEnv")))
+    assign("BulkSignalR_Network", 
+        network, envir = as.environment(get("nameEnv")))
 
     return(invisible(NULL))
 } # resetNetwork

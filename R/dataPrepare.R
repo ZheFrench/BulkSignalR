@@ -26,7 +26,7 @@ resetLRdb <- function(db, switch = FALSE) {
             )
         } else {
             db <- rbind(
-                LRdb[, c("ligand", "receptor")],
+                BulkSignalR_LRdb[, c("ligand", "receptor")],
                 db[, c("ligand", "receptor")]
             )
             assign("BulkSignalR_LRdb", unique(db), 

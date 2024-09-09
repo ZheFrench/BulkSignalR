@@ -8,6 +8,7 @@
 \S4method{updateInference}{BSRInferenceComp}(
   obj,
   bsrcc,
+  ncounts,
   src.bsrcc = NULL,
   rank.p = 0.55,
   max.pval = 0.01,
@@ -26,6 +27,8 @@
 \item{obj}{BSRInferenceComp object.}
 
 \item{bsrcc}{BSRClusterComp object relative to target cells.}
+
+\item{ncounts}{Matrix counts normalized.}
 
 \item{src.bsrcc}{BSRClusterComp object relative to source cells.}
 

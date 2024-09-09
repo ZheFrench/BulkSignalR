@@ -74,7 +74,9 @@ colB <- as.integer(8:15)
 # associated pvalues from DGE ouputs.
 
 n <- nrow(ncounts(bsrdm.comp))
-stats <- data.frame(pval = runif(n), logFC = rnorm(n, 0, 2))
+stats <- data.frame(pval = runif(n),
+logFC = rnorm(n, 0, 2),
+expr = runif(n, 0, 10))
 rownames(stats) <- rownames(ncounts(bsrdm.comp))
 
 # we first define the cluster comparison and add it

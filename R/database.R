@@ -13,7 +13,9 @@
 #' @export
 #' @examples
 #' print("createDatabase")
-#' createDatabase()
+#' if(FALSE){
+#'  createDatabase()
+#' }
 createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
     # Default directory
     cacheDir <- get("BulkSignalR_CACHEDIR")

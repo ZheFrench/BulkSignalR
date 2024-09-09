@@ -649,6 +649,7 @@ if (!isGeneric("updateInference")) {
 #'
 #' @param obj BSRInferenceComp object.
 #' @param bsrcc BSRClusterComp object relative to target cells.
+#' @param ncounts Matrix counts normalized.
 #' @param src.bsrcc BSRClusterComp object relative to source cells.
 #' @param rank.p        A number between 0 and 1 defining the rank of the last
 #'   considered target genes.
@@ -725,7 +726,7 @@ if (!isGeneric("updateInference")) {
 #' bsrinf.updated <- updateInference(bsrinf, bsrcc.2)
 #'
 setMethod("updateInference", "BSRInferenceComp", function(obj, bsrcc,
-    src.bsrcc = NULL, rank.p = 0.55,
+    ncounts, src.bsrcc = NULL, rank.p = 0.55,
     max.pval = 0.01, min.logFC = 1, min.LR.score = 0,
     neg.receptors = FALSE,
     pos.targets = FALSE, neg.targets = FALSE,

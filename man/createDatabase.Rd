@@ -21,5 +21,7 @@ Fetch LR database from remote location.
 }
 \examples{
 print("createDatabase")
-createDatabase()
+if(FALSE){
+ createDatabase()
+}
 }

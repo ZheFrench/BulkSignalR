@@ -139,27 +139,21 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     max.pval = NULL, tg.logFC = NULL, min.logFC = 0) {
     # local binding
     i <- NULL
-
+    
     directed.int <- c(
-        "controls-state-change-of", "catalysis-precedes",
-        "controls-expression-of", "controls-transport-of",
-        "controls-phosphorylation-of"
-    )
-
-    directed.int.upgrade <- c(
-        "catalysis-precedes",
-        "controls-state-change-of",
         "controls-transport-of",
-        "controls-phosphorylation-of",
-        "controls-phospho-of",
-        "controls-state-of-by-metabo",
-        "regulates-phospho-of",
-        "regulates-dephospho-of",
+        "catalysis-precedes",
+        "positively-controls-expression-of",
+        "negatively-controls-expression-of",
+        "regulates-transcription-of",
         "controls-dephospho-of",
-        "regulates_transcription_of"
+        "controls-phospho-of",
+        "regulates-dephospho-of",
+        "regulates-phospho-of",
+        "controls-state-change-of",
+        "controls-state-of-by-metab"
     )
 
-    directed.int <- union(directed.int, directed.int.upgrade)
 
     arcs <- foreach::foreach(i = seq_len(nrow(pairs)), .combine = rbind) %do% {
         # arcs <- NULL
@@ -449,27 +443,19 @@ getLRIntracellNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
 
     # build graph
     directed.int <- c(
-        "controls-state-change-of", "catalysis-precedes",
-        "controls-expression-of", "controls-transport-of",
-        "controls-phosphorylation-of", "LR"
-    )
-
-
-    directed.int.upgrade <- c(
-        "catalysis-precedes",
-        "controls-state-change-of",
         "controls-transport-of",
-        "controls-phosphorylation-of",
-        "controls-phospho-of",
-        "controls-state-of-by-metabo",
-        "regulates-phospho-of",
-        "regulates-dephospho-of",
+        "catalysis-precedes",
+        "positively-controls-expression-of",
+        "negatively-controls-expression-of",
+        "regulates-transcription-of",
         "controls-dephospho-of",
-        "regulates_transcription_of"
+        "controls-phospho-of",
+        "regulates-dephospho-of",
+        "regulates-phospho-of",
+        "controls-state-change-of",
+        "controls-state-of-by-metabo",
+        "LR"
     )
-
-    directed.int <- union(directed.int, directed.int.upgrade)
-
 
     directed <- all.edges$edge.type %in% directed.int
     ret <- all.edges[!directed, ]

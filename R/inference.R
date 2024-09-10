@@ -105,41 +105,28 @@
     r <- p <- pl <- id <- NULL
 
     # define interaction types
-    control.int <- "controls-expression-of"
-    incomplex.int <- c("in-complex-with", "interacts-with")
-    directed.int <- c(
-        "controls-state-change-of", "catalysis-precedes",
-        "controls-expression-of", "controls-transport-of",
-        "controls-phosphorylation-of"
+    control.int <- c(
+        "positively-controls-expression-of",
+        "negatively-controls-expression-of",
+        "regulates-transcription-of"
     )
 
-
-    # define interaction types
-    control.int <- "controls-expression-of"
     incomplex.int <- c("in-complex-with", "interacts-with")
-    directed.int <- c(
-        "catalysis-precedes", "controls-state-change-of",
-        "controls-expression-of", "controls-transport-of",
-        "controls-phosphorylation-of"
-    )
 
-    control.int.upgrade <- c("positively-controls-expression-of",
-        "negatively-controls-expression-of")
-    directed.int.upgrade <- c(
-        "catalysis-precedes",
-        "controls-state-change-of",
+    directed.int <- c(
         "controls-transport-of",
-        "controls-phosphorylation-of",
-        "controls-phospho-of",
-        "controls-state-of-by-metabo",
-        "regulates-phospho-of",
-        "regulates-dephospho-of",
+        "catalysis-precedes",
+        "positively-controls-expression-of",
+        "negatively-controls-expression-of",
+        "regulates-transcription-of",
         "controls-dephospho-of",
-        "regulates_transcription_of"
+        "controls-phospho-of",
+        "regulates-dephospho-of",
+        "regulates-phospho-of",
+        "controls-state-change-of",
+        "controls-state-of-by-metab"
     )
 
-    control.int <- union(control.int, control.int.upgrade)
-    directed.int <- union(directed.int, directed.int.upgrade)
 
     if (with.complex) {
         correlated.int <- union(control.int, incomplex.int)

@@ -16,7 +16,7 @@
 
     url <- "https://partage-dev.montp.inserm.fr:9192"
     urlDatabase <- paste0(url,
-        "/CBSB/SignalR/database/SignalR.db")
+        "/CBSB/SignalR/database/SignalR_09.2024.db")
     assign("BulkSignalR_DB_URL", urlDatabase, envir = as.environment(nameEnv))
 
     createDatabase(onRequest = FALSE)
@@ -30,11 +30,11 @@
     ##   Resource Cache Files   ###
     ################################
     urlGo <- paste0(url,
-        "/CBSB/SignalR/resources/gobp.rds")
+        "/CBSB/SignalR/resources/gobp_09.2024.rds")
     urlReactome <- paste0(url,
-        "/CBSB/SignalR/resources/reactome.rds")
+        "/CBSB/SignalR/resources/reactome_09.2024.rds")
     urlNetwork <- paste0(url,
-        "/CBSB/SignalR/resources/Network.rds")
+        "/CBSB/SignalR/resources/rawData/C10_M50/Network_09.2024.rds")
 
     assign("BulkSignalR_GO_URL", urlGo, 
         envir = as.environment(nameEnv))

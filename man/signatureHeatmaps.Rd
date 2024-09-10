@@ -67,7 +67,7 @@ bsrinf <- initialInference(bsrdm)
 bsrinf.redP <- reduceToPathway(bsrinf)
 bsrinf.redPBP <- reduceToBestPathway(bsrinf.redP)
 bsrsig.redPBP <- getLRGeneSignatures(bsrinf.redPBP, qval.thres = 0.001)
-pathway1 <- LRinter(bsrinf.redPBP)[1,c("pw.name")]
+pathway1 <- pathways(bsrsig.redPBP)[1]
 signatureHeatmaps(
     pathway = pathway1,
     bsrdm = bsrdm,

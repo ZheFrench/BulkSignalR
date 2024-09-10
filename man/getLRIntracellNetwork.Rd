@@ -10,7 +10,7 @@ getLRIntracellNetwork(
   qval.thres = NULL,
   min.cor = 0.25,
   max.pval = NULL,
-  min.logFC = 0,
+  min.logFC = NULL,
   pos.targets = FALSE,
   neg.targets = FALSE,
   restrict.pw = NULL,
@@ -80,8 +80,8 @@ pairs <- LRinter(bsrinf.redBP)
 top <- unique(pairs[pairs$pval < 1e-20, c("pw.id", "pw.name")])
 
 gLRintra.res <- getLRIntracellNetwork(bsrinf.redBP,
-    qval.thres = 0.01,
-    restrict.pw = top$pw.id
+qval.thres = 0.01,
+restrict.pw = top$pw.id
 )
 
 # write.graph(gLRintra, file="SDC-LR-intracellular-network.reduced.graphml",

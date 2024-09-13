@@ -20,6 +20,7 @@ LazyData: FALSE
 Depends: R (>= 4.4)
 biocViews: Network, RNASeq, Software, Proteomics, Transcriptomics, NetworkInference, Spatial
 Imports:
+    Biobase,
     BiocFileCache,
     rappdirs,
     httr,
@@ -29,6 +30,7 @@ Imports:
     dplyr,
     rlang,
     jsonlite,
+    matrixStats,
     methods,
     doParallel,
     glmnet,

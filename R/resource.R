@@ -15,7 +15,8 @@
 #' pre-existing database. Default is True.
 #' @param verbose Default is FALSE
 #' @return Returns `NULL`, invisibly. 
-#'
+#' @importFrom Biobase testBioCConnection
+#' @importFrom cli cli_alert_danger cli_alert
 #' @export
 #' @examples
 #' if (FALSE) {
@@ -25,18 +26,43 @@ createResources <- function(onRequest = TRUE, verbose = FALSE) {
     cacheDir <- get("BulkSignalR_CACHEDIR")
     resourcesCacheDir <- paste(cacheDir, "resources", sep = "/")
 
+    www <- Biobase::testBioCConnection()
+
+    if (!www & 
+    !file.exists(resourcesCacheDir)) {
+        cli::cli_alert_danger("Your internet connection is off :")
+        stop(
+        "- Remote resources can't be downloaded.\n"
+        )   
+    }
+
+    if (!www & 
+        onRequest) {
+        cli::cli_alert_danger("Your internet connection is off :")
+        stop(
+        "- Remote resources can't be downloaded.\n"
+        )   
+    }
+
     # Do it once, onLoad
     if (!dir.exists(resourcesCacheDir) | onRequest) {
         .cacheAdd(fpath = BulkSignalR_GO_URL,
             cacheDir = resourcesCacheDir,
-            resourceName = "GO-BP", verbose = verbose)
+            resourceName = "GO-BP", 
+            verbose = verbose, download = TRUE)
         .cacheAdd(fpath = BulkSignalR_Reactome_URL,
             cacheDir = resourcesCacheDir, 
-            resourceName = "Reactome", verbose = verbose)
+            resourceName = "Reactome",
+            verbose = verbose, download = TRUE)
         .cacheAdd(fpath = BulkSignalR_Network_URL,
             cacheDir = resourcesCacheDir, 
-            resourceName = "Network", verbose = verbose)
+            resourceName = "Network",
+             verbose = verbose, download = TRUE)
+
     }
+
+    cacheVersion(dir="resources")
+
 
     return(invisible(NULL))
 }

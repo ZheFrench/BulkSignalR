@@ -9,7 +9,8 @@
 #' @return Returns `NULL`, invisibly. 
 #' 
 #' @import httr
-#' @importFrom cli col_cyan
+#' @importFrom Biobase testBioCConnection
+#' @importFrom cli cli_alert_danger cli_alert
 #' @export
 #' @examples
 #' print("createDatabase")
@@ -20,22 +21,44 @@ createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
     # Default directory
     cacheDir <- get("BulkSignalR_CACHEDIR")
     databaseCacheDir <- paste(cacheDir, "database", sep = "/")
-    url <- BulkSignalR_DB_URL
+    url <- get("BulkSignalR_DB_URL")
     # databaseFilePath <- paste(databaseCacheDir
     #    ,basename(url)
     #    ,sep = "/")
+    www <- Biobase::testBioCConnection()
+    if (!www & 
+        !file.exists(databaseCacheDir)) {
+        cli::cli_alert_danger("Your internet connection is off :")
+        stop(
+        "- Remote database can't be downloaded."
+        )   
+    }
+
+    if (!www & 
+        onRequest) {
+        cli::cli_alert_danger("Your internet connection is off :")
+        stop(
+        "- Remote database can't be downloaded.\n"
+        )   
+    }
+
     if (!file.exists(databaseCacheDir) | onRequest) {
         # isDownloaded <- .downloadDatabase(url,databaseFilePath)
         # if(!isDownloaded)
         # stop("Ligand-Receptor database was not downloaded successfully.")
+        #cacheVersion()
 
         .cacheAdd(
             fpath = url,
             cacheDir = databaseCacheDir,
             resourceName = basename(url),
-            verbose = verbose
+            verbose = verbose,
+            download = TRUE
         )
+
     }
+
+    cacheVersion(dir="database")
 
     # fc <- BiocFileCache::BiocFileCache(databaseCacheDir,ask = FALSE)
     # cacheHits <- bfcquery(bfc,query="LRdb",field="rname")

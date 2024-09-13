@@ -85,6 +85,7 @@
 #' @return Returns `NULL`, invisibly. 
 #' 
 #' @importFrom BiocFileCache removebfc
+#' @importFrom cli cli_alert_danger cli_alert
 #' @export
 #' @examples
 #' print("cacheClear")
@@ -156,16 +157,17 @@ cacheInfo <- function(dir = c("both", "resources", "database")) {
 
     # safeguard
     if (!dir.exists(cacheDir)) {
-        dir.create(cacheDir, recursive = TRUE)
+        cli::cli_alert("BulkSignalR {.val {dir}} cache uninitialized.")
+        message("- Location: ", cacheDir, "\n")
+        return(invisible(NULL))
     }
 
     bfc <- BiocFileCache::BiocFileCache(cacheDir, ask = FALSE)
     files <- BiocFileCache::bfcinfo(bfc)$rpath
 
     if (length(files) == 0) {
-        message(
-            "BulkSignalR ", dir, " cache uninitialized.\n",
-            "- Location: ", cacheDir, "\n",
+        cli::cli_alert("BulkSignalR {.val {dir}} cache uninitialized.")
+        message("- Location: ", cacheDir, "\n",
             "- No. of files: ", length(files), "\n"
         )
         return(invisible(NULL))
@@ -175,8 +177,8 @@ cacheInfo <- function(dir = c("both", "resources", "database")) {
         # print(total_size)
         # print(size_obj)
 
+        cli::cli_alert("BulkSignalR {.val {dir}} cache :")
         message(
-            "BulkSignalR ", dir, " cache: \n",
             "- Location:  ", cacheDir, " \n",
             "- No. of files:  ", length(files), "\n",
             "- Total size:  ", format(size_obj, units = "auto"), "\n"
@@ -199,6 +201,7 @@ cacheInfo <- function(dir = c("both", "resources", "database")) {
 #'
 #' @importFrom cli cli_alert_danger cli_alert cli_alert_info
 #' @import BiocFileCache httr
+#' @importFrom Biobase testBioCConnection
 #' @return Returns `NULL`, invisibly. 
 #'
 #' @export
@@ -219,40 +222,40 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 
     cacheDir <- get("BulkSignalR_CACHEDIR")
     cacheDir <- paste(cacheDir, dir, sep = "/")
-
-    # safeguard
+  
     if (!dir.exists(cacheDir)) {
-        dir.create(cacheDir, recursive = TRUE)
-    }
-
-    files <- list.files(cacheDir)
-
-    if (length(files) == 0) {
-        message(
-            "BulkSignalR ", dir, " cache uninitialized.\n",
-            "- Location: ", cacheDir, "\n",
-            "- No. of files: ", length(files), "\n"
-        )
-        return(invisible(NULL))
+        cli::cli_alert_danger("BulkSignalR {.val {dir}} cache uninitialized.")
+        stop("- Location: ", cacheDir, "\n")    
     }
 
     config <- httr::set_config(config(ssl_verifypeer = 0L, ssl_verifyhost = 0L))
-    bfc <- BiocFileCache::BiocFileCache(cacheDir, ask = FALSE)
 
     word <- ifelse(dir == "resources", "have", "has")
     word2 <- ifelse(dir == "resources", "are", "is")
 
-    if (any(BiocFileCache::bfcneedsupdate(bfc))) {
-        cli::cli_alert("Remote BulkSignalR {.val {dir}} {word} been updated.\n")
-        mess_info <- paste0("To update locally,",
-            " clear your cache with cacheClear({.var {dir}})\n")
-        cli::cli_alert_info(mess_info)
-        return(invisible(NULL))
-    } else {
-        cli::cli_alert("Local BulkSignalR {.val {dir}} {word2} up to date.\n")
-        message("")
-    }
+    if (Biobase::testBioCConnection()) {
 
+       bfc <- BiocFileCache::BiocFileCache(cacheDir, ask = FALSE)
+
+        if (any(BiocFileCache::bfcneedsupdate(bfc))) {
+            cli::cli_alert("Remote BulkSignalR {.val {dir}} {word} been updated.\n")
+            mess_info <- paste0("To update locally,",
+                " clear your cache with cacheClear({.var {dir}})\n")
+            cli::cli_alert_info(mess_info)
+            return(invisible(NULL))
+        } else {
+            cli::cli_alert("Local BulkSignalR {.val {dir}} {word2} up to date.\n")
+            message("")
+        }
+
+        } 
+
+    else {
+        mess_info <- paste0("Your internet connection is off:",
+            " remote update of {.val {dir}} won't be checked.")
+        cli::cli_alert_info(mess_info)
+    } 
+  
     return(invisible(NULL))
 }
 

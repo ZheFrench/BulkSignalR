@@ -9,10 +9,13 @@
 #'
 #' @importFrom foreach %do% %dopar%
 #' @importFrom stats quantile
+#' @importFrom matrixStats rowMeans2 colQuantiles
 #' @keywords internal
 .buildPermutationIndices <- function(ncounts, n.bins = 20) {
-    rm <- rowMeans(ncounts, na.rm = TRUE)
-    breaks <- stats::quantile(rm, prob = (seq(0, n.bins)) / n.bins)
+    rm <- matrixStats::rowMeans2(ncounts, na.rm = TRUE)
+    breaks <- matrixStats::colQuantiles(data.matrix(rm),
+        probs = (seq(0, n.bins)) / n.bins)
+
     breaks[1] <- 0
 
     lapply(
@@ -78,6 +81,7 @@
 #'   If \code{file.name} is provided, a control plot is generated in a PDF with
 #'   a data histogram and the fitted Gaussian. \code{title} is used to give this
 #'   plot a main title.
+#' @importFrom matrixStats mean2
 #' @keywords internal
 .getGaussianParam <- function(d, title, verbose = FALSE, file.name = NULL) {
     if (!is.null(file.name)) {
@@ -92,7 +96,7 @@
     }
 
     # initial fit with a Gaussian over ]-infty;+infty[]
-    mu <- mean(d)
+    mu <- matrixStats::mean2(d)
     sigma <- stats::sd(d)
     if (verbose) {
         message("Initial estimate of the mean: ", mu)

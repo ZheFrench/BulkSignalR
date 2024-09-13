@@ -222,7 +222,7 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 
     cacheDir <- get("BulkSignalR_CACHEDIR")
     cacheDir <- paste(cacheDir, dir, sep = "/")
-  
+
     if (!dir.exists(cacheDir)) {
         cli::cli_alert_danger("BulkSignalR {.val {dir}} cache uninitialized.")
         stop("- Location: ", cacheDir, "\n")    
@@ -235,27 +235,24 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
 
     if (Biobase::testBioCConnection()) {
 
-       bfc <- BiocFileCache::BiocFileCache(cacheDir, ask = FALSE)
+        bfc <- BiocFileCache::BiocFileCache(cacheDir, ask = FALSE)
 
         if (any(BiocFileCache::bfcneedsupdate(bfc))) {
-            cli::cli_alert("Remote BulkSignalR {.val {dir}} {word} been updated.\n")
+            cli::cli_alert("Remote {.val {dir}} {word} been updated.\n")
             mess_info <- paste0("To update locally,",
                 " clear your cache with cacheClear({.var {dir}})\n")
             cli::cli_alert_info(mess_info)
             return(invisible(NULL))
         } else {
-            cli::cli_alert("Local BulkSignalR {.val {dir}} {word2} up to date.\n")
+            cli::cli_alert("Local {.val {dir}} {word2} up to date.\n")
             message("")
         }
-
-        } 
-
+    } 
     else {
         mess_info <- paste0("Your internet connection is off:",
-            " remote update of {.val {dir}} won't be checked.")
+        " remote update of {.val {dir}} won't be checked.")
         cli::cli_alert_info(mess_info)
-    } 
-  
+    }
     return(invisible(NULL))
 }
 

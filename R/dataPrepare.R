@@ -190,7 +190,8 @@ prepareDataset <- function(
     counts <- counts[matrixStats::rowSums2(abs(counts)) > 0, ]
 
     if (normalize) {
-        good.c <- matrixStats::rowSums2(counts >= min.count) >= prop * ncol(counts)
+        good.c <- matrixStats::rowSums2(counts >= min.count) >= 
+        prop * ncol(counts)
         counts <- counts[good.c, ]
         if (method == "UQ") {
             tot <- apply(counts, 2, function(x) {

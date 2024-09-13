@@ -310,6 +310,7 @@ if (!isGeneric("infParam")) {
 #' infParam(bsrinf)
 #' @export
 setMethod("infParam", "BSRInference", function(x) x@inf.param)
+
 if (!isGeneric("infParam<-")) {
     if (is.function("infParam<-")) {
         fun <- `infParam<-`

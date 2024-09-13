@@ -858,7 +858,8 @@ setMethod("scoreLRGeneSignatures", "BSRDataModel", function(obj,
         z <- (ncounts - apply(ncounts, 1, stats::median)) 
         z <- z / apply(ncounts, 1, stats::mad)
     } else {
-        z <- (ncounts - matrixStats::rowMeans2(ncounts)) / apply(ncounts, 1, stats::sd)
+        z <- (ncounts - matrixStats::rowMeans2(ncounts)) / 
+        apply(ncounts, 1, stats::sd)
     }
     if (abs.z.score) {
         z <- abs(z)

@@ -57,7 +57,7 @@ createResources <- function(onRequest = TRUE, verbose = FALSE) {
         .cacheAdd(fpath = BulkSignalR_Network_URL,
             cacheDir = resourcesCacheDir, 
             resourceName = "Network",
-             verbose = verbose, download = TRUE)
+            verbose = verbose, download = TRUE)
 
     }
 

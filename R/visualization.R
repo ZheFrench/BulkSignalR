@@ -772,7 +772,7 @@ simpleHeatmap <- function(mat.c, width, height,
 #' data(immune.signatures, package = "BulkSignalR")
 #' imm.scores <- scoreSignatures(bsrdm, immune.signatures)
 #' @importFrom methods is
-#' @importFrom matrixStats rowMeans2 colQuantiles
+#' @importFrom matrixStats rowMeans2
 scoreSignatures <- function(ds, ref.signatures, robust = FALSE) {
     if (!is(ds, "BSRDataModel")) {
         stop("ds must be BSRDataModel object")
@@ -792,7 +792,8 @@ scoreSignatures <- function(ds, ref.signatures, robust = FALSE) {
         z <- (ncounts - apply(ncounts, 1, stats::median)) 
         z <- z / apply(ncounts, 1, stats::mad)
     } else {
-        z <- (ncounts - matrixStats::rowMeans2(ncounts)) / apply(ncounts, 1, stats::sd)
+        z <- (ncounts - matrixStats::rowMeans2(ncounts)) / 
+        apply(ncounts, 1, stats::sd)
     }
 
     # compute the gene signature scores

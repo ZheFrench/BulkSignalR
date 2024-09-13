@@ -840,6 +840,7 @@ if (!isGeneric("scoreLRGeneSignatures")) {
 #'
 #' @importFrom foreach %do% %dopar%
 #' @importFrom methods is
+#' @importFrom matrixStats rowMeans2 colSums2
 setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
     sig, LR.weight = 0.5, robust = FALSE,
     name.by.pathway = FALSE, abs.z.score = FALSE,
@@ -901,7 +902,7 @@ setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
         z <- (ncounts - apply(ncounts, 1, stats::median)) 
         z <- z / apply(ncounts, 1, stats::mad)
     } else {
-        z <- (ncounts - rowMeans(ncounts)) / apply(ncounts, 1, stats::sd)
+        z <- (ncounts - matrixStats::rowMeans2(ncounts)) / apply(ncounts, 1, stats::sd)
     }
     if (abs.z.score) {
         z <- abs(z)
@@ -937,7 +938,7 @@ setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
         # average ligand z-score
         zz <- z[ligands[[i]], ]
         if (is.matrix(zz)) {
-            mL <- colSums(zz) / length(ligands[[i]])
+            mL <- matrixStats::colSums2(zz) / length(ligands[[i]])
         } else {
             mL <- zz
         }
@@ -945,7 +946,7 @@ setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
         # average receptor z-score
         zz <- z[receptors[[i]], ]
         if (is.matrix(zz)) {
-            mR <- colSums(zz) / length(receptors[[i]])
+            mR <- matrixStats::colSums2(zz) / length(receptors[[i]])
         } else {
             mR <- zz
         }
@@ -953,7 +954,7 @@ setMethod("scoreLRGeneSignatures", "BSRDataModelComp", function(obj,
         # average target gene z-score
         zz <- z[t.genes[[i]], ]
         if (is.matrix(zz)) {
-            mT <- colSums(zz) / length(t.genes[[i]])
+            mT <- matrixStats::colSums2(zz) / length(t.genes[[i]])
         } else {
             mT <- zz
         }

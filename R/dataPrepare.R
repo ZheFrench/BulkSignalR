@@ -110,7 +110,7 @@ resetLRdb <- function(db, switch = FALSE) {
 #'   In case proteomic or microarray data are provided, \code{min.count} must be
 #'   understood as its equivalent with respect to those data.
 #'
-#'
+#' @importFrom matrixStats rowMeans2 rowSums2 colSums2
 #' @export
 #' @examples
 #' print("prepareDataset")
@@ -187,10 +187,10 @@ prepareDataset <- function(
     }
 
     # avoid empty rows even if no normalization is performed here
-    counts <- counts[rowSums(abs(counts)) > 0, ]
+    counts <- counts[matrixStats::rowSums2(abs(counts)) > 0, ]
 
     if (normalize) {
-        good.c <- rowSums(counts >= min.count) >= prop * ncol(counts)
+        good.c <- matrixStats::rowSums2(counts >= min.count) >= prop * ncol(counts)
         counts <- counts[good.c, ]
         if (method == "UQ") {
             tot <- apply(counts, 2, function(x) {
@@ -206,7 +206,7 @@ prepareDataset <- function(
                 ))
             }
         } else {
-            tot <- colSums(counts)
+            tot <- matrixStats::colSums2(counts)
         }
         ncounts <- sweep(counts, 2, tot / stats::median(tot), "/")
     } else {

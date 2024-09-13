@@ -81,7 +81,6 @@
 #'   If \code{file.name} is provided, a control plot is generated in a PDF with
 #'   a data histogram and the fitted Gaussian. \code{title} is used to give this
 #'   plot a main title.
-#' @importFrom matrixStats mean2
 #' @keywords internal
 .getGaussianParam <- function(d, title, verbose = FALSE, file.name = NULL) {
     if (!is.null(file.name)) {
@@ -96,7 +95,7 @@
     }
 
     # initial fit with a Gaussian over ]-infty;+infty[]
-    mu <- matrixStats::mean2(d)
+    mu <- mean(d)
     sigma <- stats::sd(d)
     if (verbose) {
         message("Initial estimate of the mean: ", mu)

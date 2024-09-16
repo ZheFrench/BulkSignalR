@@ -147,7 +147,7 @@ by using several processors in parallel.
 
 ```{r parallel , message= FALSE, warnings=FALSE}
 library(doParallel)
-n.proc <- 2
+n.proc <- 4
 cl <- makeCluster(n.proc)
 registerDoParallel(cl)
 
@@ -172,11 +172,11 @@ matrices, you might want to use `set.seed()`. In a parallel mode,
 Here, we load salivary duct carcinoma transcriptomes integrated as 
 `sdc` in `BulkSignalR`.
 
-```{r loading,eval=FALSE}
+```{r loading,eval=TRUE}
 data(sdc)
 head(sdc)
 ```  
-```{r displayLoading,eval=FALSE}
+```{r displayLoading,eval=TRUE}
 ##          SDC16 SDC15 SDC14 SDC13 SDC12 SDC11 SDC10 SDC9 SDC8 SDC7 SDC6 SDC5
 ## TSPAN6    1141  2491  1649  3963  2697  3848  3115  495 1777 1997 1682 1380
 ## TNMD         3     0     2    48     0     0    10    0  195    0    4    0
@@ -206,12 +206,12 @@ head(sdc)
 `prepareDataset` creates the first object with information
 relative to your bulk expression data.
 
-```{r prepareDataset , eval=FALSE,cache=FALSE}
+```{r prepareDataset , eval=TRUE,cache=FALSE}
 bsrdm <- prepareDataset(counts = sdc)
 # print object
 str(bsrdm)
 ```  
-```{r output1 , eval=FALSE}
+```{r output1 , eval=TRUE}
 ## Formal class 'BSRDataModel' [package "BulkSignalR"] with 6 slots
 ##   ..@ initial.organism : chr "hsapiens"
 ##   ..@ initial.orthologs: list()
@@ -230,17 +230,17 @@ Spearman correlation null distributions, you can provide a directory and
 a base file name to plot this distribution along with the fitted
 model for visual inspection.
 
-```{r learnParameters , eval=FALSE,cache=FALSE,results=FALSE}
+```{r learnParameters , eval=TRUE,cache=FALSE,results=FALSE}
 bsrdm <- learnParameters(bsrdm,
     plot.folder = "../man/figures/", filename = "sdc"
 )
 ```
 
-```{r printBsrdm , eval=FALSE,cache=FALSE}
+```{r printBsrdm , eval=TRUE,cache=FALSE}
 # print object updated
 str(bsrdm)
 ```
-```{r output2, eval=FALSE}
+```{r output2, eval=TRUE}
 ## Formal class 'BSRDataModel' [package "BulkSignalR"] with 6 slots
 ##   ..@ initial.organism : chr "hsapiens"
 ##   ..@ initial.orthologs: list()
@@ -300,7 +300,7 @@ with their associated pathways and corrected p-values.
 
 From here, you can already access LR interactions using: `LRinter(bsrinf)`.
 
-```{r BSRInference , eval=FALSE,cache=FALSE}
+```{r BSRInference , eval=TRUE,cache=FALSE}
 bsrinf <- initialInference(bsrdm)
 
 LRinter.dataframe <- LRinter(bsrinf)
@@ -351,7 +351,7 @@ once. For a given pathway, the reported P-values and target genes are those
 of best (minimum P-value) L-R interaction that was part of the aggregation.
 Nothing is recomputed, we simply merge.
 
-```{r ReduceToPathway, eval=FALSE,cache=FALSE}
+```{r ReduceToPathway, eval=TRUE,cache=FALSE}
 bsrinf.redP <- reduceToPathway(bsrinf)
 ```
 
@@ -362,7 +362,7 @@ one pathway per L-R interaction. The pathway with the smallest P-value
 is selected.
 A same pathways might occur multiple times with with different L-R interactions.
 
-```{r ReduceToBestPathway, eval=FALSE,cache=FALSE}
+```{r ReduceToBestPathway, eval=TRUE,cache=FALSE}
 bsrinf.redBP <- reduceToBestPathway(bsrinf)
 ```
 
@@ -373,7 +373,7 @@ several shared receptors) and the converse is true as well. Two
 reduction operators enable users to either aggregate all the ligands
 of a same receptor or all the receptors bound by a same ligand:
 
-```{r ReduceToLigand, eval=FALSE,cache=FALSE}
+```{r ReduceToLigand, eval=TRUE,cache=FALSE}
 bsrinf.L <- reduceToLigand(bsrinf)
 bsrinf.R <- reduceToReceptor(bsrinf)
 ```
@@ -388,7 +388,7 @@ same sets of aggregated ligands and receptors obtained with `reduceToPathway`
 was associated with several pathways, the pathway with the best P-value
 would be kept by `reduceToBestPathway`.
 
-```{r doubleReduction, eval=FALSE,cache=FALSE}
+```{r doubleReduction, eval=TRUE,cache=FALSE}
 bsrinf.redP <- reduceToPathway(bsrinf)
 bsrinf.redPBP <- reduceToBestPathway(bsrinf.redP)
 ```
@@ -412,7 +412,7 @@ signature scoring and display.
 
 ###  Scoring by ligand-receptor
 
-```{r scoringLR  ,cache=FALSE,results=FALSE,eval=FALSE}
+```{r scoringLR  ,cache=FALSE,results=FALSE,eval=TRUE}
 bsrsig.redBP <- getLRGeneSignatures(bsrinf.redBP, qval.thres = 0.001)
 
 scoresLR <- scoreLRGeneSignatures(bsrdm, bsrsig.redBP,
@@ -433,7 +433,7 @@ simpleHeatmap(scoresLR[1:20, ],
 
 ###  Scoring by pathway
 
-```{r scoringPathway, cache=FALSE,results=FALSE,eval=FALSE}    
+```{r scoringPathway, cache=FALSE,results=FALSE,eval=TRUE}    
 bsrsig.redPBP <- getLRGeneSignatures(bsrinf.redPBP, qval.thres = 0.001)
 
 scoresPathway <- scoreLRGeneSignatures(bsrdm, bsrsig.redPBP,
@@ -468,8 +468,8 @@ expression of ligands (pink), receptors (green), and target genes (blue).
 On the top of each heatmap, the whole signature score from
 `scoreLRGeneSignatures` is reported for reference.
 
-```{r HeatmapRTL ,results=FALSE,,eval=FALSE}   
-pathway1 <- "Elastic fibre formation"
+```{r HeatmapRTL ,results=FALSE,eval=FALSE}   
+#' pathway1 <- pathways(bsrsig.redPBP)[1]
 signatureHeatmaps(
     pathway = pathway1,
     bsrdm = bsrdm,
@@ -494,7 +494,7 @@ Obviously, it is possible to filter by ligand, receptor, or pathway. This
 is achieved by specifying a key word on the chosen category. A filter on
 L-R interaction Q-values can be applied in addition.
 
-```{r AlluvialPlot,results=FALSE,eval=FALSE}   
+```{r AlluvialPlot,results=FALSE,eval=TRUE}   
 alluvialPlot(bsrinf,
     keywords = c("COL4A1"),
     type = "L",
@@ -516,7 +516,7 @@ L-R interactions in relation with their receptor downstream pathways.
 A vector of pathways of interest can be provided to limit the complexity
 of the plot.
 
-```{r BubblePlot,results=FALSE,eval=FALSE} 
+```{r BubblePlot,results=FALSE,eval=TRUE} 
 pathway1 <- "PD-1 signaling"
 pathway2 <- "Interferon gamma signaling"
 pathways <- c(pathway1, pathway2)
@@ -547,7 +547,7 @@ Ligands are in grey, whereas receptors are in green.
 You can also highlight in red one specific interaction by passing values 
 of a L-R pair as follows  `ligand="COL18A1", receptor="ITGA3"`.  
 
-```{r Chordiagram,results=FALSE,eval=FALSE} 
+```{r Chordiagram,results=FALSE,eval=TRUE} 
 chordDiagramLR(bsrinf,
     path = "../man/figures/",
     filename = "sdc_chord",

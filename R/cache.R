@@ -41,8 +41,9 @@
     # if fname="exact" remove the unique identifier
     BiocFileCache::bfcadd(bfc, rname = resourceName,
         config = config, fpath = fpath, download = download)
-
-    cli::cli_alert_info("{.val {resourceName}} added to cache with success.")
+    
+    packageStartupMessage(
+    cli::cli_alert_info("{.val {resourceName}} added to cache with success."))
 
     if (verbose) {
         cli::cli_alert("{.path {BiocFileCache::bfccache(bfc)}}")
@@ -200,6 +201,7 @@ cacheInfo <- function(dir = c("both", "resources", "database")) {
 #' Can be only 'resources', 'database' or 'both'.
 #'
 #' @importFrom cli cli_alert_danger cli_alert cli_alert_info
+#' @importFrom cli cli_inform
 #' @import BiocFileCache httr
 #' @importFrom Biobase testBioCConnection
 #' @return Returns `NULL`, invisibly. 
@@ -244,8 +246,9 @@ cacheVersion <- function(dir = c("both", "resources", "database")) {
             cli::cli_alert_info(mess_info)
             return(invisible(NULL))
         } else {
-            cli::cli_alert("Local {.val {dir}} {word2} up to date.\n")
-            message("")
+            cli::cli_inform("Local {.val {dir}} {word2} up to date.\n",
+            class = "packageStartupMessage")
+            packageStartupMessage("")
         }
     } 
     else {

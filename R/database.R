@@ -47,7 +47,6 @@ createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
         # if(!isDownloaded)
         # stop("Ligand-Receptor database was not downloaded successfully.")
         #cacheVersion()
-
         .cacheAdd(
             fpath = url,
             cacheDir = databaseCacheDir,
@@ -57,7 +56,6 @@ createDatabase <- function(onRequest = TRUE, verbose = FALSE) {
         )
 
     }
-
     cacheVersion(dir="database")
 
     # fc <- BiocFileCache::BiocFileCache(databaseCacheDir,ask = FALSE)

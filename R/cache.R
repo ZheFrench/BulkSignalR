@@ -42,8 +42,7 @@
     BiocFileCache::bfcadd(bfc, rname = resourceName,
         config = config, fpath = fpath, download = download)
     
-    packageStartupMessage(
-    cli::cli_alert_info("{.val {resourceName}} added to cache with success."))
+    cli::cli_alert_info("{.val {resourceName}} added to cache with success.")
 
     if (verbose) {
         cli::cli_alert("{.path {BiocFileCache::bfccache(bfc)}}")

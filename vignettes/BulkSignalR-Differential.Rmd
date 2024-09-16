@@ -35,6 +35,7 @@ knitr::opts_chunk$set(
     comment = "##"
 )
 knitr::knit_hooks$set(optipng = knitr::hook_optipng)
+options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 BulkSignalR package version: `r packageVersion("BulkSignalR")`

@@ -37,6 +37,12 @@ knitr::opts_chunk$set(
 knitr::knit_hooks$set(optipng = knitr::hook_optipng)
 options(rmarkdown.html_vignette.check_title = FALSE)
 ```
+# Load packages {.unnumbered}
+```{r load-libs, message = FALSE,  warning = FALSE, results = FALSE}
+library(BulkSignalR)
+library(igraph)
+library(dplyr)
+```
 
 BulkSignalR package version: `r packageVersion("BulkSignalR")`
 

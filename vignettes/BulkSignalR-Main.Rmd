@@ -517,21 +517,17 @@ A vector of pathways of interest can be provided to limit the complexity
 of the plot.
 
 ```{r BubblePlot,results=FALSE,eval=TRUE} 
-pathway1 <- "PD-1 signaling"
-pathway2 <- "Interferon gamma signaling"
-pathways <- c(pathway1, pathway2)
 
+pathways <- LRinter(bsrinf)[1,c("pw.name")]
 bubblePlotPathwaysLR(bsrinf,
     pathways = pathways,
     qval.thres = 1,
     path = "../man/figures/",
     color = "red",
     filename = "sdc_bubble",
-    width = 16,
+    width = 42,
     height = 7,
     pointsize = 8
-    # filter.L = c("ADAM12")
-    # filter.R = c("ITGA3")
 )
 ```
 ![bubblePlot](../man/figures/sdc_bubble_clean.svg)

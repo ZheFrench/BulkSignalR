@@ -16,7 +16,7 @@ transcriptomics.
 
 Potential L-R interactions are taken from the
 LR*db* database, which was previously included in our other package 
-**SingleCellSignalR**,available from Bioconductor 
+**SingleCellSignalR**, available from Bioconductor 
 [here](https://www.bioconductor.org/packages/release/bioc/html/SingleCellSignalR.html).  
 
 Inferences rely on a statistical model linking potential

@@ -5,7 +5,7 @@ BulkSignalR 0.99.0  (First release: 2022-03-22)
 * This is the first release of BulkSignalR.
 
 
-BulkSignalR 0.99.0  (2023-07-17)
+BulkSignalR 0.99.0  (2024-09-17)
 ==============================================
 
 
@@ -14,22 +14,11 @@ BulkSignalR 0.99.0  (2023-07-17)
 ############################################
 #  Version 2 : LRDBv1 + Upgrade Reactome   #
 ############################################
-4242 Interactions :
-849 Genes annotated as Ligand only.
-722 Genes annotated as Receptor only.
+3820 Interactions :
+836 Genes annotated as Ligand only.
+727 Genes annotated as Receptor only.
 
-44 genes are defined both as ligand and receptor in 454 interactions.
-
-1833 Complexes were defined.
-
-Integrated Pathways :
-# Initially in V1
-161 994 gene-pathway association in gobp
-134 440 gene-pathway association in react
-
-# Msidb C2 and C5 from Msidb
-642 656 gene-pathway association in gobp
-92 780  gene-pathway association in react
+39 genes are defined both as ligand and receptor in 332 interactions.
 
 ############################
 #  Version 1 : LRDBv1      # 

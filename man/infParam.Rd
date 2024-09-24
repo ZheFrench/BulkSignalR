@@ -17,12 +17,6 @@ infParam
 Inference parameters accessor
 }
 \examples{
-data(sdc,package='BulkSignalR')
-normal <- grep("^N", names(sdc))
-
-bsrdm <- prepareDataset(sdc[,-normal])
-bsrdm <- learnParameters(bsrdm, quick=FALSE,
-plot.folder=".", verbose=TRUE)
-bsrinf <- initialInference(bsrdm)
-infParam(bsrinf)
+data(bsrinf.example, package = "BulkSignalR")
+infParam(bsrinf.example)
 }

@@ -37,19 +37,9 @@ Basic statistics about hit pathways
 }
 \examples{
 print("getPathwayStats")
-data(sdc, package = "BulkSignalR")
-normal <- grep("^N", names(sdc))
-bsrdm <- prepareDataset(sdc[, -normal])
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
+data(bsrinf.example, package = "BulkSignalR")
 
-pw.stat <- getPathwayStats(bsrinf)
+pw.stat <- getPathwayStats(bsrinf.example)
 head(pw.stat)
 
 }

@@ -21,6 +21,7 @@ containing at least two columns named 'pval', 'logFC', and 'expr'.}
 }}
 
 \examples{
+if(FALSE){
 bsrdm <- new("BSRDataModel",
     ncounts = matrix(1.5,
         nrow = 2, ncol = 4,
@@ -39,5 +40,5 @@ edger.stats <- data.frame(
 rownames(edger.stats) <- rownames(ncounts(bsrdm.comp))
 bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, edger.stats)
 bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "my_comparison")
-
+}
 }

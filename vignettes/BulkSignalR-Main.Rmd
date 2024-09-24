@@ -99,10 +99,6 @@ Three S4 objects will be sequentially constructed:
 
 \
 
-![workflow](../man/figures/workflow.png)
-\
-
-
 **BSRDataModel** integrates the expression data matrix and the 
 parameters of the statistical model learned on this matrix.
 
@@ -230,9 +226,9 @@ Spearman correlation null distributions, you can provide a directory and
 a base file name to plot this distribution along with the fitted
 model for visual inspection.
 
-```{r learnParameters , eval=TRUE,cache=FALSE,results=FALSE}
+```{r learnParameters , eval=FALSE,cache=FALSE,results=FALSE}
 bsrdm <- learnParameters(bsrdm,
-    plot.folder = "../man/figures/", filename = "sdc"
+    plot.folder = "./", filename = "sdc"
 )
 ```
 
@@ -253,7 +249,7 @@ str(bsrdm)
 ##   ..@ param            :List of 13
 ##   .. ..$ n.rand.LR   : int 5
 ##   .. ..$ n.rand.RT   : int 2
-##   .. ..$ plot.folder : chr "../man/figures/"
+##   .. ..$ plot.folder : chr "./"
 ##   .. ..$ file.name   : chr "sdc"
 ##   .. ..$ with.complex: logi TRUE
 ##   .. ..$ max.pw.size : num 200
@@ -286,7 +282,7 @@ str(bsrdm)
 
 The plot with distribution of L-R correlation in `sdc` is displayed below. 
 
-![LR.distribution.correlation](../man/figures/sdc_LR-null.png)
+#![LR.distribution.correlation](../man/figures/sdc_LR-null.png)
 
     
 
@@ -301,9 +297,13 @@ with their associated pathways and corrected p-values.
 From here, you can already access LR interactions using: `LRinter(bsrinf)`.
 
 ```{r BSRInference , eval=TRUE,cache=FALSE}
-bsrinf <- initialInference(bsrdm)
+# Here we don't execute the function,
+# but we will load a pre(computed BSR-Inference object)
+# bsrinf <- initialInference(bsrdm)
 
-LRinter.dataframe <- LRinter(bsrinf)
+data(bsrinf.example, package = "BulkSignalR")
+
+LRinter.dataframe <- LRinter(bsrinf.example)
 
 head(LRinter.dataframe[
     order(LRinter.dataframe$qval <= 0.001),
@@ -327,7 +327,7 @@ by best Q-value before saving them to a file for instance.
 
 ```{r BSRInferenceTfile, eval=FALSE}
 write.table(LRinter.dataframe[order(LRinter.dataframe$qval <= 0.001), ],
-    "../man/figures/sdc_LR.tsv",
+    "./sdc_LR.tsv",
     row.names = FALSE,
     sep = "\t",
     quote = FALSE
@@ -352,7 +352,7 @@ of best (minimum P-value) L-R interaction that was part of the aggregation.
 Nothing is recomputed, we simply merge.
 
 ```{r ReduceToPathway, eval=TRUE,cache=FALSE}
-bsrinf.redP <- reduceToPathway(bsrinf)
+bsrinf.redP <- reduceToPathway(bsrinf.example)
 ```
 
 ### Reducing a BSRInference object to best pathway
@@ -363,7 +363,7 @@ is selected.
 A same pathways might occur multiple times with with different L-R interactions.
 
 ```{r ReduceToBestPathway, eval=TRUE,cache=FALSE}
-bsrinf.redBP <- reduceToBestPathway(bsrinf)
+bsrinf.redBP <- reduceToBestPathway(bsrinf.example)
 ```
 
 ### Reducing to ligands or receptors
@@ -374,8 +374,8 @@ reduction operators enable users to either aggregate all the ligands
 of a same receptor or all the receptors bound by a same ligand:
 
 ```{r ReduceToLigand, eval=TRUE,cache=FALSE}
-bsrinf.L <- reduceToLigand(bsrinf)
-bsrinf.R <- reduceToReceptor(bsrinf)
+bsrinf.L <- reduceToLigand(bsrinf.example)
+bsrinf.R <- reduceToReceptor(bsrinf.example)
 ```
 
 ### Combined reductions
@@ -389,7 +389,7 @@ was associated with several pathways, the pathway with the best P-value
 would be kept by `reduceToBestPathway`.
 
 ```{r doubleReduction, eval=TRUE,cache=FALSE}
-bsrinf.redP <- reduceToPathway(bsrinf)
+bsrinf.redP <- reduceToPathway(bsrinf.example)
 bsrinf.redPBP <- reduceToBestPathway(bsrinf.redP)
 ```
 
@@ -420,7 +420,7 @@ scoresLR <- scoreLRGeneSignatures(bsrdm, bsrsig.redBP,
 )
 
 simpleHeatmap(scoresLR[1:20, ],
-    path = "../man/figures/",
+    path = "./",
     filename = "sdc_scoresLR",
     column.names = TRUE,
     height = 5, width = 9,
@@ -441,7 +441,7 @@ scoresPathway <- scoreLRGeneSignatures(bsrdm, bsrsig.redPBP,
 )
 
 simpleHeatmap(scoresPathway[1:10, ],
-    path = "../man/figures/",
+    path = "./",
     filename = "sdc_scoresPathway",
     column.names = TRUE,
     width = 9,
@@ -474,7 +474,7 @@ signatureHeatmaps(
     pathway = pathway1,
     bsrdm = bsrdm,
     bsrsig = bsrsig.redPBP,
-    path = "../man/figures/",
+    path = "./",
     filename = "sdc_signatureheatmap",
     h.width = 15,
     h.height = 10,
@@ -495,18 +495,18 @@ is achieved by specifying a key word on the chosen category. A filter on
 L-R interaction Q-values can be applied in addition.
 
 ```{r AlluvialPlot,results=FALSE,eval=TRUE}   
-alluvialPlot(bsrinf,
+alluvialPlot(bsrinf.example,
     keywords = c("COL4A1"),
     type = "L",
     qval.thres = 0.001,
-    path = "../man/figures/",
+    path = "./",
     filename = "sdc_alluvial",
     width = 16,
     height = 12
 )
 ```
 
-![alluvial.plot](../man/figures/sdc_alluvial_clean.svg)
+![alluvial.plot](../man/figures/sdc_alluvial_clean.png)
 
 ### BubblePlot
 
@@ -518,11 +518,11 @@ of the plot.
 
 ```{r BubblePlot,results=FALSE,eval=TRUE} 
 
-pathways <- LRinter(bsrinf)[1,c("pw.name")]
-bubblePlotPathwaysLR(bsrinf,
+pathways <- LRinter(bsrinf.example)[1,c("pw.name")]
+bubblePlotPathwaysLR(bsrinf.example,
     pathways = pathways,
     qval.thres = 1,
-    path = "../man/figures/",
+    path = "./",
     color = "red",
     filename = "sdc_bubble",
     width = 42,
@@ -530,7 +530,7 @@ bubblePlotPathwaysLR(bsrinf,
     pointsize = 8
 )
 ```
-![bubblePlot](../man/figures/sdc_bubble_clean.svg)
+![bubblePlot](../man/figures/sdc_bubble_clean.png)
 
 
 ### Chordiagram
@@ -544,8 +544,8 @@ You can also highlight in red one specific interaction by passing values
 of a L-R pair as follows  `ligand="COL18A1", receptor="ITGA3"`.  
 
 ```{r Chordiagram,results=FALSE,eval=TRUE} 
-chordDiagramLR(bsrinf,
-    path = "../man/figures/",
+chordDiagramLR(bsrinf.example,
+    path = "./",
     filename = "sdc_chord",
     pw.id.filter = "R-HSA-202733",
     limit = 20,
@@ -698,7 +698,7 @@ bsrdm <- prepareDataset(
 )
 
 bsrdm <- learnParameters(bsrdm,
-    plot.folder = "../man/figures/", filename = "bodyMap.mouse"
+    plot.folder = "./", filename = "bodyMap.mouse"
 )
 
 bsrinf <- initialInference(bsrdm)
@@ -823,7 +823,7 @@ inter <- "{CALM1} / {GRM5}"
 # to be compatible with reduction operations
 
 # with raw tissue reference
-png("../man/figures/spatialPlot1_clean.png", width = 600, height = 300)
+png("./spatialPlot1_clean.png", width = 600, height = 300)
 spatialPlot(scores.red[inter, ], areas, inter,
     ref.plot = TRUE, ref.plot.only = FALSE,
     image.raster = NULL, dot.size = 1
@@ -834,7 +834,7 @@ dev.off()
 
 ```{r spatialrawPlot , eval=FALSE}
 # or with synthetic image reference
-png("../man/figures/spatialPlot2_clean.png", width = 600, height = 300)
+png("./spatialPlot2_clean.png", width = 600, height = 300)
 spatialPlot(scores.red[inter, ], areas, inter,
     ref.plot = TRUE, ref.plot.only = FALSE,
     image.raster = my.image.as.raster, dot.size = 1
@@ -847,7 +847,7 @@ You can dissect one interaction to visualise both ligand and
 receptor expression of the interaction.
 
 ```{r spatialseparatedPlot , eval=FALSE}
-png("../man/figures/spatialPlot_separated_clean.png", width = 600, height = 600)
+png("./spatialPlot_separated_clean.png", width = 600, height = 600)
 separatedLRPlot(scores.red, "CALM1", "GRM5", ncounts(bsrdm), areas)
 dev.off()
 ```
@@ -858,7 +858,7 @@ for visual inspection and manual selection.
 
 ```{r spatialIndexPlot , eval=FALSE}
 # generate visual index on disk
-spatialIndexPlot(scores.red, areas, "../man/figures/bigplot-BSR.pdf")
+spatialIndexPlot(scores.red, areas, "./bigplot-BSR.pdf")
 ```
 ![spatialIndexPlot](../man/figures/spatialIndexPlot_clean.png)
 
@@ -877,7 +877,7 @@ latter in the form of a heatmap.
 assoc.bsr.corr <- spatialAssociation(scores.red[c(1:25), ],
 areas, test = "Spearman")
 
-png("../man/figures/spatialAssociation_clean.png", width = 400, height = 400)
+png("./spatialAssociation_clean.png", width = 400, height = 400)
 spatialAssociationPlot(assoc.bsr.corr)
 dev.off()
 ```

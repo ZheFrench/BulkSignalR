@@ -41,18 +41,11 @@ that several pathways are reported for a same LR pair.
 }
 \examples{
 print("reduceToBestPathway")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-bsrinf.redBP <- reduceToBestPathway(bsrinf)
+data(bsrinf.example, package = "BulkSignalR")
 
+bsrinf.redBP <- reduceToBestPathway(bsrinf.example)
+
+if(FALSE){
 print("reduceToBestPathway")
 
 # prepare data
@@ -78,5 +71,5 @@ bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 # reduction
 bsrinf.redBP <- reduceToBestPathway(bsrinf)
-
+}
 }

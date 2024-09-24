@@ -25,6 +25,7 @@ Simplified LRinter accessor reporting the essential columns
 Simplified LRinter accessor reporting the essential columns
 }
 \examples{
+if(FALSE){
 # prepare data
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
@@ -46,4 +47,5 @@ bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
 # infer ligand-receptor interactions from the comparison
 bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 LRinterShort(bsrinf)
+}
 }

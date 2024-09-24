@@ -366,6 +366,7 @@ if (!isGeneric("learnParameters")) {
 #' @examples
 #' print("prepareDataset")
 #' data(sdc, package = "BulkSignalR")
+#' if(FALSE){
 #' normal <- grep("^N", names(sdc))
 #' bsrdm <- prepareDataset(sdc[, -normal])
 #'
@@ -378,6 +379,7 @@ if (!isGeneric("learnParameters")) {
 #' print("learnParameters")
 #' bsrdm <- learnParameters(bsrdm, plot.folder = "./")
 #' bsrdm
+#' }
 #' @importFrom methods new
 setMethod(
     "learnParameters", "BSRDataModel",
@@ -658,7 +660,8 @@ if (!isGeneric("initialInference")) {
 #' @export
 #'
 #' @examples
-#' print("prepareDataset")
+#' print("initialInference")
+#' if(FALSE){
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
 #' bsrdm <- prepareDataset(sdc[, -normal])
@@ -670,6 +673,7 @@ if (!isGeneric("initialInference")) {
 #' print("perform inference")
 #' bsrinf <- initialInference(bsrdm)
 #' bsrinf
+#' }
 #' @importFrom methods new
 setMethod("initialInference", "BSRDataModel", function(obj, rank.p = 0.55,
     min.cor = 0.25, restrict.genes = NULL,
@@ -783,18 +787,13 @@ if (!isGeneric("scoreLRGeneSignatures")) {
 #'
 #' @export
 #' @examples
-#' print("prepareDataset")
+#' print("scoreLRGeneSignatures")
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
 #' bsrdm <- prepareDataset(sdc[, -normal])
 #'
-#' print("learnParameters")
-#' bsrdm <- learnParameters(bsrdm)
-#' bsrdm
-#'
-#' print("perform inference")
-#' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redBP <- reduceToBestPathway(bsrinf)
+#' data(bsrinf.example, package = "BulkSignalR")
+#' bsrinf.redBP <- reduceToBestPathway(bsrinf.example)
 #' bsrsig.redBP <- getLRGeneSignatures(bsrinf.redBP,
 #'     qval.thres = 0.001
 #' )

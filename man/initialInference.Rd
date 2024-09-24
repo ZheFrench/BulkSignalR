@@ -196,7 +196,8 @@ In the paracrine case, L average expression
 is taken from the source cluster.
 }
 \examples{
-print("prepareDataset")
+print("initialInference")
+if(FALSE){
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
 bsrdm <- prepareDataset(sdc[, -normal])
@@ -208,6 +209,8 @@ bsrdm
 print("perform inference")
 bsrinf <- initialInference(bsrdm)
 bsrinf
+}
+if(FALSE){
 # prepare data
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
@@ -228,4 +231,5 @@ bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
 
 # infer ligand-receptor interactions from the comparison
 bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+}
 }

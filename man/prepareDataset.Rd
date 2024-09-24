@@ -96,5 +96,4 @@ print("prepareDataset")
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
 bsrdm <- prepareDataset(sdc[, -normal])
-
 }

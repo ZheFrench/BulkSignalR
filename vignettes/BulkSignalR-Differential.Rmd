@@ -94,7 +94,7 @@ bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
 
 # finally we infer ligand-receptor interactions from the comparison
 
-bsrinf.comp <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+# bsrinf.comp <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 ```  
 

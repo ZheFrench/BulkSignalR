@@ -49,17 +49,8 @@ between Ligands,Receptors and Pathways.
 }
 \examples{
 print("alluvialPlot")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-alluvialPlot(bsrinf,
+data(bsrinf.example, package = "BulkSignalR")
+alluvialPlot(bsrinf.example,
     keywords = c("COL4A1"),
     type = "L",
     qval.thres = 0.001,

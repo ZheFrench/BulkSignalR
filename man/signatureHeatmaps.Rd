@@ -55,16 +55,10 @@ for a specific pathway
 \examples{
 print("signatureHeatmaps")
 data(sdc, package = "BulkSignalR")
+data(bsrinf.example, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-bsrinf.redP <- reduceToPathway(bsrinf)
+
+bsrinf.redP <- reduceToPathway(bsrinf.example)
 bsrinf.redPBP <- reduceToBestPathway(bsrinf.redP)
 bsrsig.redPBP <- getLRGeneSignatures(bsrinf.redPBP, qval.thres = 0.001)
 pathway1 <- pathways(bsrsig.redPBP)[1]

@@ -15,20 +15,13 @@
 #' @export
 #' @examples
 #' print("getLRNetwork")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' gLR <- getLRNetwork(bsrinf, qval.thres = 1e-4)
+#' if(FALSE){
+#' data(bsrinf.example, package = "BulkSignalR")
+#' 
+#' gLR <- getLRNetwork(bsrinf.example, qval.thres = 1e-4)
 #' # plot(gLR)
 #' # write.graph(gLR, file="SDC-LR-network.graphml", format="graphml")
-#'
+#' }
 #' @importFrom methods is
 getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     node.size = 5, red.pairs = NULL) {
@@ -282,17 +275,10 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
 #' @export
 #' @examples
 #' print("getLRIntracellNetwork")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redBP <- reduceToBestPathway(bsrinf)
+#' if(FALSE){
+#' data(bsrinf.example, package = "BulkSignalR")
+#' 
+#' bsrinf.redBP <- reduceToBestPathway(bsrinf.example)
 #'
 #' pairs <- LRinter(bsrinf.redBP)
 #' top <- unique(pairs[pairs$pval < 1e-20, c("pw.id", "pw.name")])
@@ -304,7 +290,7 @@ getLRNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
 #'
 #' # write.graph(gLRintra, file="SDC-LR-intracellular-network.reduced.graphml",
 #' # format="graphml")
-#'
+#' }
 getLRIntracellNetwork <- function(bsrinf, pval.thres = NULL, qval.thres = NULL,
     min.cor = 0.25, max.pval = NULL, min.logFC = NULL,
     pos.targets = FALSE, neg.targets = FALSE,

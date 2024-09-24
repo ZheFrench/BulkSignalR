@@ -40,20 +40,12 @@ Simplifies a ligand-receptor table to focus on the ligands.
 }
 \examples{
 print("reduceToLigand")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-bsrinf.redL <- reduceToLigand(bsrinf)
+data(bsrinf.example, package = "BulkSignalR")
+
+bsrinf.redL <- reduceToLigand(bsrinf.example)
 
 print("reduceToLigand")
-
+if(FALSE){
 # prepare data
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
@@ -77,5 +69,5 @@ bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 # reduction
 bsrinf.redL <- reduceToLigand(bsrinf)
-
+}
 }

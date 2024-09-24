@@ -45,18 +45,9 @@
 #' @export
 #' @examples
 #' print("bubblePlotPathwaysLR")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' pathways <- LRinter(bsrinf)[1,c("pw.name")]
-#' bubblePlotPathwaysLR(bsrinf,
+#' data(bsrinf.example, package = "BulkSignalR")
+#' pathways <- LRinter(bsrinf.example)[1,c("pw.name")]
+#' bubblePlotPathwaysLR(bsrinf.example,
 #'     pathways = pathways,
 #'     qval.thres = 1,
 #'     path = "./",
@@ -322,16 +313,10 @@ bubblePlotPathwaysLR <- function(
 #' @examples
 #' print("signatureHeatmaps")
 #' data(sdc, package = "BulkSignalR")
+#' data(bsrinf.example, package = "BulkSignalR")
 #' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redP <- reduceToPathway(bsrinf)
+#' 
+#' bsrinf.redP <- reduceToPathway(bsrinf.example)
 #' bsrinf.redPBP <- reduceToBestPathway(bsrinf.redP)
 #' bsrsig.redPBP <- getLRGeneSignatures(bsrinf.redPBP, qval.thres = 0.001)
 #' pathway1 <- pathways(bsrsig.redPBP)[1]
@@ -572,16 +557,9 @@ signatureHeatmaps <- function(pathway,
 #' @examples
 #' print("simpleHeatmap")
 #' data(sdc, package = "BulkSignalR")
+#' data(bsrinf.example, package = "BulkSignalR")
 #' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redBP <- reduceToBestPathway(bsrinf)
+#' bsrinf.redBP <- reduceToBestPathway(bsrinf.example)
 #' bsrsig.redBP <- getLRGeneSignatures(bsrinf.redBP,
 #'     qval.thres = 0.001
 #' )
@@ -762,13 +740,7 @@ simpleHeatmap <- function(mat.c, width, height,
 #' @examples
 #' data(sdc, package = "BulkSignalR")
 #' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
+#' 
 #' data(immune.signatures, package = "BulkSignalR")
 #' imm.scores <- scoreSignatures(bsrdm, immune.signatures)
 #' @importFrom methods is
@@ -845,17 +817,8 @@ scoreSignatures <- function(ds, ref.signatures, robust = FALSE) {
 #' @export
 #' @examples
 #' print("alluvialPlot")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' alluvialPlot(bsrinf,
+#' data(bsrinf.example, package = "BulkSignalR")
+#' alluvialPlot(bsrinf.example,
 #'     keywords = c("COL4A1"),
 #'     type = "L",
 #'     qval.thres = 0.001,
@@ -997,20 +960,12 @@ alluvialPlot <- function(bsrinf, keywords, type = c("L", "R", "pw.id"),
 #' @export
 #' @examples
 #' print("chordDiagramLR")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' chordDiagramLR(bsrinf,
-#'     pw.id.filter = "R-HSA-202733",
-#'     ligand = "COL18A1",
-#'     receptor = "ITGA3",
+#' data(bsrinf.example, package = "BulkSignalR")
+#' 
+#' chordDiagramLR(bsrinf.example,
+#'     pw.id.filter = "R-HSA-2173782",
+#'     ligand = "A2M",
+#'     receptor = "LRP1",
 #'     path = "./",
 #'     filename = "sdc_chord",
 #'     limit = 20,

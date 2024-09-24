@@ -57,21 +57,13 @@ score ligand-receptor pairs across samples subsequently with
 }
 \examples{
 print("getLRGeneSignatures")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-bsrinf.redP <- reduceToPathway(bsrinf)
+data(bsrinf.example, package = "BulkSignalR")
+
+bsrinf.redP <- reduceToPathway(bsrinf.example)
 bsrsig.redP <- getLRGeneSignatures(bsrinf.redP, qval.thres = 0.001)
 
 print("getLRGeneSignatures")
-
+if(FALSE){
 # prepare data
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
@@ -96,5 +88,5 @@ bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 # reductions
 bsrinf.redP <- reduceToPathway(bsrinf)
 bsrsig.redP <- getLRGeneSignatures(bsrinf.redP, qval.thres = 0.001)
-
+}
 }

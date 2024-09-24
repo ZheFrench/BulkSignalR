@@ -37,13 +37,7 @@ It is provided for convenience.
 \examples{
 data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
+
 data(immune.signatures, package = "BulkSignalR")
 imm.scores <- scoreSignatures(bsrdm, immune.signatures)
 }

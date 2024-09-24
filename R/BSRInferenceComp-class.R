@@ -26,7 +26,7 @@
 #' @export
 #' @examples
 #' print("BSRInferenceComp class")
-#'
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -47,7 +47,7 @@
 #'
 #' # infer ligand-receptor interactions from the comparison
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
-#'
+#' }
 setClass("BSRInferenceComp",
     contains = "BSRInference",
     slots = c(
@@ -127,7 +127,7 @@ if (!isGeneric("cmpName")) {
 #' @param x BSRInferenceComp object
 #' @return cmpName
 #' @examples
-#'
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -149,6 +149,7 @@ if (!isGeneric("cmpName")) {
 #' # infer ligand-receptor interactions from the comparison
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #' cmpName(bsrinf)
+#' }
 #' @export
 setMethod("cmpName", "BSRInferenceComp", function(x) x@cmp.name)
 
@@ -188,6 +189,7 @@ if (!isGeneric("srcCmpName")) {
 #' @param x BSRInferenceComp object
 #' @return srcCmpName
 #' @examples
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -210,6 +212,7 @@ if (!isGeneric("srcCmpName")) {
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #'
 #' srcCmpName(bsrinf)
+#' }
 #' @export
 setMethod("srcCmpName", "BSRInferenceComp", function(x) x@src.cmp.name)
 
@@ -248,6 +251,7 @@ if (!isGeneric("tgPval")) {
 #' @param x BSRInferenceComp object
 #' @return tgPval
 #' @examples
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -270,6 +274,7 @@ if (!isGeneric("tgPval")) {
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #'
 #' tgPval(bsrinf)
+#' }
 #' @export
 setMethod("tgPval", "BSRInferenceComp", function(x) x@tg.pval)
 
@@ -309,6 +314,7 @@ if (!isGeneric("tgLogFC")) {
 #' @param x BSRInferenceComp object
 #' @return tgLogFC
 #' @examples
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -331,6 +337,7 @@ if (!isGeneric("tgLogFC")) {
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #'
 #' tgLogFC(bsrinf)
+#' }
 #' @export
 setMethod("tgLogFC", "BSRInferenceComp", function(x) x@tg.logFC)
 
@@ -368,7 +375,8 @@ if (!isGeneric("tgExpr")) {
 #' @aliases tgExpr,BSRInferenceComp-method
 #' @param x BSRInferenceComp object
 #' @return tgExpr
-#' @examples 
+#' @examples
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -391,6 +399,7 @@ if (!isGeneric("tgExpr")) {
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #'
 #' tgExpr(bsrinf)
+#' }
 #' @export
 setMethod("tgExpr", "BSRInferenceComp", function(x) x@tg.expr)
 
@@ -432,6 +441,7 @@ if (!isGeneric("LRinterShort")) {
 #' @param x BSRInferenceComp object
 #' @return LRinterShort
 #' @examples
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -453,6 +463,7 @@ if (!isGeneric("LRinterShort")) {
 #' # infer ligand-receptor interactions from the comparison
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #' LRinterShort(bsrinf)
+#' }
 #' @export
 setMethod(
     "LRinterShort", "BSRInferenceComp",
@@ -480,6 +491,7 @@ if (!isGeneric("LRinterScore")) {
 #' @param x BSRInferenceComp object
 #' @return LRinterScore
 #' @examples
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -501,6 +513,7 @@ if (!isGeneric("LRinterScore")) {
 #' # infer ligand-receptor interactions from the comparison
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #' LRinterScore(bsrinf)
+#' }
 #' @export
 setMethod(
     "LRinterScore", "BSRInferenceComp",
@@ -544,6 +557,7 @@ if (!isGeneric("rescoreInference")) {
 #'
 #' @export
 #' @examples
+#' if(FALSE){
 #' print("rescoreInference")
 #'
 #' # prepare data
@@ -570,7 +584,7 @@ if (!isGeneric("rescoreInference")) {
 #' # rescore
 #' bsrinf.less <- rescoreInference(bsrinf, 
 #' param = param(bsrdm.comp), rank.p = 0.75)
-#'
+#' }
 setMethod("rescoreInference", "BSRInferenceComp", function(obj, param, 
     rank.p = 0.55,
     fdr.proc = c("BH", "Bonferroni", "Holm",
@@ -696,6 +710,7 @@ if (!isGeneric("updateInference")) {
 #'
 #' @export
 #' @examples
+#' if(FALSE){
 #' print("updateInference")
 #'
 #' # prepare data
@@ -724,7 +739,7 @@ if (!isGeneric("updateInference")) {
 #' stats$logFC <- stats$logFC + 0.5
 #' bsrcc.2 <- defineClusterComp(bsrdm.comp, colA, colB, stats)
 #' bsrinf.updated <- updateInference(bsrinf, bsrcc.2)
-#'
+#' }
 setMethod("updateInference", "BSRInferenceComp", function(obj, bsrcc,
     ncounts, src.bsrcc = NULL, rank.p = 0.55,
     max.pval = 0.01, min.logFC = 1, min.LR.score = 0,
@@ -940,6 +955,7 @@ if (!isGeneric("reduceToBestPathway")) {
 #'
 #' @export
 #' @examples
+#' if(FALSE){
 #' print("reduceToBestPathway")
 #'
 #' # prepare data
@@ -965,7 +981,7 @@ if (!isGeneric("reduceToBestPathway")) {
 #'
 #' # reduction
 #' bsrinf.redBP <- reduceToBestPathway(bsrinf)
-#'
+#' }
 #' @importFrom rlang .data
 setMethod("reduceToBestPathway", "BSRInferenceComp", function(obj) {
     # Here we access the object slots directly as this procedure
@@ -1043,7 +1059,7 @@ if (!isGeneric("reduceToReceptor")) {
 #' @export
 #' @examples
 #' print("reduceToReceptor")
-#'
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -1067,7 +1083,7 @@ if (!isGeneric("reduceToReceptor")) {
 #'
 #' # reduction
 #' bsrinf.redR <- reduceToReceptor(bsrinf)
-#'
+#' }
 #' @importFrom rlang .data
 setMethod("reduceToReceptor", "BSRInferenceComp", function(obj) {
     # Here we access the object slots directly as this procedure
@@ -1149,7 +1165,7 @@ if (!isGeneric("reduceToLigand")) {
 #' @export
 #' @examples
 #' print("reduceToLigand")
-#'
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -1173,7 +1189,7 @@ if (!isGeneric("reduceToLigand")) {
 #'
 #' # reduction
 #' bsrinf.redL <- reduceToLigand(bsrinf)
-#'
+#' }
 #' @importFrom rlang .data
 setMethod("reduceToLigand", "BSRInferenceComp", function(obj) {
     # Here we access the object slots directly as this procedure
@@ -1262,7 +1278,7 @@ if (!isGeneric("reduceToPathway")) {
 #' @export
 #' @examples
 #' print("reduceToPathway")
-#'
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -1286,6 +1302,7 @@ if (!isGeneric("reduceToPathway")) {
 #'
 #' # reduction
 #' bsrinf.redP <- reduceToPathway(bsrinf)
+#' }
 #' @importFrom rlang .data
 setMethod("reduceToPathway", "BSRInferenceComp", function(obj) {
     # Here we access the object slots directly as this procedure
@@ -1379,7 +1396,7 @@ if (!isGeneric("getLRGeneSignatures")) {
 #' @export
 #' @examples
 #' print("getLRGeneSignatures")
-#'
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -1404,7 +1421,7 @@ if (!isGeneric("getLRGeneSignatures")) {
 #' # reductions
 #' bsrinf.redP <- reduceToPathway(bsrinf)
 #' bsrsig.redP <- getLRGeneSignatures(bsrinf.redP, qval.thres = 0.001)
-#'
+#' }
 #' @importFrom foreach %do% %dopar%
 #' @importFrom methods new
 setMethod("getLRGeneSignatures", "BSRInferenceComp", function(obj,

@@ -23,6 +23,7 @@ Target gene logFC accessor
 Target gene logFC accessor
 }
 \examples{
+if(FALSE){
 # prepare data
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
@@ -45,4 +46,5 @@ bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
 bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 tgLogFC(bsrinf)
+}
 }

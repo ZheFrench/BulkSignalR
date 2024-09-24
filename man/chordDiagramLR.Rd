@@ -54,20 +54,12 @@ Chord diagram.
 }
 \examples{
 print("chordDiagramLR")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-chordDiagramLR(bsrinf,
-    pw.id.filter = "R-HSA-202733",
-    ligand = "COL18A1",
-    receptor = "ITGA3",
+data(bsrinf.example, package = "BulkSignalR")
+
+chordDiagramLR(bsrinf.example,
+    pw.id.filter = "R-HSA-2173782",
+    ligand = "A2M",
+    receptor = "LRP1",
     path = "./",
     filename = "sdc_chord",
     limit = 20,

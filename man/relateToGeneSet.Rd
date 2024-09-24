@@ -28,17 +28,9 @@ receptor downstream pathway targets.
 }
 \examples{
 print("relateToGeneSet")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
+data(bsrinf.example, package = "BulkSignalR")
+
 data(p.EMT, package = "BulkSignalR")
 p.EMT <- p.EMT$gene
-triggers <- relateToGeneSet(bsrinf, p.EMT) # Here in SDC instead of HNSCC!
+triggers <- relateToGeneSet(bsrinf.example, p.EMT) 
 }

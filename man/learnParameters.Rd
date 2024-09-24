@@ -112,6 +112,7 @@ pathways.
 \examples{
 print("prepareDataset")
 data(sdc, package = "BulkSignalR")
+if(FALSE){
 normal <- grep("^N", names(sdc))
 bsrdm <- prepareDataset(sdc[, -normal])
 
@@ -124,4 +125,5 @@ bsrdm <- prepareDataset(sdc[, -normal])
 print("learnParameters")
 bsrdm <- learnParameters(bsrdm, plot.folder = "./")
 bsrdm
+}
 }

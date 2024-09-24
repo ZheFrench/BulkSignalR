@@ -28,14 +28,7 @@ in the (L,R,pathway) triples that targeted genes in a gene set.
 print("assignCellTypesToInteractions")
 data(sdc, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
+data(bsrinf.example, package = "BulkSignalR")
 
 # microenvironment cell populations
 data(immune.signatures, package = "BulkSignalR")
@@ -51,12 +44,12 @@ signatures <- rbind(immune.signatures, tme.signatures[
 tme.scores <- scoreSignatures(bsrdm, signatures)
 
 # assignment
-lr2ct <- assignCellTypesToInteractions(bsrdm, bsrinf, tme.scores)
+lr2ct <- assignCellTypesToInteractions(bsrdm, bsrinf.example, tme.scores)
 
 # relate to p-EMT (should be done in HNSCC normally, not in SDC)
 data(p.EMT, package = "BulkSignalR")
 p.EMT <- p.EMT$gene
-triggers <- relateToGeneSet(bsrinf, p.EMT)
+triggers <- relateToGeneSet(bsrinf.example, p.EMT)
 
 # counts
 cf <- cellTypeFrequency(triggers, lr2ct)

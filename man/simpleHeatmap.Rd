@@ -94,16 +94,9 @@ signature scores.
 \examples{
 print("simpleHeatmap")
 data(sdc, package = "BulkSignalR")
+data(bsrinf.example, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-bsrinf.redBP <- reduceToBestPathway(bsrinf)
+bsrinf.redBP <- reduceToBestPathway(bsrinf.example)
 bsrsig.redBP <- getLRGeneSignatures(bsrinf.redBP,
     qval.thres = 0.001
 )

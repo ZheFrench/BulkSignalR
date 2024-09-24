@@ -24,9 +24,11 @@
 #' normal <- grep("^N", names(sdc))
 #'
 #' bsrdm <- prepareDataset(sdc[,-normal])
+#' if(FALSE){
 #' bsrdm <- learnParameters(bsrdm, quick=FALSE,
 #' plot.folder=".", verbose=TRUE)
 #' bsrinf <- initialInference(bsrdm)
+#' }
 setClass("BSRInference",
     slots = c(
         LRinter = "data.frame",
@@ -108,14 +110,8 @@ if (!isGeneric("LRinter")) {
 #' @param x BSRInference object
 #' @return LRinter
 #' @examples
-#' data(sdc,package='BulkSignalR')
-#' normal <- grep("^N", names(sdc))
-#'
-#' bsrdm <- prepareDataset(sdc[,-normal])
-#' bsrdm <- learnParameters(bsrdm, quick=FALSE,
-#' plot.folder=".", verbose=TRUE)
-#' bsrinf <- initialInference(bsrdm)
-#' LRinter(bsrinf)
+#' data(bsrinf.example, package = "BulkSignalR")
+#' LRinter(bsrinf.example)
 #' @export
 setMethod("LRinter", "BSRInference", function(x) x@LRinter)
 
@@ -300,14 +296,8 @@ if (!isGeneric("infParam")) {
 #' @param x BRSInference object.
 #' @return infParam
 #' @examples
-#' data(sdc,package='BulkSignalR')
-#' normal <- grep("^N", names(sdc))
-#'
-#' bsrdm <- prepareDataset(sdc[,-normal])
-#' bsrdm <- learnParameters(bsrdm, quick=FALSE,
-#' plot.folder=".", verbose=TRUE)
-#' bsrinf <- initialInference(bsrdm)
-#' infParam(bsrinf)
+#' data(bsrinf.example, package = "BulkSignalR")
+#' infParam(bsrinf.example)
 #' @export
 setMethod("infParam", "BSRInference", function(x) x@inf.param)
 
@@ -402,6 +392,7 @@ if (!isGeneric("rescoreInference")) {
 #' @export
 #' @examples
 #' print("rescoreInference")
+#' if(FALSE){
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
 #' bsrdm <- prepareDataset(sdc[, -normal])
@@ -414,7 +405,7 @@ if (!isGeneric("rescoreInference")) {
 #' )
 #' bsrinf <- initialInference(bsrdm)
 #' bsrinf.new <- rescoreInference(bsrinf, param = param(bsrdm), rank.p = 0.75)
-#'
+#' }
 setMethod("rescoreInference", "BSRInference", function(obj, param, 
     rank.p = 0.55, fdr.proc = c("BH", "Bonferroni", "Holm",
         "Hochberg", "SidakSS", "SidakSD", "BY", "ABH", "TSBH"
@@ -529,19 +520,9 @@ if (!isGeneric("getPathwayStats")) {
 #' @export
 #' @examples
 #' print("getPathwayStats")
-#' data(sdc, package = "BulkSignalR")
-#' normal <- grep("^N", names(sdc))
-#' bsrdm <- prepareDataset(sdc[, -normal])
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
+#' data(bsrinf.example, package = "BulkSignalR")
 #'
-#' pw.stat <- getPathwayStats(bsrinf)
+#' pw.stat <- getPathwayStats(bsrinf.example)
 #' head(pw.stat)
 #'
 #' @importFrom foreach %do% %dopar%
@@ -634,17 +615,9 @@ if (!isGeneric("reduceToBestPathway")) {
 #' @export
 #' @examples
 #' print("reduceToBestPathway")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redBP <- reduceToBestPathway(bsrinf)
+#' data(bsrinf.example, package = "BulkSignalR")
+#' 
+#' bsrinf.redBP <- reduceToBestPathway(bsrinf.example)
 #'
 #' @importFrom rlang .data
 setMethod("reduceToBestPathway", "BSRInference", function(obj) {
@@ -711,17 +684,9 @@ if (!isGeneric("reduceToReceptor")) {
 #' @export
 #' @examples
 #' print("reduceToReceptor")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redR <- reduceToReceptor(bsrinf)
+#' data(bsrinf.example, package = "BulkSignalR")
+#' 
+#' bsrinf.redR <- reduceToReceptor(bsrinf.example)
 #'
 #' @importFrom rlang .data
 setMethod("reduceToReceptor", "BSRInference", function(obj) {
@@ -791,17 +756,9 @@ if (!isGeneric("reduceToLigand")) {
 #' @export
 #' @examples
 #' print("reduceToLigand")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redL <- reduceToLigand(bsrinf)
+#' data(bsrinf.example, package = "BulkSignalR")
+#' 
+#' bsrinf.redL <- reduceToLigand(bsrinf.example)
 #'
 #' @importFrom rlang .data
 setMethod("reduceToLigand", "BSRInference", function(obj) {
@@ -879,17 +836,9 @@ if (!isGeneric("reduceToPathway")) {
 #' @export
 #' @examples
 #' print("reduceToPathway")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redP <- reduceToPathway(bsrinf)
+#' data(bsrinf.example, package = "BulkSignalR")
+#' 
+#' bsrinf.redP <- reduceToPathway(bsrinf.example)
 #' @importFrom rlang .data
 setMethod("reduceToPathway", "BSRInference", function(obj) {
     # Here we access the object slots directly as this procedure
@@ -971,17 +920,9 @@ if (!isGeneric("getLRGeneSignatures")) {
 #' @export
 #' @examples
 #' print("getLRGeneSignatures")
-#' data(sdc, package = "BulkSignalR")
-#' bsrdm <- prepareDataset(counts = sdc)
-#' bsrdm <- learnParameters(bsrdm,
-#'     null.model = "normal",
-#'     quick = FALSE,
-#'     plot.folder = "./",
-#'     filename = "sdc",
-#'     verbose = TRUE
-#' )
-#' bsrinf <- initialInference(bsrdm)
-#' bsrinf.redP <- reduceToPathway(bsrinf)
+#' data(bsrinf.example, package = "BulkSignalR")
+#' 
+#' bsrinf.redP <- reduceToPathway(bsrinf.example)
 #' bsrsig.redP <- getLRGeneSignatures(bsrinf.redP, qval.thres = 0.001)
 #'
 #' @importFrom foreach %do% %dopar%
@@ -1054,7 +995,9 @@ if (!isGeneric("resetToInitialOrganism")) {
 #'
 #' @export
 #' @examples
+#' if(FALSE){
 #' data(bodyMap.mouse)
+#'
 #' ortholog.dict <- findOrthoGenes(
 #'     from_organism = "mmusculus",
 #'     from_values = rownames(bodyMap.mouse)
@@ -1070,7 +1013,7 @@ if (!isGeneric("resetToInitialOrganism")) {
 #'     species = "mmusculus",
 #'     conversion.dict = ortholog.dict
 #' )
-#'
+#' 
 #' bsrdm <- learnParameters(bsrdm,
 #'     null.model = "normal", quick = FALSE,
 #'     plot.folder = "./", filename = "bodyMap.mouse",
@@ -1080,7 +1023,7 @@ if (!isGeneric("resetToInitialOrganism")) {
 #' bsrinf <- initialInference(bsrdm)
 #'
 #' bsrinf <- resetToInitialOrganism(bsrinf, conversion.dict = ortholog.dict)
-#'
+#' }
 setMethod("resetToInitialOrganism", "BSRInference", function(obj,
     conversion.dict) {
     # Need to check conversion.dict format

@@ -17,12 +17,6 @@ LRinter
 LRinter accessor
 }
 \examples{
-data(sdc,package='BulkSignalR')
-normal <- grep("^N", names(sdc))
-
-bsrdm <- prepareDataset(sdc[,-normal])
-bsrdm <- learnParameters(bsrdm, quick=FALSE,
-plot.folder=".", verbose=TRUE)
-bsrinf <- initialInference(bsrdm)
-LRinter(bsrinf)
+data(bsrinf.example, package = "BulkSignalR")
+LRinter(bsrinf.example)
 }

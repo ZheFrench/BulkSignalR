@@ -60,18 +60,9 @@ and Q-values.
 }
 \examples{
 print("bubblePlotPathwaysLR")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-pathways <- LRinter(bsrinf)[1,c("pw.name")]
-bubblePlotPathwaysLR(bsrinf,
+data(bsrinf.example, package = "BulkSignalR")
+pathways <- LRinter(bsrinf.example)[1,c("pw.name")]
+bubblePlotPathwaysLR(bsrinf.example,
     pathways = pathways,
     qval.thres = 1,
     path = "./",

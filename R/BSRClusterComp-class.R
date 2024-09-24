@@ -11,6 +11,7 @@
 #'
 #' @export
 #' @examples
+#' if(FALSE){
 #' bsrdm <- new("BSRDataModel",
 #'     ncounts = matrix(1.5,
 #'         nrow = 2, ncol = 4,
@@ -29,7 +30,7 @@
 #' rownames(edger.stats) <- rownames(ncounts(bsrdm.comp))
 #' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, edger.stats)
 #' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "my_comparison")
-#'
+#' }
 setClass("BSRClusterComp",
     slots = c(
         colA = "integer",

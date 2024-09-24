@@ -63,18 +63,13 @@ Compute ligand-receptor gene signature scores over a BSRDataModelComp
 specific comparison.
 }
 \examples{
-print("prepareDataset")
+print("scoreLRGeneSignatures")
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
 bsrdm <- prepareDataset(sdc[, -normal])
 
-print("learnParameters")
-bsrdm <- learnParameters(bsrdm)
-bsrdm
-
-print("perform inference")
-bsrinf <- initialInference(bsrdm)
-bsrinf.redBP <- reduceToBestPathway(bsrinf)
+data(bsrinf.example, package = "BulkSignalR")
+bsrinf.redBP <- reduceToBestPathway(bsrinf.example)
 bsrsig.redBP <- getLRGeneSignatures(bsrinf.redBP,
     qval.thres = 0.001
 )
@@ -82,6 +77,7 @@ bsrsig.redBP <- getLRGeneSignatures(bsrinf.redBP,
 scoresLR <- scoreLRGeneSignatures(bsrdm, bsrsig.redBP,
     name.by.pathway = FALSE
 )
+if(FALSE){
 # prepare data
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
@@ -111,5 +107,5 @@ bsrsig.red <- getLRGeneSignatures(bsrinf.red, qval.thres = 1e-6)
 scores.red <- scoreLRGeneSignatures(bsrdm.comp, bsrsig.red,
     name.by.pathway = TRUE, rownames.LRP = TRUE
 )
-
+}
 }

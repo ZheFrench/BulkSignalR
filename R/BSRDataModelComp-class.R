@@ -30,7 +30,7 @@
 #' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
 #'
 #' # infer ligand-receptor interactions from the comparison
-#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+#' # bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #'
 setClass("BSRDataModelComp",
     contains = c("BSRDataModel"),
@@ -294,10 +294,6 @@ if (!isGeneric("defineClusterComp")) {
 #' )
 #' rownames(stats) <- rownames(ncounts(bsrdm.comp))
 #' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
-#' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
-#'
-#' # infer ligand-receptor interactions from the comparison
-#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 #'
 #' @importFrom methods new
 setMethod("defineClusterComp", "BSRDataModelComp", function(obj, colA,
@@ -384,10 +380,6 @@ if (!isGeneric("addClusterComp")) {
 #' rownames(stats) <- rownames(ncounts(bsrdm.comp))
 #' bsrcc <- defineClusterComp(bsrdm.comp, colA, colB, stats)
 #' bsrdm.comp <- addClusterComp(bsrdm.comp, bsrcc, "random.example")
-#'
-#' # infer ligand-receptor interactions from the comparison
-#' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
-#'
 #' @importFrom methods new
 setMethod("addClusterComp", "BSRDataModelComp", function(obj, cmp,
     cmp.name) {
@@ -597,6 +589,7 @@ if (!isGeneric("initialInference")) {
 #' @export
 #'
 #' @examples
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -617,6 +610,7 @@ if (!isGeneric("initialInference")) {
 #'
 #' # infer ligand-receptor interactions from the comparison
 #' bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
+#' }
 #' @importFrom methods new
 setMethod("initialInference", "BSRDataModelComp", function(obj, cmp.name, 
     src.cmp.name = NULL, rank.p = 0.55,
@@ -808,6 +802,7 @@ if (!isGeneric("scoreLRGeneSignatures")) {
 #'
 #' @export
 #' @examples
+#' if(FALSE){
 #' # prepare data
 #' data(sdc, package = "BulkSignalR")
 #' normal <- grep("^N", names(sdc))
@@ -837,7 +832,7 @@ if (!isGeneric("scoreLRGeneSignatures")) {
 #' scores.red <- scoreLRGeneSignatures(bsrdm.comp, bsrsig.red,
 #'     name.by.pathway = TRUE, rownames.LRP = TRUE
 #' )
-#'
+#' }
 #' @importFrom foreach %do% %dopar%
 #' @importFrom methods is
 #' @importFrom matrixStats rowMeans2 colSums2

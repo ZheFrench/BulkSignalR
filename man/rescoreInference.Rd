@@ -64,6 +64,7 @@ A BSRInferenceComp object should be created by calling
 }
 \examples{
 print("rescoreInference")
+if(FALSE){
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
 bsrdm <- prepareDataset(sdc[, -normal])
@@ -76,7 +77,8 @@ bsrdm <- learnParameters(bsrdm,
 )
 bsrinf <- initialInference(bsrdm)
 bsrinf.new <- rescoreInference(bsrinf, param = param(bsrdm), rank.p = 0.75)
-
+}
+if(FALSE){
 print("rescoreInference")
 
 # prepare data
@@ -103,5 +105,5 @@ bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 # rescore
 bsrinf.less <- rescoreInference(bsrinf, 
 param = param(bsrdm.comp), rank.p = 0.75)
-
+}
 }

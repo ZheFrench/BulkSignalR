@@ -8,6 +8,19 @@
 #' @usage data(sdc)
 "sdc"
 
+#' A BSR-Inference object related to sdc.
+#'
+#' From the previous object `bsrdm`, 
+#' you can generate inferences by calling its
+#' method `initialInference`. 
+#' The resulting BSR-Inference object is `bsrinf`,
+#' It contains all the inferred L-R interactions 
+#' with their associated pathways and corrected p-values.
+#' 
+#' @format An example of an object created by inference function 
+#' @usage data(bsrinf.example)
+"bsrinf.example"
+
 #' Mouse transcriptomes across tissues
 #'
 #' A dataset containing rpkm values of  brain and liver.

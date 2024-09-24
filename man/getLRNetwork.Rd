@@ -34,18 +34,11 @@ Generate a ligand-receptor network from a ligand-receptor table.
 }
 \examples{
 print("getLRNetwork")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-gLR <- getLRNetwork(bsrinf, qval.thres = 1e-4)
+if(FALSE){
+data(bsrinf.example, package = "BulkSignalR")
+
+gLR <- getLRNetwork(bsrinf.example, qval.thres = 1e-4)
 # plot(gLR)
 # write.graph(gLR, file="SDC-LR-network.graphml", format="graphml")
-
+}
 }

@@ -20,15 +20,8 @@ Generate a igraph object with one link between each cell type.
 \examples{
 print("assignCellTypesToInteractions")
 data(sdc, package = "BulkSignalR")
+data(bsrinf.example, package = "BulkSignalR")
 bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
 
 # microenvironment cell populations
 data(immune.signatures, package = "BulkSignalR")
@@ -44,7 +37,7 @@ signatures <- rbind(immune.signatures, tme.signatures[
 tme.scores <- scoreSignatures(bsrdm, signatures)
 
 # assignment
-lr2ct <- assignCellTypesToInteractions(bsrdm, bsrinf, tme.scores)
+lr2ct <- assignCellTypesToInteractions(bsrdm, bsrinf.example, tme.scores)
 
 # cellular network
 g.table <- cellularNetworkTable(lr2ct)

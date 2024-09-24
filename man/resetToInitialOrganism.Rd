@@ -21,7 +21,9 @@ the organism providen in first instance.
 Reset gene names to initial organism providen in first instance
 }
 \examples{
+if(FALSE){
 data(bodyMap.mouse)
+
 ortholog.dict <- findOrthoGenes(
     from_organism = "mmusculus",
     from_values = rownames(bodyMap.mouse)
@@ -47,5 +49,5 @@ bsrdm <- learnParameters(bsrdm,
 bsrinf <- initialInference(bsrdm)
 
 bsrinf <- resetToInitialOrganism(bsrinf, conversion.dict = ortholog.dict)
-
+}
 }

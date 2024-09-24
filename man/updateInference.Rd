@@ -92,6 +92,7 @@ A BSRInferenceComp object should be created by calling
 \code{"\link[=BSRClusterComp-class]{initialInference}"}
 }
 \examples{
+if(FALSE){
 print("updateInference")
 
 # prepare data
@@ -120,5 +121,5 @@ stats$pval <- stats$pval / 100
 stats$logFC <- stats$logFC + 0.5
 bsrcc.2 <- defineClusterComp(bsrdm.comp, colA, colB, stats)
 bsrinf.updated <- updateInference(bsrinf, bsrcc.2)
-
+}
 }

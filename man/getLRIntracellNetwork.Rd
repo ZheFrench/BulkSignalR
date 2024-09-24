@@ -64,17 +64,10 @@ target genes following Reactome and KEGG pathways.
 }
 \examples{
 print("getLRIntracellNetwork")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-bsrinf.redBP <- reduceToBestPathway(bsrinf)
+if(FALSE){
+data(bsrinf.example, package = "BulkSignalR")
+
+bsrinf.redBP <- reduceToBestPathway(bsrinf.example)
 
 pairs <- LRinter(bsrinf.redBP)
 top <- unique(pairs[pairs$pval < 1e-20, c("pw.id", "pw.name")])
@@ -86,5 +79,5 @@ restrict.pw = top$pw.id
 
 # write.graph(gLRintra, file="SDC-LR-intracellular-network.reduced.graphml",
 # format="graphml")
-
+}
 }

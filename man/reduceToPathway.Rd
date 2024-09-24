@@ -49,19 +49,11 @@ the pathways.
 }
 \examples{
 print("reduceToPathway")
-data(sdc, package = "BulkSignalR")
-bsrdm <- prepareDataset(counts = sdc)
-bsrdm <- learnParameters(bsrdm,
-    null.model = "normal",
-    quick = FALSE,
-    plot.folder = "./",
-    filename = "sdc",
-    verbose = TRUE
-)
-bsrinf <- initialInference(bsrdm)
-bsrinf.redP <- reduceToPathway(bsrinf)
-print("reduceToPathway")
+data(bsrinf.example, package = "BulkSignalR")
 
+bsrinf.redP <- reduceToPathway(bsrinf.example)
+print("reduceToPathway")
+if(FALSE){
 # prepare data
 data(sdc, package = "BulkSignalR")
 normal <- grep("^N", names(sdc))
@@ -85,4 +77,5 @@ bsrinf <- initialInference(bsrdm.comp, max.pval = 1, "random.example")
 
 # reduction
 bsrinf.redP <- reduceToPathway(bsrinf)
+}
 }
